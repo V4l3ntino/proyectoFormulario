@@ -21,7 +21,7 @@ const SearchForm:React.FC<Props> = ({filter, error}) => {
         <form className="flex flex-row w-[100%]" onSubmit={handleSubmit}>
             <div className="relative w-full md:w-80">
                 {error ? 
-                    <label className="text-red-500 font-thin absolute -top-8">
+                    <label className="text-red-500 font-semibold absolute -top-8">
                         {('No se ha encontrado a nadie').split(" ").map((word, key) => (
                             <motion.span
                             initial={{
