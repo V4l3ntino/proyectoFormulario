@@ -2,7 +2,8 @@ import DashboardApp from "@/components/dashboard-app";
 
 
 
-const Dashboard = () => {
+const Dashboard = async() => {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     return ( 
         <DashboardApp />
      );

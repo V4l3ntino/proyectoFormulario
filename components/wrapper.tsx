@@ -13,7 +13,7 @@ type Props = {
 }
 const Wrapper:React.FC<Props> = ({personas}) => {
     return ( 
-        <div className="flex flex-col w-full">
+        <div className="flex flex-wrap gap-3 w-full">
             {
                 personas.map((item, key) => (
                     <Card key={key} name={item.name} description={item.description} index={key}/>

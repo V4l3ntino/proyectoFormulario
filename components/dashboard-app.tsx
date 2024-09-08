@@ -7,185 +7,72 @@ const DashboardApp = () => {
     const json:Person[] = [
         {
             name: 'Manolo',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Peralta',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Pedro',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
-            name: 'Joselito',
-            description: 'Soy polifacetico'
+            name: 'Jose',
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Manuel',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Pancho',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Paco',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Paco',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Paco',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Paco',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Paco',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Paco',
-            description: 'Soy polifacetico'
+            description: 'Apellido del sujeto'
         },
         {
             name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
-        {
-            name: 'Paco',
-            description: 'Soy polifacetico'
-        },
+            description: 'Apellido del sujeto'
+        }
     ] 
     const [data, setData] = useState(json)
     const [datafilter, setDatafilter] = useState<Person[]>([])
+    const [error, setError] = useState(false)
     const filterText = (text:string) => {
         const filtered = data.filter(item => {
             return item.name.toLocaleLowerCase().indexOf(text.toLocaleLowerCase()) != -1
         })
+        setError(false)
+        if (filtered.length == 0) setError(true)
         setDatafilter(filtered)
     }
 
     return ( 
         <main>
-            <SearchForm filter={filterText}/>
+            <SearchForm filter={filterText} error={error}/>
             <br />
             <hr />
             <br />
