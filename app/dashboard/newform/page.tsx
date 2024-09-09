@@ -1,15 +1,39 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react";
-import { json } from "@/data"
 import { Person } from "@/interfaces/interfaces";
+const fetchUsers = async (): Promise<Person[]> => {
+    const response = await fetch('http://localhost:8000/api/trabajador/', {
+      next: { revalidate: 60 } // Opcional: puedes configurar la revalidación para que los datos se actualicen periódicamente
+    });
+  
+    if (!response.ok) {
+      throw new Error('Error al obtener el trabajador');
+    }
+  
+    return response.json();
+  };
+
+
 const newform = () => {
     const [name, setName] = useState('');
     const refElement = useRef<HTMLInputElement>(null);
     const [lista, setLista] = useState<Person[]>([])
+    const [json, setJson] = useState<Person[]>([])
+
     useEffect(() => {
         filter()
     },[name])
+
+    useEffect(() => {
+      const fetchData = async () => {
+        const data = await fetchUsers();
+        setJson(data);
+      };
+  
+      fetchData();
+    }, []);
+
     const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     }
@@ -18,7 +42,7 @@ const newform = () => {
         //     setTimeout(resolve, 1000)
         // })
         const listaFiltrada = json.filter((item,index) => {
-            return item.name.toLowerCase().startsWith(name.toLowerCase())
+            return item.id.toString().toLowerCase().trim().startsWith(name.toLowerCase().trim())||item.nombre.toLowerCase().trim().startsWith(name.toLowerCase().trim()) || item.apellido.toLowerCase().trim().startsWith(name.toLowerCase().trim())
         })
         setLista(name.length > 0 ? listaFiltrada : [])
     }
@@ -46,7 +70,7 @@ const newform = () => {
                                         <div className="bg-slate-100 flex flex-col border-[1px] border-solid border-gray-50 max-h-40 overflow-auto rounded mt-2">
                                             {
                                                 (lista).map((item, index) => (
-                                                    <span onClick={()=> {choose(item.name)}} className="cursor-pointer text-start mx-[2px] hover:bg-black/15 rounded px-2">{item.name}</span>
+                                                    <span onClick={()=> {choose(item.nombre)}} className="cursor-pointer text-start mx-[2px] hover:bg-black/15 rounded px-2">{item.nombre}, {item.apellido} | Id: {item.id}</span>
                                                 ))
                                             }
                                         </div>

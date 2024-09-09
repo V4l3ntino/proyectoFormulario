@@ -1,6 +1,9 @@
 export interface Person {
-    name: string;
-    description: string;
+    id: string,
+    nombre: string,
+    apellido: string,
+    sexo: string,
+    experiencia: number;
 }
 
 export interface Formulario {

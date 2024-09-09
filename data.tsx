@@ -2,55 +2,81 @@ import { Person } from "./interfaces/interfaces";
 
 export const json:Person[] = [
     {
-        name: 'Manolo',
-        description: 'Apellido del sujeto'
+        nombre: 'Manolo',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Peralta',
-        description: 'Apellido del sujeto'
+        nombre: 'Peralta',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Pedro',
-        description: 'Apellido del sujeto'
+        nombre: 'Pedro',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Jose',
-        description: 'Apellido del sujeto'
+        nombre: 'Jose',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Manuel',
-        description: 'Apellido del sujeto'
+        nombre: 'Manuel',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Pancho',
-        description: 'Apellido del sujeto'
+        nombre: 'Pancho',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Paco',
-        description: 'Apellido del sujeto'
+        nombre: 'Paco',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Paco',
-        description: 'Apellido del sujeto'
+        nombre: 'Paco',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Paco',
-        description: 'Apellido del sujeto'
+        nombre: 'Paco',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Paco',
-        description: 'Apellido del sujeto'
+        nombre: 'Paco',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Paco',
-        description: 'Apellido del sujeto'
+        nombre: 'Paco',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Paco',
-        description: 'Apellido del sujeto'
+        nombre: 'Paco',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     },
     {
-        name: 'Paco',
-        description: 'Apellido del sujeto'
+        nombre: 'Paco',
+        apellido: 'Apellido del sujeto',
+        sexo: "h",
+        experiencia: 80
     }
 ] 
