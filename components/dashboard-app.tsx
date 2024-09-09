@@ -3,61 +3,8 @@ import { useState } from "react"
 import { Person } from "@/interfaces/interfaces"
 import SearchForm from "./search-form"
 import Wrapper from "./wrapper"
+import { json } from "@/data"
 const DashboardApp = () => {
-    const json:Person[] = [
-        {
-            name: 'Manolo',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Peralta',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Pedro',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Jose',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Manuel',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Pancho',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Paco',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Paco',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Paco',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Paco',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Paco',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Paco',
-            description: 'Apellido del sujeto'
-        },
-        {
-            name: 'Paco',
-            description: 'Apellido del sujeto'
-        }
-    ] 
     const [data, setData] = useState(json)
     const [datafilter, setDatafilter] = useState<Person[]>([])
     const [error, setError] = useState(false)

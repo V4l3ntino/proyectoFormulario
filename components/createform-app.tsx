@@ -78,15 +78,16 @@ const CreateFormApp = () => {
             <section>
                 
                 <div className="bg-slate-200 p-2 lg:p-10 rounded flex-col overflow-hidden">
-                    <motion.div 
+                    <motion.a
+                    href="/dashboard/newform"
                     initial={{opacity:0}}
                     whileInView={{opacity:1}}
                     transition={{duration:0.5}}
                     viewport={{ margin: "-100px", once: false }}
                     onViewportEnter={() => { setStyle(true)}}
                     onViewportLeave={() => { setStyle(false)}}
-                    className={`bg-slate-50 overflow-hidden relative rounded w-full h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-1000 ease-in-out 
-                    ${style ? `translate-x-0` : `translate-x-5` }`}
+                    className={`bg-slate-50 hover:bg-slate-200 overflow-hidden relative rounded w-full h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-1000 ease-in-out 
+                    ${style ? `opacity-1 scale-1` : `opacity-0 scale-0` }`}
                     >
                         <div className="flex gap-5 relative">
                             <DocumentPlusIcon className="h-10 w-10 text-gray-400 hidden md:flex"/>
@@ -96,7 +97,7 @@ const CreateFormApp = () => {
                             </div>
                         </div>
                         <DocumentPlusIcon className="h-10 w-10 text-gray-400  md:hidden"/>
-                    </motion.div>                    
+                    </motion.a>                    
                     {(json).map((item, key) => (
                         <CardForm key={key} creador={item.creador} operario={item.operario} created_at={item.created_at}/>
                     ))}
