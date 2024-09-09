@@ -20,7 +20,7 @@ const Card: React.FC<Props> = ({name, description, index}) => {
         onViewportEnter={() => { setStyle(true)}}
         onViewportLeave={() => { setStyle(false)}}
         className={`bg-slate-50 overflow-hidden relative rounded w-full md:w-4/6 h-40 mb-5 flex justify-between items-center px-10 py-5 shadow-2xl transition-transform duration-1000 ease-in-out 
-        ${style ? `translate-x-0` : `translate-x-20` }`}
+        ${style ? `translate-x-0` : `translate-x-5` }`}
         onHoverStart={() => {setTipe(true)}}
         onHoverEnd={() => {setTipe(false)}}
         >
@@ -37,7 +37,7 @@ const Card: React.FC<Props> = ({name, description, index}) => {
             initial={{filter: 'blur(50px)'}}
             animate={{filter: 'blur(0px)'}}
             transition={{delay:0.1}}
-            className='w-full bg-black/40 absolute top-0 left-0 h-40 flex justify-center items-center rounded'><CursorArrowRippleIcon className='w-5 h-5 text-white'/></motion.div>
+            className='w-full bg-black/40 absolute top-0 left-0 h-40 flex justify-center items-center rounded'><CursorArrowRippleIcon className='w-7 h-7 text-white'/></motion.div>
             }
         </motion.div>
      );

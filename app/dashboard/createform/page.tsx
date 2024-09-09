@@ -1,5 +1,9 @@
+import CreateFormApp from "@/components/createform-app";
+
 const createform = () => {
-    return ( <p>Nuevo formulario</p> );
+    return ( 
+        <CreateFormApp />
+     );
 }
  
 export default createform;

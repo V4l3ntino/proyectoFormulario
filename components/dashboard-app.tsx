@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { Person } from "@/interfaces/persona"
+import { Person } from "@/interfaces/interfaces"
 import SearchForm from "./search-form"
 import Wrapper from "./wrapper"
 const DashboardApp = () => {
