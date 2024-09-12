@@ -16,11 +16,11 @@ const Card: React.FC<Props> = ({name, description, index}) => {
         initial={{opacity:0}}
         whileInView={{opacity:1}}
         transition={{duration:0.5}}
-        viewport={{ margin: "-100px", once: true }}
+        viewport={{ margin: "-10px", once: true }}
         onViewportEnter={() => { setStyle(true)}}
         onViewportLeave={() => { setStyle(false)}}
-        className={`bg-slate-50 overflow-hidden relative rounded w-full md:w-4/6 h-40 mb-5 flex justify-between items-center px-10 py-5 shadow-2xl transition-transform duration-1000 ease-in-out 
-        ${style ? `opacity-1 scale-1` : `opacity-0 scale-0` }`}
+        className={`bg-slate-50 overflow-hidden relative rounded w-full md:w-4/6 h-40 mb-5 flex justify-between items-center px-10 py-5 shadow-2xl transition-transform duration-300 ease-in-out 
+        ${style ? `opacity-1 scale-1` : `opacity-0 scale-0 lg:translate-x-96 translate-x-20` }`}
         onHoverStart={() => {setTipe(true)}}
         onHoverEnd={() => {setTipe(false)}}
         >

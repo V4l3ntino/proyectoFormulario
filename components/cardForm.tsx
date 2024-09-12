@@ -16,11 +16,11 @@ const CardForm:React.FC<Props> = ({creador, created_at, operario}) => {
         initial={{opacity:0}}
         whileInView={{opacity:1}}
         transition={{duration:0.5}}
-        viewport={{ margin: "-100px", once: true }}
+        viewport={{ margin: "-10px", once: true }}
         onViewportEnter={() => { setStyle(true)}}
         onViewportLeave={() => { setStyle(false)}}
         className={`bg-slate-50 overflow-hidden relative rounded w-full h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-1000 ease-in-out 
-        ${style ? `opacity-1 scale-1` : `opacity-0 scale-0` }`}
+        ${style ? `opacity-1 scale-1` : `opacity-0 scale-0 lg:translate-x-96 translate-x-20` }`}
         >
             <div className="flex gap-5 relative">
                 <ClipboardDocumentIcon className="h-10 w-10 text-gray-400 hidden md:flex"/>
