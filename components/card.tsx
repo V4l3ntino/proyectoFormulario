@@ -1,14 +1,13 @@
 "use client"
 import {motion} from 'framer-motion'
 type Props = {
-    name:string
-    description:string,
-    index:number
+    operario: Person
 }
 import { UserIcon, CursorArrowRippleIcon } from "@heroicons/react/24/outline";
 import { useState } from 'react'
 import { abel } from '@/app/ui/fonts'
-const Card: React.FC<Props> = ({name, description, index}) => {
+import { Person } from '@/interfaces/interfaces';
+const Card: React.FC<Props> = ({operario}) => {
     const [style, setStyle] = useState(false)
     const [tipe, setTipe] = useState(false)
     return ( 
@@ -25,11 +24,14 @@ const Card: React.FC<Props> = ({name, description, index}) => {
         onHoverEnd={() => {setTipe(false)}}
         >
             <div className="flex gap-5 relative">
-                <UserIcon className="h-10 w-10 text-gray-400"/>
+                <div>
+                    <UserIcon className="h-10 w-10 text-gray-400"/>
+                    <p>Id: {operario.id}</p>
+                </div>
                 <span className="h-full w-5 before:border-r-2 before:border-r-black before:border-solid before:absolute before:w-1 before:h-10"></span>
                 <div className="flex-col">
-                    <h1 className={`${abel.className} text-2xl`}>{name}</h1>
-                    <p>{description}</p>
+                    <h1 className={`${abel.className} text-2xl`}>{operario.nombre}</h1>
+                    <p>{operario.apellido}</p>
                 </div>
             </div>
             {tipe && 

@@ -83,7 +83,7 @@ const CreateFormApp = () => {
                     initial={{opacity:0}}
                     whileInView={{opacity:1}}
                     transition={{duration:0.5}}
-                    viewport={{ margin: "-100px", once: false }}
+                    viewport={{ margin: "-100px", once: true }}
                     onViewportEnter={() => { setStyle(true)}}
                     onViewportLeave={() => { setStyle(false)}}
                     className={`bg-slate-50 hover:bg-slate-200 overflow-hidden relative rounded w-full h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-1000 ease-in-out 
