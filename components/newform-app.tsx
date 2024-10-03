@@ -30,11 +30,19 @@ const NewformApp:React.FC<Props> = ({propJson}) => {
         const name = localStorage.getItem("name")
         const edad = JSON.parse(localStorage.getItem("edad")!) || 18
         const experiencia = JSON.parse(localStorage.getItem("experiencia")!) || ``
-
+        const men = JSON.parse(localStorage.getItem("men")!) || false
+        const women = JSON.parse(localStorage.getItem("women")!) || false
         name ? setName(JSON.parse(name)) : ``;
         try {
             edad < 100 ? edadRefElement.current!.value = edad : edadRefElement.current!.value = "18"; 
             experienciaRefElement.current!.value = experiencia
+            if(men){
+                setMen(true); setWomen(false);
+                return
+            }
+            if(women){
+                setMen(false); setWomen(true);
+            }
         } catch (error) {
             console.warn(error)
         }
@@ -93,11 +101,11 @@ const NewformApp:React.FC<Props> = ({propJson}) => {
                             <div className="flex gap-2 w-2/3">
                                 <div className="lg:w-1/6 w-full">
                                     <label htmlFor="">Hombre</label>
-                                    <input  type="checkbox" onClick={() => {setMen(true); setWomen(false)}} checked={men}  name="floating_email" className="peer  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
+                                    <input  type="checkbox" onClick={() => {setMen(true); setWomen(false); saveInStorage("men", true)}} checked={men}  name="floating_email" className="peer  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
                                 </div>
                                 <div className="lg:w-1/6 w-full">
                                     <label htmlFor="">Mujer</label>
-                                    <input  type="checkbox" onClick={() => {setWomen(true); setMen(false)}} checked={women} name="floating_email" className="peer  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
+                                    <input  type="checkbox" onClick={() => {setWomen(true); setMen(false); saveInStorage("women", true); saveInStorage("men", false)}} checked={women} name="floating_email" className="peer  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
                                 </div>
                             </div>
                         </div>
