@@ -4,6 +4,10 @@ import { Person } from "@/interfaces/interfaces"
 import SearchForm from "./search-form"
 import Wrapper from "./wrapper"
 import { json } from "@/data"
+import CreateFormApp from "./createform-app"
+import NewformApp from "./newform-app"
+import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline"
+
 
 
 type Props = {
@@ -11,25 +15,40 @@ type Props = {
 }
 
 const DashboardApp:React.FC<Props> = ({json}) => {
-    const [data, setData] = useState<Person[]>(json)
-    const [datafilter, setDatafilter] = useState<Person[]>([])
-    const [error, setError] = useState(false)
-    const filterText = (text:string) => {
-        const filtered = data.filter(item => {
-            return item.id.toString().toLowerCase().trim().startsWith(text.toLowerCase().trim())||item.nombre.toLowerCase().trim().startsWith(text.toLowerCase().trim()) || item.apellido.toLowerCase().trim().startsWith(text.toLowerCase().trim())
-        })
-        setError(false)
-        if (filtered.length == 0) setError(true)
-        setDatafilter(filtered)
+
+    const [state, setState] = useState<boolean>(true)
+
+    useEffect(() => {
+        const stateStorage:string = localStorage.getItem('state')!
+        if(stateStorage){
+            setState(JSON.parse(stateStorage))
+        }
+
+    }, [])
+    const changeState = (state: boolean):void => {
+        setState(state);
+        localStorage.setItem('state', JSON.stringify(state))
     }
     
+    const Icon = ArrowLeftCircleIcon;
     return ( 
         <main>
-            <SearchForm filter={filterText} error={error}/>
+            { state ? (
+                <h1>Historial</h1>
+            ) : (<div>
+                <h1>Nuevo Expediente</h1>
+            </div>)
+            }
             <br />
             <hr />
             <br />
-            <Wrapper personas={datafilter.length > 0 ? datafilter : data}/>
+            { state ? (``) : (<span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit" onClick={() => {changeState(true)}}>Volver <Icon className="w-6" /></span>)}
+            <br />
+            {
+                state ? (
+                    <CreateFormApp funcion={changeState}/>
+                ) : (<NewformApp propJson={json}/>)
+            }
         </main>
      );
 }
