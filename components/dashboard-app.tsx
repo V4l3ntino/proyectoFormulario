@@ -1,9 +1,9 @@
 "use client"
 import { useEffect, useState } from "react"
-import { Person } from "@/interfaces/interfaces"
+import { ExpedienteJson, Person } from "@/interfaces/interfaces"
 import SearchForm from "./search-form"
 import Wrapper from "./wrapper"
-import { json } from "@/data"
+
 import CreateFormApp from "./createform-app"
 import NewformApp from "./newform-app"
 import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline"
@@ -11,10 +11,12 @@ import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline"
 
 
 type Props = {
-    json: Person[]
+    jsonTrabajadores: Person[]
+    jsonExpedientes: ExpedienteJson[]
+
 }
 
-const DashboardApp:React.FC<Props> = ({json}) => {
+const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
 
     const [state, setState] = useState<boolean>(true)
 
@@ -46,8 +48,8 @@ const DashboardApp:React.FC<Props> = ({json}) => {
             <br />
             {
                 state ? (
-                    <CreateFormApp funcion={changeState}/>
-                ) : (<NewformApp propJson={json}/>)
+                    <CreateFormApp funcion={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes}/>
+                ) : (<NewformApp propJson={jsonTrabajadores}/>)
             }
         </main>
      );

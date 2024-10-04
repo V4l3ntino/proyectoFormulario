@@ -1,80 +1,33 @@
 "use client"
-import { Formulario } from "@/interfaces/interfaces";
+import { ExpedienteJson, Person } from "@/interfaces/interfaces";
 import CardForm from "./cardForm";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { abel } from "@/app/ui/fonts";
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
+import { Expediente } from "@/models/Expediente";
 
 type Props = {
     funcion: (state: boolean)=> void
+    trabajadores: Person[]
+    expedientesJson: ExpedienteJson[]
 }
 
-const CreateFormApp:React.FC<Props> = ({funcion}) => {
+const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson}) => {
 
-
-    const json:Formulario[] = [
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-        {
-            creador: 'Paco',
-            operario: 'Operario1',
-            created_at: '2024-04-04'
-        },
-    ]
+    const expedientes2: Expediente[] = []
+    if(expedientesJson && expedientesJson.length > 0 && trabajadores && trabajadores.length > 0){
+        expedientesJson.forEach((item, index) => {
+            trabajadores.forEach((user, index) => {
+                if(item.trabajador == user.id){
+                    const expedienteNuevo = new Expediente(item.id, user.nombre, item.sexo, item.edad, item.lugar_accidente, item.fecha_suceso, item.lesion, item.descripcion_hechos)
+                    expedientes2.push(expedienteNuevo)
+                }
+            })
+        })
+    } 
+   
+    
     const [style, setStyle] = useState(false)
     return ( 
         <section>
@@ -99,8 +52,8 @@ const CreateFormApp:React.FC<Props> = ({funcion}) => {
                         </div>
                         <DocumentPlusIcon className="h-10 w-10 text-gray-400  md:hidden"/>
                     </motion.span>                    
-                    {(json).map((item, key) => (
-                        <CardForm key={key} creador={item.creador} operario={item.operario} created_at={item.created_at}/>
+                    {(expedientes2).map((item, key) => (
+                        <CardForm key={key} creador={item.trabajador} operario={item.lugarAccidente} created_at={item.fechaSuceso}/>
                     ))}
                 </div>
         </section>
