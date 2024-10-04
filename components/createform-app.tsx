@@ -15,12 +15,21 @@ type Props = {
 
 const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson}) => {
 
-    const expedientes2: Expediente[] = []
+    const expedientes2: ExpedienteJson[] = []
     if(expedientesJson && expedientesJson.length > 0 && trabajadores && trabajadores.length > 0){
         expedientesJson.forEach((item, index) => {
             trabajadores.forEach((user, index) => {
                 if(item.trabajador == user.id){
-                    const expedienteNuevo = new Expediente(item.id, user.nombre, item.sexo, item.edad, item.lugar_accidente, item.fecha_suceso, item.lesion, item.descripcion_hechos)
+                    const expedienteNuevo:ExpedienteJson = {
+                        id: item.id,
+                        trabajador: user.nombre,
+                        descripcion_hechos: item.descripcion_hechos,
+                        edad: item.edad,
+                        fecha_suceso: item.fecha_suceso,
+                        lesion: item.lesion,
+                        lugar_accidente: item.lugar_accidente,
+                        sexo: item.sexo
+                    }
                     expedientes2.push(expedienteNuevo)
                 }
             })
@@ -53,7 +62,7 @@ const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson})
                         <DocumentPlusIcon className="h-10 w-10 text-gray-400  md:hidden"/>
                     </motion.span>                    
                     {(expedientes2).map((item, key) => (
-                        <CardForm key={key} creador={item.trabajador} operario={item.lugarAccidente} created_at={item.fechaSuceso}/>
+                        <CardForm key={key} creador={typeof item.trabajador === "string" ? item.trabajador : "Sin_Nombre"} operario={item.lugar_accidente} created_at={item.fecha_suceso}/>
                     ))}
                 </div>
         </section>

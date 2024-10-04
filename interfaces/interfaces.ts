@@ -6,8 +6,8 @@ export interface Person {
 }
 
 export interface ExpedienteJson {
-    id: number
-    trabajador: number
+    id?: number
+    trabajador: number | string
     sexo: string
     edad: number
     lugar_accidente: string
