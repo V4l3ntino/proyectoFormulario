@@ -1,6 +1,6 @@
 import DashboardApp from "@/components/dashboard-app";
 import { ExpedienteJson, Person } from "@/interfaces/interfaces";
-
+export const dynamic = "force-dynamic"
 const fetchUsers = async (): Promise<Person[]|undefined> => {
     try {
         const response = await fetch('http://localhost:8000/api/trabajador/', {
