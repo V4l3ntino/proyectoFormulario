@@ -5,7 +5,6 @@ import { ExpedienteJson, Person } from "@/interfaces/interfaces";
 import { TrashIcon } from "@heroicons/react/24/outline"
 import { abel, inter } from "@/app/ui/fonts";
 import { Expediente } from "@/models/Expediente";
-import { NOMEM } from "dns";
 
 type Props = {
     propJson: Person[]
@@ -31,7 +30,7 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
     const [lesiondescripcion, setLesiondescripcion] = useState<string>("")
     const [fechasuceso, setFechasuceso] = useState<string>("2024-10-11T11:47")
     const [descripcion, setDescripcion] = useState<string>("")
-    const [idtrabajador, setIdtrabajador] = useState<number>()
+    const [idtrabajador, setIdtrabajador] = useState<number|undefined>(undefined)
 
     useEffect(() => {
         filter()
@@ -59,7 +58,7 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
         localStorage.removeItem('descripcion')
         setDescripcion(``)
         localStorage.removeItem('idTrabajador')
-        setIdtrabajador(0)
+        setIdtrabajador(undefined)
     }
 
     useEffect(() => {
@@ -116,7 +115,7 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
             lugar_accidente: formulario.lugarAccidente,
             sexo: formulario.sexo,
         }
-        const url = updateId ? `http://localhost:8000/api/expediente/${updateId}/` : `http://localhost:8000/api/expediente/`
+        const url = updateId ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${updateId}/` : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/`
         const method = updateId ? `PUT` : `POST`
         if (setUpdateId) setUpdateId()
         fetch(url, {
@@ -180,7 +179,7 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
                         </div>
                         <div className="lg:w-1/3 w-full">
                             <label htmlFor="">Id</label>
-                            <input value={idtrabajador} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
+                            <input value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
                         </div>
                         <div className="lg:w-1/3 w-full">
                             <label htmlFor="">Edad</label>

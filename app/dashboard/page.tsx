@@ -3,7 +3,7 @@ import { ExpedienteJson, Person } from "@/interfaces/interfaces";
 export const dynamic = "force-dynamic"
 const fetchUsers = async (): Promise<Person[]|undefined> => {
     try {
-        const response = await fetch('http://localhost:8000/api/trabajador/', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trabajador/`, {
           next: { revalidate: 60 } // Opcional: puedes configurar la revalidación para que los datos se actualicen periódicamente
         });
       
@@ -19,7 +19,7 @@ const fetchUsers = async (): Promise<Person[]|undefined> => {
 
 const fechExpedientes = async(): Promise<ExpedienteJson[]|undefined> => {
   try {
-    const response = await fetch('http://localhost:8000/api/expediente')
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/`)
     if (!response.ok){
       throw new Error('Error al cargar los expedientes')
     }

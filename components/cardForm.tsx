@@ -18,7 +18,7 @@ const CardForm:React.FC<Props> = ({expediente, update}) => {
 
     const fetchDeleteExpediente = async(): Promise<void> => {
         try{
-            const response = await fetch(`http://localhost:8000/api/expediente/${expediente.id}/`,{method: 'DELETE'})
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${expediente.id}/`,{method: 'DELETE'})
             if(!response.ok){
                 throw new Error("Error al eliminar el expediente")
             }

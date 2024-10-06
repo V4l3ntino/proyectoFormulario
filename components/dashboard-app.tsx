@@ -65,7 +65,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
             <br />
             <hr />
             <br />
-            { state ? (``) : (<span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit" onClick={() => {changeState(true)}}>Volver <Icon className="w-6" /></span>)}
+            { state ? (``) : (<span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit" onClick={() => {changeState(true); setUpdate(undefined)}}>Volver <Icon className="w-6" /></span>)}
             <br />
             {
                 state ? (
