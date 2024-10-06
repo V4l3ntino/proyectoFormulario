@@ -7,10 +7,25 @@ type Props = {
     creador: string,
     created_at: string,
     operario: string
+    id: number | undefined
 }
 
-const CardForm:React.FC<Props> = ({creador, created_at, operario}) => {
+
+const CardForm:React.FC<Props> = ({creador, created_at, operario, id}) => {
     const [style, setStyle] = useState(false)
+    const [idExp, setIdexp] = useState<number | undefined>(id)
+
+    const fetchDeleteExpediente = async(): Promise<void> => {
+        try{
+            const response = await fetch(`http://localhost:8000/api/expediente/${idExp}/`,{method: 'DELETE'})
+            if(!response.ok){
+                throw new Error("Error al eliminar el expediente")
+            }
+            window.location.reload()
+        }catch(Error){
+            console.log(Error)
+        }
+    }
     return ( 
         <motion.div 
         initial={{opacity:0}}
@@ -32,7 +47,7 @@ const CardForm:React.FC<Props> = ({creador, created_at, operario}) => {
                 </div>
             </div>
             <div className="flex gap-4">
-                <TrashIcon className="h-5 w-5 text-gray-400 md:h-10 md:w-10" />
+                <TrashIcon onClick={() => {fetchDeleteExpediente()}} className="h-5 w-5 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
                 <PencilSquareIcon className="h-5 w-5 text-gray-400 md:h-10 md:w-10"/>
                 <DocumentIcon className="h-5 w-5 text-gray-400 md:h-10 md:w-10" />
                 <TableCellsIcon className="h-5 w-5 text-gray-400 md:h-10 md:w-10" />

@@ -62,7 +62,7 @@ const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson})
                         <DocumentPlusIcon className="h-10 w-10 text-gray-400  md:hidden"/>
                     </motion.span>                    
                     {(expedientes2).map((item, key) => (
-                        <CardForm key={key} creador={typeof item.trabajador === "string" ? item.trabajador : "Sin_Nombre"} operario={item.lugar_accidente} created_at={item.fecha_suceso}/>
+                        <CardForm key={key} creador={typeof item.trabajador === "string" ? item.trabajador : "Sin_Nombre"} operario={item.lugar_accidente} created_at={item.fecha_suceso} id={item.id}/>
                     ))}
                 </div>
         </section>
