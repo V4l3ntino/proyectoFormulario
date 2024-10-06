@@ -2,18 +2,17 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { ClipboardDocumentIcon, TrashIcon, PencilSquareIcon, DocumentIcon,TableCellsIcon } from "@heroicons/react/24/outline";
 import { abel } from '@/app/ui/fonts'
+import { ExpedienteJson } from "@/interfaces/interfaces";
 
 type Props = {
-    creador: string,
-    created_at: string,
-    operario: string
-    id: number | undefined
+    expediente: ExpedienteJson
+    update: (object: ExpedienteJson) => void
 }
 
 
-const CardForm:React.FC<Props> = ({creador, created_at, operario, id}) => {
+const CardForm:React.FC<Props> = ({expediente, update}) => {
     const [style, setStyle] = useState(false)
-    const [idExp, setIdexp] = useState<number | undefined>(id)
+    const [idExp, setIdexp] = useState<number | undefined>(expediente.id)
 
     const fetchDeleteExpediente = async(): Promise<void> => {
         try{
@@ -41,14 +40,14 @@ const CardForm:React.FC<Props> = ({creador, created_at, operario, id}) => {
                 <ClipboardDocumentIcon className="h-10 w-10 text-gray-400 hidden md:flex"/>
                 <span className="h-full w-5 before:border-r-2 before:border-r-black before:border-solid before:absolute before:w-1 before:h-10 hidden md:flex"></span>
                 <div className="flex-col">
-                    <h1 className={`${abel.className} text-2xl`}>{creador}</h1>
-                    <p>{created_at}</p>
-                    <p>{operario}</p>
+                    <h1 className={`${abel.className} text-2xl`}>{expediente.trabajador_nombre}</h1>
+                    <p>{expediente.fecha_suceso}</p>
+                    <p>{expediente.lugar_accidente}</p>
                 </div>
             </div>
             <div className="flex gap-4">
-                <TrashIcon onClick={() => {fetchDeleteExpediente()}} className="h-5 w-5 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
-                <PencilSquareIcon className="h-5 w-5 text-gray-400 md:h-10 md:w-10"/>
+                <TrashIcon onClick={() => {fetchDeleteExpediente()}}  className="h-5 w-5 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
+                <PencilSquareIcon onClick={() => {update(expediente)}} className="h-5 w-5 text-gray-400 md:h-10 md:w-10 cursor-pointer"/>
                 <DocumentIcon className="h-5 w-5 text-gray-400 md:h-10 md:w-10" />
                 <TableCellsIcon className="h-5 w-5 text-gray-400 md:h-10 md:w-10" />
             </div>

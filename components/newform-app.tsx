@@ -9,9 +9,11 @@ import { NOMEM } from "dns";
 
 type Props = {
     propJson: Person[]
+    updateId: number|undefined
+    setUpdateId?: () => void
 }
 
-const NewformApp: React.FC<Props> = ({ propJson }) => {
+const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
 
@@ -20,7 +22,7 @@ const NewformApp: React.FC<Props> = ({ propJson }) => {
 
     const [name, setName] = useState('');
     const [edad, setEdad] = useState<number>(18);
-    const [experiencia, setExperiencia] = useState<Number>(0)
+    const [experiencia, setExperiencia] = useState<number>(0)
     const [men, setMen] = useState<boolean>(false)
     const [women, setWomen] = useState<boolean>(false)
     const [lugar, setLugar] = useState<string>("")
@@ -114,8 +116,11 @@ const NewformApp: React.FC<Props> = ({ propJson }) => {
             lugar_accidente: formulario.lugarAccidente,
             sexo: formulario.sexo,
         }
-        fetch('http://localhost:8000/api/expediente/', {
-            method: 'POST',
+        const url = updateId ? `http://localhost:8000/api/expediente/${updateId}/` : `http://localhost:8000/api/expediente/`
+        const method = updateId ? `PUT` : `POST`
+        if (setUpdateId) setUpdateId()
+        fetch(url, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -134,7 +139,7 @@ const NewformApp: React.FC<Props> = ({ propJson }) => {
         // new Promise((resolve) => {
         //     setTimeout(resolve, 1000)
         // })
-        const listaFiltrada = json.filter((item, index) => {
+        const listaFiltrada:Person[] = json.filter((item, index) => {
             return item.id.toString().toLowerCase().trim().startsWith(name.toLowerCase().trim()) || item.nombre.toLowerCase().trim().startsWith(name.toLowerCase().trim()) || item.apellido.toLowerCase().trim().startsWith(name.toLowerCase().trim())
         })
         setLista(name.length > 0 ? listaFiltrada : [])
@@ -167,7 +172,7 @@ const NewformApp: React.FC<Props> = ({ propJson }) => {
                                 <div className="bg-slate-100 flex flex-col border-[1px] border-solid border-gray-50 max-h-40 overflow-auto rounded mt-2">
                                     {
                                         (lista).map((item, index) => (
-                                            <span onClick={() => { choose(item) }} className="cursor-pointer text-start mx-[2px] hover:bg-black/15 rounded px-2">{item.nombre}, {item.apellido} | Id: {item.id}</span>
+                                            <span key={index} onClick={() => { choose(item) }} className="cursor-pointer text-start mx-[2px] hover:bg-black/15 rounded px-2">{item.nombre}, {item.apellido} | Id: {item.id}</span>
                                         ))
                                     }
                                 </div>

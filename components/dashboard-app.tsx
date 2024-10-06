@@ -19,6 +19,7 @@ type Props = {
 const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
 
     const [state, setState] = useState<boolean>(true)
+    const [update, setUpdate] = useState<number|undefined>()
 
     useEffect(() => {
         const stateStorage:string = localStorage.getItem('state')!
@@ -31,7 +32,27 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
         setState(state);
         localStorage.setItem('state', JSON.stringify(state))
     }
-    
+    const setUpdateFuncion = ():void => {
+        setUpdate(undefined)
+    }
+    const updateExpediente = (expediente: ExpedienteJson) => {
+        const user = jsonTrabajadores.find((person) => {return person.id === expediente.trabajador})
+        saveInStorage("name", expediente.trabajador_nombre)
+        saveInStorage("edad", expediente.edad)
+        saveInStorage("experiencia", user?.experiencia)
+        
+        saveInStorage("men", expediente.sexo == "H" ? true : false)
+        saveInStorage("women", expediente.sexo == "M" ? true : false)
+        saveInStorage("lugarAccidente", expediente.lugar_accidente)
+        saveInStorage("fechaSuceso", expediente.fecha_suceso)
+        saveInStorage("descripcion", expediente.descripcion_hechos)
+        saveInStorage("idTrabajador", user?.id)
+        setUpdate(expediente.id)
+        changeState(false)
+    }
+    const saveInStorage = (tipo: string, value: any) => {
+        localStorage.setItem(tipo, JSON.stringify(value))
+    }
     const Icon = ArrowLeftCircleIcon;
     return ( 
         <main>
@@ -48,8 +69,8 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
             <br />
             {
                 state ? (
-                    <CreateFormApp funcion={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes}/>
-                ) : (<NewformApp propJson={jsonTrabajadores}/>)
+                    <CreateFormApp funcion={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente}/>
+                ) : (<NewformApp propJson={jsonTrabajadores} updateId={update? update : undefined} setUpdateId={update? setUpdateFuncion : undefined}/>)
             }
         </main>
      );

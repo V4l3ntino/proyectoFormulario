@@ -7,7 +7,8 @@ export interface Person {
 
 export interface ExpedienteJson {
     id?: number
-    trabajador: number | string
+    trabajador: number
+    trabajador_nombre?: string
     sexo: string
     edad: number
     lugar_accidente: string

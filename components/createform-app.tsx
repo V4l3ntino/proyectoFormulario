@@ -11,9 +11,10 @@ type Props = {
     funcion: (state: boolean)=> void
     trabajadores: Person[]
     expedientesJson: ExpedienteJson[]
+    update: (object: ExpedienteJson) => void
 }
 
-const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson}) => {
+const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson, update}) => {
 
     const expedientes2: ExpedienteJson[] = []
     if(expedientesJson && expedientesJson.length > 0 && trabajadores && trabajadores.length > 0){
@@ -22,7 +23,8 @@ const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson})
                 if(item.trabajador == user.id){
                     const expedienteNuevo:ExpedienteJson = {
                         id: item.id,
-                        trabajador: user.nombre,
+                        trabajador: user.id,
+                        trabajador_nombre: user.nombre,
                         descripcion_hechos: item.descripcion_hechos,
                         edad: item.edad,
                         fecha_suceso: item.fecha_suceso,
@@ -49,7 +51,7 @@ const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson})
                     viewport={{ margin: "-100px", once: true }}
                     onViewportEnter={() => { setStyle(true)}}
                     onViewportLeave={() => { setStyle(false)}}
-                    className={`bg-slate-50 hover:bg-slate-200 cursor-pointer overflow-hidden relative rounded w-full h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-1000 ease-in-out 
+                    className={`bg-slate-50 hover:bg-slate-200 cursor-pointer overflow-hidden relative rounded w-full h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-100 ease-in-out 
                     ${style ? `opacity-1 scale-1` : `opacity-0 scale-0 lg:translate-x-96 translate-x-20` }`}
                     >
                         <div className="flex gap-5 relative">
@@ -62,7 +64,7 @@ const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson})
                         <DocumentPlusIcon className="h-10 w-10 text-gray-400  md:hidden"/>
                     </motion.span>                    
                     {(expedientes2).map((item, key) => (
-                        <CardForm key={key} creador={typeof item.trabajador === "string" ? item.trabajador : "Sin_Nombre"} operario={item.lugar_accidente} created_at={item.fecha_suceso} id={item.id}/>
+                        <CardForm key={key} expediente={item} update={update}/>
                     ))}
                 </div>
         </section>
