@@ -38,7 +38,7 @@ const CardForm:React.FC<Props> = ({expediente, update}) => {
         viewport={{ margin: "-10px", once: true }}
         onViewportEnter={() => { setStyle(true)}}
         onViewportLeave={() => { setStyle(false)}}
-        className={`bg-slate-50 overflow-hidden relative rounded w-full h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-1000 ease-in-out 
+        className={`bg-slate-50 overflow-hidden relative rounded w-full h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-500 ease-in-out 
         ${style ? `opacity-1 scale-1` : `opacity-0 scale-0 lg:translate-x-96 translate-x-20` }`}
         >
             <div className="flex gap-5 relative">
