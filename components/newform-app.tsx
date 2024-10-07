@@ -1,7 +1,7 @@
 "use client"
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { ExpedienteJson, Person } from "@/interfaces/interfaces";
+import { ExpedienteJson, ImagenJson, Person } from "@/interfaces/interfaces";
 import { TrashIcon } from "@heroicons/react/24/outline"
 import { abel, inter } from "@/app/ui/fonts";
 import { Expediente } from "@/models/Expediente";
@@ -10,15 +10,18 @@ type Props = {
     propJson: Person[]
     updateId: number|undefined
     setUpdateId?: () => void
+    idExpediente: number
+    metodo: string
 }
 
-const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
+const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId, idExpediente, metodo}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
 
     const edadRefElement = useRef<HTMLInputElement>(null);
     const experienciaRefElement = useRef<HTMLInputElement>(null);
 
+    const [idexpediente, setIdexpediente] = useState<number>(idExpediente)
     const [name, setName] = useState('');
     const [edad, setEdad] = useState<number>(18);
     const [experiencia, setExperiencia] = useState<number>(0)
@@ -31,6 +34,8 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
     const [fechasuceso, setFechasuceso] = useState<string>("2024-10-11T11:47")
     const [descripcion, setDescripcion] = useState<string>("")
     const [idtrabajador, setIdtrabajador] = useState<number|undefined>(undefined)
+    const [imagenes, setImagenes] = useState<File[]|null>(null)
+    const [methodtype, setMethodtype] = useState<string>(metodo)
 
     useEffect(() => {
         filter()
@@ -92,6 +97,17 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
         }
     }, [])
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if(e.target.files && e.target.files.length > 0){
+            setImagenes([...e.target.files])
+        }
+    }
+    useEffect(() => {
+        if (imagenes) {
+          console.log('Imagenes seleccionadas:', imagenes);
+        }
+      }, [imagenes]);
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const sexo = men? `H` : `M`
@@ -105,8 +121,30 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
         alert("Id no especificado")
         
     }
+    const fetchExpedienteImagenes = async(): Promise<void> => {
+        if(imagenes && imagenes.length > 0){
+            imagenes.map((item) => {
+                const formData = new FormData();
+                formData.append('expediente', idexpediente.toString())
+                formData.append('imagen', item)
+                const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/`
+                if (setUpdateId) setUpdateId()
+                fetch(url, {
+                    method: `POST`,
+                    body: formData
+                }).then(response => {
+                    if(!response.ok){
+                        throw new Error('Error al enviar la imagen')
+                    }
+                }).catch((error) => {
+                    console.error('No se puede establecer conexión con el servidor: ', error)
+                })
+            })
+        }
+    }
     const fetchExpedientePost = async(formulario: Expediente):Promise<void> =>{
         const data:ExpedienteJson = {
+            id: idexpediente,
             trabajador: formulario.trabajador,
             descripcion_hechos: formulario.descripcionHechos,
             edad: formulario.edad,
@@ -116,18 +154,18 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
             sexo: formulario.sexo,
         }
         const url = updateId ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${updateId}/` : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/`
-        const method = updateId ? `PUT` : `POST`
         if (setUpdateId) setUpdateId()
         fetch(url, {
-            method: method,
+            method: methodtype,
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
         }).then(response => {
             if(!response.ok){
-                throw new Error('Error en la solicitud por post')
+                throw new Error(`Error en la solicitud por ${methodtype}`)
             }
+            fetchExpedienteImagenes()
             localStorage.clear()
             window.location.reload()
         }).catch((error) => {
@@ -240,6 +278,10 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId}) => {
                     <div className="w-full flex flex-col">
                         <label>Descripción del Suceso</label>
                         <textarea onChange={(e) => {setDescripcion(e.target.value); saveInStorage("descripcion", e.target.value)}} value={descripcion} name="" id=""></textarea>
+                    </div>
+                    <div className="w-full flex flex-col">
+                        <label>Subir imagenes</label>
+                        <input type="file" multiple onChange={(e) => {handleImageChange(e)}}/>
                     </div>
                     <button type="submit" className={`bg-slate-800 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</button>
                 </form>

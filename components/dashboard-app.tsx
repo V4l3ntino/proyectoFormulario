@@ -35,7 +35,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
     const setUpdateFuncion = ():void => {
         setUpdate(undefined)
     }
-    const updateExpediente = (expediente: ExpedienteJson) => {
+    const updateExpediente = async(expediente: ExpedienteJson) => {
         const user = jsonTrabajadores.find((person) => {return person.id === expediente.trabajador})
         saveInStorage("name", expediente.trabajador_nombre)
         saveInStorage("edad", expediente.edad)
@@ -70,7 +70,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
             {
                 state ? (
                     <CreateFormApp funcion={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente}/>
-                ) : (<NewformApp propJson={jsonTrabajadores} updateId={update? update : undefined} setUpdateId={update? setUpdateFuncion : undefined}/>)
+                ) : (<NewformApp propJson={jsonTrabajadores} metodo={update? 'PUT' : 'POST'} updateId={update? update : undefined} setUpdateId={update? setUpdateFuncion : undefined} idExpediente={update? update : jsonExpedientes.length>0 ? (jsonExpedientes[jsonExpedientes.length-1].id)+1 : 1}/>)
             }
         </main>
      );
