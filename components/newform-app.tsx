@@ -8,19 +8,17 @@ import { Expediente } from "@/models/Expediente";
 
 type Props = {
     propJson: Person[]
-    updateId: number|undefined
-    setUpdateId?: () => void
+    clearUpdate?: () => void
     idExpediente: number
-    metodo: string
 }
 
-const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId, idExpediente, metodo}) => {
+const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
 
     const edadRefElement = useRef<HTMLInputElement>(null);
     const experienciaRefElement = useRef<HTMLInputElement>(null);
-
+    
     const [idexpediente, setIdexpediente] = useState<number>(idExpediente)
     const [name, setName] = useState('');
     const [edad, setEdad] = useState<number>(18);
@@ -35,8 +33,7 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId, idExped
     const [descripcion, setDescripcion] = useState<string>("")
     const [idtrabajador, setIdtrabajador] = useState<number|undefined>(undefined)
     const [imagenes, setImagenes] = useState<File[]|null>(null)
-    const [methodtype, setMethodtype] = useState<string>(metodo)
-
+    const [estado, setEstado] = useState<boolean>(true)
     useEffect(() => {
         filter()
     }, [name])
@@ -121,6 +118,16 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId, idExped
         alert("Id no especificado")
         
     }
+    const verificarOperario = (id: number) => {
+        let estado = false
+
+        const persona = json.find((item) => item.id == id)
+        if(persona){
+            estado = true
+        }
+        setEstado(estado)
+        return estado
+    }
     const fetchExpedienteImagenes = async(): Promise<void> => {
         if(imagenes && imagenes.length > 0){
             imagenes.map((item) => {
@@ -128,7 +135,7 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId, idExped
                 formData.append('expediente', idexpediente.toString())
                 formData.append('imagen', item)
                 const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/`
-                if (setUpdateId) setUpdateId()
+                if (clearUpdate) clearUpdate()
                 fetch(url, {
                     method: `POST`,
                     body: formData
@@ -143,8 +150,17 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId, idExped
         }
     }
     const fetchExpedientePost = async(formulario: Expediente):Promise<void> =>{
+        const updateId:number = +(JSON.parse(localStorage.getItem("updateId")!))
+        const methodtype = updateId ? 'PUT' : 'POST'
+        const url = updateId ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${updateId}/` : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/`
+        
+        if(!verificarOperario(formulario.trabajador)) {
+            alert('No existe dicho trabajador en la base de datos')
+            return
+        }
+
         const data:ExpedienteJson = {
-            id: idexpediente,
+            id: updateId? updateId : idexpediente,
             trabajador: formulario.trabajador,
             descripcion_hechos: formulario.descripcionHechos,
             edad: formulario.edad,
@@ -153,8 +169,7 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId, idExped
             lugar_accidente: formulario.lugarAccidente,
             sexo: formulario.sexo,
         }
-        const url = updateId ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${updateId}/` : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/`
-        if (setUpdateId) setUpdateId()
+        if (clearUpdate) clearUpdate()
         fetch(url, {
             method: methodtype,
             headers: {
@@ -216,8 +231,8 @@ const NewformApp: React.FC<Props> = ({ propJson , updateId, setUpdateId, idExped
                                 : ``}
                         </div>
                         <div className="lg:w-1/3 w-full">
-                            <label htmlFor="">Id</label>
-                            <input value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
+                        {estado? (<label>Id</label>) : (<span className="border-b-2 border-rose-700 text-red-400">No se ha encontrado a dicho operario</span>)}
+                            <input value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(+e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
                         </div>
                         <div className="lg:w-1/3 w-full">
                             <label htmlFor="">Edad</label>

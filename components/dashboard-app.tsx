@@ -54,6 +54,13 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
         localStorage.setItem(tipo, JSON.stringify(value))
     }
     const Icon = ArrowLeftCircleIcon;
+    useEffect(()=>{
+        if(update){
+            saveInStorage("updateId", JSON.stringify(update))
+            return
+        }
+        // localStorage.removeItem("update")
+    },[update])
     return ( 
         <main>
             { state ? (
@@ -70,7 +77,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
             {
                 state ? (
                     <CreateFormApp funcion={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente}/>
-                ) : (<NewformApp propJson={jsonTrabajadores} metodo={update? 'PUT' : 'POST'} updateId={update? update : undefined} setUpdateId={update? setUpdateFuncion : undefined} idExpediente={update? update : jsonExpedientes.length>0 ? (jsonExpedientes[jsonExpedientes.length-1].id)+1 : 1}/>)
+                ) : (<NewformApp propJson={jsonTrabajadores} clearUpdate={update? setUpdateFuncion : undefined} idExpediente={update? update : jsonExpedientes.length>0 ? (jsonExpedientes[jsonExpedientes.length-1].id)+1 : 1}/>)
             }
         </main>
      );
