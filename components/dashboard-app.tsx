@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { ExpedienteJson, Person } from "@/interfaces/interfaces"
+import { ExpedienteJson, ImagenJson, Person } from "@/interfaces/interfaces"
 import SearchForm from "./search-form"
 import Wrapper from "./wrapper"
 
@@ -13,10 +13,11 @@ import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline"
 type Props = {
     jsonTrabajadores: Person[]
     jsonExpedientes: ExpedienteJson[]
+    jsonImagenes: ImagenJson[]
 
 }
 
-const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
+const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes}) => {
 
     const [state, setState] = useState<boolean>(true)
     const [update, setUpdate] = useState<number|undefined>()
@@ -48,6 +49,9 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
         saveInStorage("descripcion", expediente.descripcion_hechos)
         saveInStorage("idTrabajador", user?.id)
         setUpdate(expediente.id)
+
+        saveInStorage("imagenes", jsonImagenes.filter((item) => item.expediente == expediente.id ))
+
         changeState(false)
     }
     const saveInStorage = (tipo: string, value: any) => {
@@ -59,7 +63,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
             saveInStorage("updateId", JSON.stringify(update))
             return
         }
-        // localStorage.removeItem("update")
+
     },[update])
     return ( 
         <main>
@@ -72,7 +76,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes}) => {
             <br />
             <hr />
             <br />
-            { state ? (``) : (<span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit" onClick={() => {changeState(true); setUpdate(undefined)}}>Volver <Icon className="w-6" /></span>)}
+            { state ? (``) : (<span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit" onClick={() => {changeState(true); localStorage.clear()}}>Volver <Icon className="w-6" /></span>)}
             <br />
             {
                 state ? (

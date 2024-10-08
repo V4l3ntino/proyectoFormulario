@@ -1,5 +1,5 @@
 import DashboardApp from "@/components/dashboard-app";
-import { ExpedienteJson, Person } from "@/interfaces/interfaces";
+import { ExpedienteJson, ImagenJson, Person } from "@/interfaces/interfaces";
 export const dynamic = "force-dynamic"
 const fetchUsers = async (): Promise<Person[]|undefined> => {
     try {
@@ -29,13 +29,22 @@ const fechExpedientes = async(): Promise<ExpedienteJson[]|undefined> => {
   }
 }
 
+const fetchImagenes = async(): Promise<ImagenJson[]|undefined> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/`)
+  if(!response.ok){
+    throw new Error('Error al cargar las imágenes')
+  }
+  return await response.json()
+}
+
 const Dashboard = async() => {
     // await new Promise((resolve) => setTimeout(resolve, 1000))
     const trabajadores = await fetchUsers()
     const expedientes = await fechExpedientes()
+    const imagenes = await fetchImagenes()
     
     return ( 
-        <DashboardApp jsonTrabajadores={trabajadores? trabajadores : []} jsonExpedientes={expedientes ? expedientes : []}/>
+        <DashboardApp jsonTrabajadores={trabajadores? trabajadores : []} jsonExpedientes={expedientes ? expedientes : []} jsonImagenes={imagenes ? imagenes : []} />
      );
 }
  

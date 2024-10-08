@@ -2,9 +2,10 @@
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ExpedienteJson, ImagenJson, Person } from "@/interfaces/interfaces";
-import { TrashIcon } from "@heroicons/react/24/outline"
+import { TrashIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { abel, inter } from "@/app/ui/fonts";
 import { Expediente } from "@/models/Expediente";
+import { motion } from "framer-motion";
 
 type Props = {
     propJson: Person[]
@@ -34,6 +35,18 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
     const [idtrabajador, setIdtrabajador] = useState<number|undefined>(undefined)
     const [imagenes, setImagenes] = useState<File[]|null>(null)
     const [estado, setEstado] = useState<boolean>(true)
+
+    const imagenesGuardadas: ImagenJson[] = (
+        () => {
+            try {
+                const storedImages = localStorage.getItem("imagenes")
+                return storedImages ? JSON.parse(storedImages) as ImagenJson[] : []
+            } catch (error) {
+                console.log("Error parsein json", error)
+                return [];
+            }
+        }
+    )()
     useEffect(() => {
         filter()
     }, [name])
@@ -187,6 +200,22 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
             console.error('No se puede establecer conexión con el servidor: ', error)
         })
     }
+
+    const fetchDeleteImage = async(id:number): Promise<void> => {
+       try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/${id}`, {method: "DELETE"})
+            if(!response.ok){
+                throw new Error("Error al eliminar la foto")
+            }
+            let lista: ImagenJson[] = JSON.parse(localStorage.getItem("imagenes")||`[]`) as ImagenJson[]
+            lista = lista.filter((item) => item.id !== id)
+            localStorage.setItem("imagenes", JSON.stringify(lista))
+            window.location.reload()
+       } catch (error) {
+            console.log(error)
+       }
+
+    }
     const filter = async () => {
         // new Promise((resolve) => {
         //     setTimeout(resolve, 1000)
@@ -206,6 +235,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
         setLista([])
     }
     const Trash = TrashIcon;
+    const XMarc = XMarkIcon;
     return (
         <section>
             <div className="flex justify-between">
@@ -294,6 +324,31 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
                         <label>Descripción del Suceso</label>
                         <textarea onChange={(e) => {setDescripcion(e.target.value); saveInStorage("descripcion", e.target.value)}} value={descripcion} name="" id=""></textarea>
                     </div>
+                    {
+                        imagenesGuardadas.length > 0 ? (
+                            <div className="w-full flex lg:flex-row flex-col gap-5 p-10 border-2 border-blue-400 border-dashed mt-5">
+                                {
+                                    imagenesGuardadas.map((foto) => (
+                                        <div className="lg:w-1/4 h-32 rounded flex bg-slate-100 relative">
+                                            <motion.img 
+                                            initial={{x: 100}}
+                                            animate={{ x: 0 }}
+                                            transition={{ type: "spring", stiffness: 100 }} 
+                                            className="w-2/4" src={`${foto.imagen}`} alt="" />
+                                            <div className="w-2/4 bg-slate-50 hover:bg-slate-100 cursor-pointer">
+                                                <motion.div initial={{scale:0}} animate={{scale:1}} transition={{ type: "spring", stiffness: 100 }} onClick={() => fetchDeleteImage(foto.id!)} className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.50rem] z-10 -right-2"><XMarc className="w-5"/></motion.div>
+                                                <motion.a href={`${foto.imagen}`} target="_blank" className="w-full h-full flex justify-center items-center" whileHover={{scale: 1.3}}>Ver</motion.a>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        ):(
+                            <div className="w-full flex gap-3 p-10 border-2 border-blue-400 border-dashed mt-5">
+                                <h1>No tiene imágenes guardadas este expediente</h1>
+                            </div>
+                        )
+                    }
                     <div className="w-full flex flex-col">
                         <label>Subir imagenes</label>
                         <input type="file" multiple onChange={(e) => {handleImageChange(e)}}/>
