@@ -350,7 +350,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                                         whileInView={{scale:1}}
                                         viewport={{once:true}}
                                         transition={{ type: "spring", stiffness: 100 }}
-                                        className="sm:w-32 sm:h-32 w-full h-40 rounded flex bg-slate-100 relative ">
+                                        className="sm:w-52 sm:h-52 w-full h-40 rounded flex bg-slate-100 relative ">
                                             <motion.img 
                                             initial={{x: 100}}
                                             whileInView={{x: 0}}
