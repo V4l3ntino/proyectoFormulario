@@ -345,17 +345,22 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                             <div className="w-full flex flex-wrap flex-row  gap-5 p-10 border-2 border-blue-400 border-dashed mt-5">
                                 {
                                     imagenesGuardadas.map((foto) => (
-                                        <div className="sm:w-32 sm:h-32 w-full h-40 rounded flex bg-slate-100 relative ">
+                                        <motion.div
+                                        initial={{scale:0}}
+                                        whileInView={{scale:1}}
+                                        viewport={{once:true}}
+                                        transition={{ type: "spring", stiffness: 100 }}
+                                        className="sm:w-32 sm:h-32 w-full h-40 rounded flex bg-slate-100 relative ">
                                             <motion.img 
                                             initial={{x: 100}}
-                                            animate={{ x: 0 }}
-                                            transition={{ type: "spring", stiffness: 100 }} 
+                                            whileInView={{x: 0}}
+                                            transition={{ type: "spring", stiffness: 100, delay:0.3 }} 
                                             className="w-2/4" src={`${foto.imagen}`} alt="" />
                                             <div className="w-2/4 bg-slate-50 hover:bg-slate-100 cursor-pointer">
-                                                <motion.div initial={{scale:0}} animate={{scale:1}} transition={{ type: "spring", stiffness: 100 }} onClick={() => fetchDeleteImage(foto.id!)} className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.50rem] z-10 -right-2"><XMarc className="w-5"/></motion.div>
+                                                <motion.div initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }} onClick={() => fetchDeleteImage(foto.id!)} className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.50rem] z-10 -right-2"><XMarc className="w-5"/></motion.div>
                                                 <motion.a href={`${foto.imagen}`} target="_blank" className="w-full h-full flex justify-center items-center" whileHover={{scale: 1.3}}>Ver</motion.a>
                                             </div>
-                                        </div>
+                                        </motion.div>
                                     ))
                                 }
                             </div>
