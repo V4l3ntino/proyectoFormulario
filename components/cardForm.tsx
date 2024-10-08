@@ -43,7 +43,6 @@ const CardForm:React.FC<Props> = ({expediente, update}) => {
         >
             <div className="flex gap-5 relative">
                 <ClipboardDocumentIcon className="h-10 w-10 text-gray-400 hidden md:flex"/>
-                <p>{expediente.id}</p>
                 <span className="h-full w-5 before:border-r-2 before:border-r-black before:border-solid before:absolute before:w-1 before:h-10 hidden md:flex"></span>
                 <div className="flex-col">
                     <h1 className={`${abel.className} text-2xl`}>{expediente.trabajador_nombre}</h1>
@@ -52,10 +51,10 @@ const CardForm:React.FC<Props> = ({expediente, update}) => {
                 </div>
             </div>
             <div className="flex gap-4">
-                <TrashIcon onClick={() => {fetchDeleteExpediente()}}  className="h-5 w-5 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
-                <PencilSquareIcon onClick={() => {update(expediente)}} className="h-5 w-5 text-gray-400 md:h-10 md:w-10 cursor-pointer"/>
-                <DocumentIcon className="h-5 w-5 text-gray-400 md:h-10 md:w-10" />
-                <TableCellsIcon className="h-5 w-5 text-gray-400 md:h-10 md:w-10" />
+                <TrashIcon onClick={() => {fetchDeleteExpediente()}}  className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
+                <PencilSquareIcon onClick={() => {update(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer"/>
+                <DocumentIcon className="h-7 w-7 text-gray-400 md:h-10 md:w-10" />
+                <TableCellsIcon className="h-7 w-7 text-gray-400 md:h-10 md:w-10" />
             </div>
         </motion.div>
      );

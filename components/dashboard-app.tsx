@@ -1,8 +1,8 @@
 "use client"
 import { useEffect, useState } from "react"
 import { ExpedienteJson, ImagenJson, Person } from "@/interfaces/interfaces"
-import SearchForm from "./search-form"
-import Wrapper from "./wrapper"
+import { v4 as uuidv4 } from 'uuid';
+
 
 import CreateFormApp from "./createform-app"
 import NewformApp from "./newform-app"
@@ -20,7 +20,8 @@ type Props = {
 const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes}) => {
 
     const [state, setState] = useState<boolean>(true)
-    const [update, setUpdate] = useState<number|undefined>()
+    const [update, setUpdate] = useState<string|undefined>()
+    const [lastIdExpediente, setLastIdExpediente] = useState<number>()
 
     useEffect(() => {
         const stateStorage:string = localStorage.getItem('state')!
@@ -60,7 +61,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
     const Icon = ArrowLeftCircleIcon;
     useEffect(()=>{
         if(update){
-            saveInStorage("updateId", JSON.stringify(update))
+            saveInStorage("updateId", update)
             return
         }
 
@@ -81,7 +82,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
             {
                 state ? (
                     <CreateFormApp funcion={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente}/>
-                ) : (<NewformApp propJson={jsonTrabajadores} clearUpdate={update? setUpdateFuncion : undefined} idExpediente={update? update : jsonExpedientes.length>0 ? (jsonExpedientes[jsonExpedientes.length-1].id)+1 : 1}/>)
+                ) : (<NewformApp propJson={jsonTrabajadores} clearUpdate={update? setUpdateFuncion : undefined} idExpediente={update? update : uuidv4()}/>)
             }
         </main>
      );

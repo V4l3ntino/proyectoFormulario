@@ -6,7 +6,7 @@ export interface Person {
 }
 
 export interface ExpedienteJson {
-    id: number
+    id: string
     trabajador: number
     trabajador_nombre?: string
     sexo: string
@@ -20,7 +20,7 @@ export interface ExpedienteJson {
 
 export interface ImagenJson {
     id?: number
-    expediente: number
+    expediente: string
     imagen_path?: string
     imagen?: File
 }

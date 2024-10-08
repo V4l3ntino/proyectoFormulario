@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 type Props = {
     propJson: Person[]
     clearUpdate?: () => void
-    idExpediente: number
+    idExpediente: string
 }
 
 const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) => {
@@ -20,7 +20,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
     const edadRefElement = useRef<HTMLInputElement>(null);
     const experienciaRefElement = useRef<HTMLInputElement>(null);
     
-    const [idexpediente, setIdexpediente] = useState<number>(idExpediente)
+    const [idexpediente, setIdexpediente] = useState<string>(idExpediente)
     const [name, setName] = useState('');
     const [edad, setEdad] = useState<number>(18);
     const [experiencia, setExperiencia] = useState<number>(0)
@@ -158,12 +158,14 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
                     }
                 }).catch((error) => {
                     console.error('No se puede establecer conexión con el servidor: ', error)
+                    console.log(url)
+                    console.dir(formData)
                 })
             })
         }
     }
     const fetchExpedientePost = async(formulario: Expediente):Promise<void> =>{
-        const updateId:number = +(JSON.parse(localStorage.getItem("updateId")!))
+        const updateId:string = JSON.parse(localStorage.getItem("updateId")!)
         const methodtype = updateId ? 'PUT' : 'POST'
         const url = updateId ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${updateId}/` : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/`
         
@@ -182,6 +184,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
             lugar_accidente: formulario.lugarAccidente,
             sexo: formulario.sexo,
         }
+        alert(idexpediente)
         if (clearUpdate) clearUpdate()
         fetch(url, {
             method: methodtype,
@@ -197,7 +200,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
             localStorage.clear()
             window.location.reload()
         }).catch((error) => {
-            console.error('No se puede establecer conexión con el servidor: ', error)
+            console.group
+                console.error('No se puede establecer conexión con el servidor: ', error)
+                console.log(url)
+                console.dir(data)
         })
     }
 
