@@ -6,17 +6,17 @@ import { TrashIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { abel, inter } from "@/app/ui/fonts";
 import { Expediente } from "@/models/Expediente";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 type Props = {
     propJson: Person[]
-    clearUpdate?: () => void
     idExpediente: string
 }
 
-const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) => {
+const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
-
+    const router = useRouter()
     const edadRefElement = useRef<HTMLInputElement>(null);
     const experienciaRefElement = useRef<HTMLInputElement>(null);
     
@@ -144,11 +144,12 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
     const fetchExpedienteImagenes = async(): Promise<void> => {
         if(imagenes && imagenes.length > 0){
             imagenes.map((item) => {
+                const updateId:string = JSON.parse(localStorage.getItem("updateId")!)
                 const formData = new FormData();
-                formData.append('expediente', idexpediente.toString())
+                formData.append('expediente', updateId? updateId : idexpediente)
                 formData.append('imagen', item)
                 const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/`
-                if (clearUpdate) clearUpdate()
+                console.log(url)
                 fetch(url, {
                     method: `POST`,
                     body: formData
@@ -159,7 +160,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
                 }).catch((error) => {
                     console.error('No se puede establecer conexión con el servidor: ', error)
                     console.log(url)
-                    console.dir(formData)
+                    for (const [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
                 })
             })
         }
@@ -184,8 +187,6 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
             lugar_accidente: formulario.lugarAccidente,
             sexo: formulario.sexo,
         }
-        alert(idexpediente)
-        if (clearUpdate) clearUpdate()
         fetch(url, {
             method: methodtype,
             headers: {
@@ -194,16 +195,25 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
             body: JSON.stringify(data)
         }).then(response => {
             if(!response.ok){
+                alert('Algo ha ido mal')
                 throw new Error(`Error en la solicitud por ${methodtype}`)
             }
-            fetchExpedienteImagenes()
-            localStorage.clear()
-            window.location.reload()
+            if(response.status === 201 || response.status === 200){
+                router.refresh()
+                fetchExpedienteImagenes()
+                router.refresh()
+                localStorage.clear()
+                window.location.reload()
+                return
+            }
+            alert('Algo ha ido mal')
+            alert(response.status)
         }).catch((error) => {
             console.group
                 console.error('No se puede establecer conexión con el servidor: ', error)
                 console.log(url)
                 console.dir(data)
+            console.groupEnd
         })
     }
 
@@ -332,10 +342,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  clearUpdate, idExpediente}) =
                     </div>
                     {
                         imagenesGuardadas.length > 0 ? (
-                            <div className="w-full flex lg:flex-row flex-col gap-5 p-10 border-2 border-blue-400 border-dashed mt-5">
+                            <div className="w-full flex flex-wrap flex-row  gap-5 p-10 border-2 border-blue-400 border-dashed mt-5">
                                 {
                                     imagenesGuardadas.map((foto) => (
-                                        <div className="lg:w-1/4 h-32 rounded flex bg-slate-100 relative">
+                                        <div className="sm:w-32 sm:h-32 w-full h-40 rounded flex bg-slate-100 relative ">
                                             <motion.img 
                                             initial={{x: 100}}
                                             animate={{ x: 0 }}

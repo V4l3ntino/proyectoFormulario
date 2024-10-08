@@ -34,9 +34,6 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
         setState(state);
         localStorage.setItem('state', JSON.stringify(state))
     }
-    const setUpdateFuncion = ():void => {
-        setUpdate(undefined)
-    }
     const updateExpediente = async(expediente: ExpedienteJson) => {
         const user = jsonTrabajadores.find((person) => {return person.id === expediente.trabajador})
         saveInStorage("name", expediente.trabajador_nombre)
@@ -77,12 +74,12 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
             <br />
             <hr />
             <br />
-            { state ? (``) : (<span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit" onClick={() => {changeState(true); localStorage.clear()}}>Volver <Icon className="w-6" /></span>)}
+            { state ? (``) : (<span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit" onClick={() => {changeState(true); localStorage.clear(); setUpdate(undefined)}}>Volver <Icon className="w-6" /></span>)}
             <br />
             {
                 state ? (
                     <CreateFormApp funcion={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente}/>
-                ) : (<NewformApp propJson={jsonTrabajadores} clearUpdate={update? setUpdateFuncion : undefined} idExpediente={update? update : uuidv4()}/>)
+                ) : (<NewformApp propJson={jsonTrabajadores} idExpediente={update? update : uuidv4()}/>)
             }
         </main>
      );
