@@ -11,9 +11,11 @@ export interface ExpedienteJson {
     trabajador_nombre?: string
     sexo: string
     edad: number
+    puesto_trabajo: string
     lugar_accidente: string
     fecha_suceso: string
     lesion: string
+    lesionado_check: boolean
     descripcion_hechos: string
 }
 

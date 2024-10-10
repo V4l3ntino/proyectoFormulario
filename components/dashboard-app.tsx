@@ -47,6 +47,9 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
         saveInStorage("fechaSuceso", expediente.fecha_suceso)
         saveInStorage("descripcion", expediente.descripcion_hechos)
         saveInStorage("idTrabajador", user?.id)
+        saveInStorage("lesionado", expediente.lesionado_check)
+        saveInStorage("lesionTipo", expediente.lesion.split("|")[0])
+        saveInStorage("lesionDescripcion", expediente.lesion.split("|")[1])
         setUpdate(expediente.id)
 
         saveInStorage("imagenes", jsonImagenes.filter((item) => item.expediente == expediente.id ))

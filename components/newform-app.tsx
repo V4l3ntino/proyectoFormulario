@@ -82,16 +82,22 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         const experiencia = JSON.parse(localStorage.getItem("experiencia")!) || ``
         const men = JSON.parse(localStorage.getItem("men")!) || false
         const women = JSON.parse(localStorage.getItem("women")!) || false
-        const lugarAccidente = JSON.parse(localStorage.getItem("lugarAccidente")!)
-        const fechaSuceso = JSON.parse(localStorage.getItem("fechaSuceso")!)
-        const descripcion = JSON.parse(localStorage.getItem("descripcion")!)
-        const idTrabajador = JSON.parse(localStorage.getItem("idTrabajador")!)
+        const lugarAccidenteStorage = JSON.parse(localStorage.getItem("lugarAccidente")!)
+        const fechaSucesoStorage = JSON.parse(localStorage.getItem("fechaSuceso")!)
+        const descripcionStorage = JSON.parse(localStorage.getItem("descripcion")!)
+        const idTrabajadorStorage = JSON.parse(localStorage.getItem("idTrabajador")!)
+        const lesionadoStorage = JSON.parse(localStorage.getItem("lesionado")!)
+        const lesionTipoStorage = JSON.parse(localStorage.getItem("lesionTipo")!)
+        const lesionDescripcionStorage = JSON.parse(localStorage.getItem("lesionDescripcion")!) 
         name ? setName(JSON.parse(name)) : ``;
-        lugarAccidente ? setLugar(lugarAccidente) : ``;
-        fechasuceso ? setFechasuceso(fechaSuceso) : ``;
-        console.log(fechaSuceso)
-        descripcion ? setDescripcion(descripcion) : ``;
-        idTrabajador ? setIdtrabajador(idTrabajador) : ``;
+        lugarAccidenteStorage ? setLugar(lugarAccidenteStorage) : ``;
+        fechasuceso ? setFechasuceso(fechaSucesoStorage) : ``;
+        descripcionStorage ? setDescripcion(descripcionStorage) : ``;
+        idTrabajadorStorage ? setIdtrabajador(idTrabajadorStorage) : ``;
+        lesionadoStorage ? setLesionado(lesionadoStorage) : ``;
+        lesionTipoStorage ? setLesiontipo(lesionTipoStorage) : ``;
+        lesionDescripcionStorage ? setLesiondescripcion(lesionDescripcionStorage) : ``;
+
         try {
             edad < 100 ? edadRefElement.current!.value = edad : edadRefElement.current!.value = "18";
             experienciaRefElement.current!.value = experiencia
@@ -121,10 +127,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const sexo = men? `H` : `M`
-        const lesion = `${lesiontipo} | ${lesiondescripcion}`
+        const lesion = `${lesiontipo}|${lesiondescripcion}`
         
         if(idtrabajador){
-            const expediente = new Expediente(idtrabajador, sexo, edad, lugar, fechasuceso, lesion, descripcion)
+            const expediente = new Expediente(idtrabajador, sexo, edad, lugar, fechasuceso, lesionado? lesion: `|`, descripcion, lesionado)
             fetchExpedientePost(expediente)
             return
         }
@@ -184,8 +190,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
             edad: formulario.edad,
             fecha_suceso: formulario.fechaSuceso,
             lesion: formulario.lesion,
+            lesionado_check: formulario.lesionado_check,
             lugar_accidente: formulario.lugarAccidente,
             sexo: formulario.sexo,
+            puesto_trabajo: ""
         }
         fetch(url, {
             method: methodtype,
@@ -316,21 +324,21 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                     <div className="flex lg:gap-5 flex-col lg:flex-row justify-left lg:items-center w-full">
                         <div className="flex gap-2 items-center mb-1">
                             <label>Ha habido lesión?</label>
-                            <input type="checkbox" onChange={(e) => {setLesionado(e.target.checked)}} name="" id="" />
+                            <input type="checkbox" checked={lesionado? true : false} onChange={(e) => {setLesionado(e.target.checked); saveInStorage("lesionado", e.target.checked)}} name="" id="" />
                         </div>
                         {
                             lesionado ? (
                                 <div className="w-full">
                                     <div className="flex lg:flex-row flex-col lg:gap-5 mb-2">
                                         <label>Tipo de lesión</label>
-                                        <select value={lesiontipo} onChange={(e) => {setLesiontipo(e.target.value)}} className="h-11 lg:w-2/6 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600 text-[17px]" name="" id="">
+                                        <select value={lesiontipo} onChange={(e) => {setLesiontipo(e.target.value); saveInStorage("lesionTipo", e.target.value)}} className="h-11 lg:w-2/6 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600 text-[17px]" name="" id="">
                                             <option value="Leve">Leve</option>
                                             <option value="Grave">Grave</option>
                                             <option value="MuyGrave">Muy grave</option>
                                             <option value="Mortal">Mortal</option>
                                         </select>
                                     </div>
-                                    <textarea name="" placeholder="Describe la lesión" onChange={(e) => {setLesiondescripcion(e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" id=""></textarea>
+                                    <textarea name="" placeholder="Describe la lesión" value={lesiondescripcion} onChange={(e) => {setLesiondescripcion(e.target.value); saveInStorage("lesionDescripcion", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" id=""></textarea>
                                 </div>
                             ) : (``)
                         }
