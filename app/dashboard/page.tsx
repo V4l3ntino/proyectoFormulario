@@ -30,11 +30,15 @@ const fechExpedientes = async(): Promise<ExpedienteJson[]|undefined> => {
 }
 
 const fetchImagenes = async(): Promise<ImagenJson[]|undefined> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/`)
-  if(!response.ok){
-    throw new Error('Error al cargar las imágenes')
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/`)
+    if(!response.ok){
+      throw new Error('Error al cargar las imágenes')
+    }
+    return await response.json()
+  } catch (error) {
+    console.log(error)    
   }
-  return await response.json()
 }
 
 const Dashboard = async() => {

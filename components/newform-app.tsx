@@ -34,6 +34,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
     const [descripcion, setDescripcion] = useState<string>("")
     const [idtrabajador, setIdtrabajador] = useState<number|undefined>(undefined)
     const [imagenes, setImagenes] = useState<File[]|null>(null)
+    const [puestoTrabajo, setPuestoTrabajo] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(true)
 
     const imagenesGuardadas: ImagenJson[] = (
@@ -74,6 +75,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         setDescripcion(``)
         localStorage.removeItem('idTrabajador')
         setIdtrabajador(undefined)
+        localStorage.removeItem('puesto_trabajo')
+        setPuestoTrabajo('')
     }
 
     useEffect(() => {
@@ -88,7 +91,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         const idTrabajadorStorage = JSON.parse(localStorage.getItem("idTrabajador")!)
         const lesionadoStorage = JSON.parse(localStorage.getItem("lesionado")!)
         const lesionTipoStorage = JSON.parse(localStorage.getItem("lesionTipo")!)
-        const lesionDescripcionStorage = JSON.parse(localStorage.getItem("lesionDescripcion")!) 
+        const lesionDescripcionStorage = JSON.parse(localStorage.getItem("lesionDescripcion")!)
+        const puestoTrabajoStorage = JSON.parse(localStorage.getItem("puesto_trabajo")!)
+        puestoTrabajoStorage ? setPuestoTrabajo(puestoTrabajoStorage) : ``; 
         name ? setName(JSON.parse(name)) : ``;
         lugarAccidenteStorage ? setLugar(lugarAccidenteStorage) : ``;
         fechasuceso ? setFechasuceso(fechaSucesoStorage) : ``;
@@ -130,7 +135,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         const lesion = `${lesiontipo}|${lesiondescripcion}`
         
         if(idtrabajador){
-            const expediente = new Expediente(idtrabajador, sexo, edad, lugar, fechasuceso, lesionado? lesion: `|`, descripcion, lesionado)
+            const expediente = new Expediente(idtrabajador, sexo, edad, lugar, fechasuceso, lesionado? lesion: `|`, descripcion, lesionado, puestoTrabajo)
             fetchExpedientePost(expediente)
             return
         }
@@ -193,7 +198,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
             lesionado_check: formulario.lesionado_check,
             lugar_accidente: formulario.lugarAccidente,
             sexo: formulario.sexo,
-            puesto_trabajo: ""
+            puesto_trabajo: formulario.puesto_trabajo
         }
         fetch(url, {
             method: methodtype,
@@ -291,6 +296,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                         <div className="lg:w-1/3 w-full">
                             <label htmlFor="">Edad</label>
                             <input ref={edadRefElement} onChange={(e) => { setEdad(+e.target.value);saveInStorage("edad", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
+                        </div>
+                        <div className="lg:w-1/3 w-full">
+                            <label htmlFor="">Puesto de Trabajo</label>
+                            <input value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} type="text" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Puesto" required />
                         </div>
                     </div>
                     <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-ful">

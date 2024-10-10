@@ -7,8 +7,9 @@ export class Expediente {
     private _lesion: string;
     private _lesionado_check: boolean;
     private _descripcion_hechos: string;
+    private _puesto_trabajo: string;
 
-    constructor(trabajador: number, sexo: string, edad: number, lugarAccidente: string, fechaSuceso: string, lesion: string, descripcionHechos: string, lesionado_check: boolean){
+    constructor(trabajador: number, sexo: string, edad: number, lugarAccidente: string, fechaSuceso: string, lesion: string, descripcionHechos: string, lesionado_check: boolean, puesto_trabajo: string){
         this._trabajador = trabajador;
         this._sexo = sexo;
         this._edad = edad;
@@ -17,10 +18,18 @@ export class Expediente {
         this._lesion = lesion;
         this._descripcion_hechos = descripcionHechos;
         this._lesionado_check = lesionado_check;
+        this._puesto_trabajo = puesto_trabajo;
     }
 
     toStirng(){
         return `${this.trabajador}, Edad: ${this.edad}, Sexo: ${this.sexo}`
+    }
+
+    set puesto_trabajo(value: string){
+        this._puesto_trabajo = value;
+    }
+    get puesto_trabajo(){
+        return this._puesto_trabajo;
     }
 
      
