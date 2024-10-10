@@ -8,13 +8,14 @@ import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { Expediente } from "@/models/Expediente";
 
 type Props = {
-    funcion: (state: boolean)=> void
+    changeState: (state: boolean)=> void
     trabajadores: Person[]
     expedientesJson: ExpedienteJson[]
     update: (object: ExpedienteJson) => void
+    changeStateDownload: (expediente: ExpedienteJson) => void
 }
 
-const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson, update}) => {
+const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJson, update, changeStateDownload}) => {
 
     const expedientes2: ExpedienteJson[] = []
     if(expedientesJson && expedientesJson.length > 0 && trabajadores && trabajadores.length > 0){
@@ -44,7 +45,7 @@ const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson, 
         <section>
             <div className="bg-slate-200 p-2 lg:p-10 rounded flex-col overflow-hidden">
                     <motion.span
-                    onClick={() => {funcion(false)}}
+                    onClick={() => {changeState(false)}}
                     initial={{opacity:0}}
                     whileInView={{opacity:1}}
                     transition={{duration:0.5}}
@@ -64,7 +65,7 @@ const CreateFormApp:React.FC<Props> = ({funcion, trabajadores, expedientesJson, 
                         <DocumentPlusIcon className="h-10 w-10 text-gray-400  md:hidden"/>
                     </motion.span>                    
                     {(expedientes2).map((item, key) => (
-                        <CardForm key={key} expediente={item} update={update}/>
+                        <CardForm key={key} expediente={item} update={update} changeStateDownload={changeStateDownload}/>
                     ))}
                 </div>
         </section>

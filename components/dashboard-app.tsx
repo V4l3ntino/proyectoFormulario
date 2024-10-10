@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import CreateFormApp from "./createform-app"
 import NewformApp from "./newform-app"
 import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline"
+import Downloading from "./downloading";
 
 
 
@@ -21,7 +22,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
 
     const [state, setState] = useState<boolean>(true)
     const [update, setUpdate] = useState<string|undefined>()
-    const [lastIdExpediente, setLastIdExpediente] = useState<number>()
+    const [stateDownload, setStateDownload] = useState<boolean>(false)
 
     useEffect(() => {
         const stateStorage:string = localStorage.getItem('state')!
@@ -52,6 +53,24 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
 
         changeState(false)
     }
+    const changeStateDownload = (expediente: ExpedienteJson) => {
+        setStateDownload(true)
+        fetchDownloadWord(expediente.id)
+    }
+
+    const fetchDownloadWord = async(id:string):Promise<void> => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/generate-word-document/${id}/`,{method: 'POST'})
+            if(!response.ok){
+                throw new Error("Error al generar el documento word")
+            }
+            setStateDownload(false)
+            window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/media/word/ficha_${id}.docx`
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const saveInStorage = (tipo: string, value: any) => {
         localStorage.setItem(tipo, JSON.stringify(value))
     }
@@ -78,8 +97,13 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
             <br />
             {
                 state ? (
-                    <CreateFormApp funcion={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente}/>
+                    <CreateFormApp changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} changeStateDownload={changeStateDownload}/>
                 ) : (<NewformApp propJson={jsonTrabajadores} idExpediente={update? update : uuidv4()}/>)
+            }
+            {
+                stateDownload ? (
+                    <Downloading />
+                ) : (``)
             }
         </main>
      );

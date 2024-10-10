@@ -9,10 +9,11 @@ import { useRouter } from "next/navigation";
 type Props = {
     expediente: ExpedienteJson
     update: (object: ExpedienteJson) => void
+    changeStateDownload: (expediente: ExpedienteJson) => void
 }
 
 
-const CardForm:React.FC<Props> = ({expediente, update}) => {
+const CardForm:React.FC<Props> = ({expediente, update, changeStateDownload}) => {
     const router = useRouter()
     const [style, setStyle] = useState(false)
 
@@ -53,7 +54,7 @@ const CardForm:React.FC<Props> = ({expediente, update}) => {
             <div className="flex gap-4">
                 <TrashIcon onClick={() => {fetchDeleteExpediente()}}  className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
                 <PencilSquareIcon onClick={() => {update(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer"/>
-                <DocumentIcon className="h-7 w-7 text-gray-400 md:h-10 md:w-10" />
+                <DocumentIcon onClick={() => {changeStateDownload(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
                 <TableCellsIcon className="h-7 w-7 text-gray-400 md:h-10 md:w-10" />
             </div>
         </motion.div>
