@@ -15,10 +15,11 @@ type Props = {
     jsonTrabajadores: Person[]
     jsonExpedientes: ExpedienteJson[]
     jsonImagenes: ImagenJson[]
+    errorServidor: boolean
 
 }
 
-const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes}) => {
+const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes, errorServidor}) => {
 
     const [state, setState] = useState<boolean>(true)
     const [update, setUpdate] = useState<string|undefined>()
@@ -101,7 +102,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
             <br />
             {
                 state ? (
-                    <CreateFormApp changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} changeStateDownload={changeStateDownload}/>
+                    <CreateFormApp changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} changeStateDownload={changeStateDownload} errorServidor={errorServidor}/>
                 ) : (<NewformApp propJson={jsonTrabajadores} idExpediente={update? update : uuidv4()}/>)
             }
             {

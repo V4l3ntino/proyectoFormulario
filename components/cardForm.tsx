@@ -16,6 +16,7 @@ type Props = {
 const CardForm:React.FC<Props> = ({expediente, update, changeStateDownload}) => {
     const router = useRouter()
     const [style, setStyle] = useState(false)
+    const [deleteAnimation, setDeleteAnimation] = useState<boolean>(false)
 
     const fetchDeleteExpediente = async(): Promise<void> => {
         try{
@@ -31,10 +32,15 @@ const CardForm:React.FC<Props> = ({expediente, update, changeStateDownload}) => 
             console.log(Error)
         }
     }
+    const animationDelete = async() => {
+        setDeleteAnimation(true)
+        const hola = await new Promise((r) => {setTimeout(r,200)})
+        setDeleteAnimation(false)
+    }
     return ( 
         <motion.div 
         initial={{opacity:0}}
-        whileInView={{opacity:1}}
+        whileInView={deleteAnimation? {opacity:0, width: 0} : {opacity:1}}
         transition={{duration:0.5}}
         viewport={{ margin: "-10px", once: true }}
         onViewportEnter={() => { setStyle(true)}}
@@ -52,7 +58,7 @@ const CardForm:React.FC<Props> = ({expediente, update, changeStateDownload}) => 
                 </div>
             </div>
             <div className="flex gap-4">
-                <TrashIcon onClick={() => {fetchDeleteExpediente()}}  className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
+                <TrashIcon onClick={() => {fetchDeleteExpediente(), animationDelete()}}  className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
                 <PencilSquareIcon onClick={() => {update(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer"/>
                 <DocumentIcon onClick={() => {changeStateDownload(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
                 <TableCellsIcon className="h-7 w-7 text-gray-400 md:h-10 md:w-10" />

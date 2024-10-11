@@ -46,9 +46,10 @@ const Dashboard = async() => {
     const trabajadores = await fetchUsers()
     const expedientes = await fechExpedientes()
     const imagenes = await fetchImagenes()
+    const errorServidor = trabajadores && expedientes && imagenes ? false : true
     
     return ( 
-        <DashboardApp jsonTrabajadores={trabajadores? trabajadores : []} jsonExpedientes={expedientes ? expedientes : []} jsonImagenes={imagenes ? imagenes : []} />
+        <DashboardApp jsonTrabajadores={trabajadores? trabajadores : []} jsonExpedientes={expedientes ? expedientes : []} jsonImagenes={imagenes ? imagenes : []} errorServidor={errorServidor}/>
      );
 }
  
