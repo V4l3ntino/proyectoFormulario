@@ -139,6 +139,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
             fetchExpedientePost(expediente)
             if(!updateId){
                 localStorage.clear()
+                const timeout = await new Promise((r) => setTimeout(r, 1000))
                 window.location.reload()
             }
             const timeout = await new Promise((r) => setTimeout(r, 1000))
