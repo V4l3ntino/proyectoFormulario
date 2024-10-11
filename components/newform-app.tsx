@@ -2,11 +2,13 @@
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ExpedienteJson, ImagenJson, Person } from "@/interfaces/interfaces";
-import { TrashIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { TrashIcon, XMarkIcon, ArrowPathIcon } from "@heroicons/react/24/outline"
 import { abel, inter } from "@/app/ui/fonts";
 import { Expediente } from "@/models/Expediente";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from 'uuid';
+
 
 type Props = {
     propJson: Person[]
@@ -37,18 +39,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
     const [puestoTrabajo, setPuestoTrabajo] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(true)
     const [updateId, setUpdateId] = useState<string|undefined>()
+    const [arrowLoading, setArrowLoading] = useState<boolean>(false)
 
-    const imagenesGuardadas: ImagenJson[] = (
-        () => {
-            try {
-                const storedImages = localStorage.getItem("imagenes")
-                return storedImages ? JSON.parse(storedImages) as ImagenJson[] : []
-            } catch (error) {
-                console.log("Error parsein json", error)
-                return [];
-            }
-        }
-    )()
+    const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
     useEffect(() => {
         filter()
     }, [name])
@@ -107,6 +100,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         const storeId = localStorage.getItem("updateId")
         setUpdateId(storeId ? JSON.parse(storeId) : undefined)
 
+        const storedImages = localStorage.getItem("imagenes")
+        setImagenesGuardadas(storedImages ? JSON.parse(storedImages) as ImagenJson[] : [])
+
         try {
             edad < 100 ? edadRefElement.current!.value = edad : edadRefElement.current!.value = "18";
             experienciaRefElement.current!.value = experiencia
@@ -133,8 +129,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         }
       }, [imagenes]);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        // e.preventDefault();
+    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         const sexo = men? `H` : `M`
         const lesion = `${lesiontipo}|${lesiondescripcion}`
         
@@ -145,6 +141,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                 localStorage.clear()
                 window.location.reload()
             }
+            const timeout = await new Promise((r) => setTimeout(r, 500))
+            window.location.reload()
             return
         }
         alert("Id no especificado")
@@ -160,10 +158,29 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         setEstado(estado)
         return estado
     }
+    const fetchUpdateLocalImages = async(id:string): Promise<void> => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/${id}`)
+            if(!response.ok){
+                throw new Error(`Error al buscar la imagen ${id} en la base de datos`)
+            }
+            const foto = await response.json() as ImagenJson
+            let imagenesStorage = localStorage.getItem("imagenes")
+            let fotosGuardados = imagenesStorage ? JSON.parse(imagenesStorage) as ImagenJson[] : []
+            fotosGuardados.push(foto)
+            saveInStorage("imagenes", fotosGuardados)
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const fetchExpedienteImagenes = async(): Promise<void> => {
+        let ids_imagenes:string[] = []
         if(imagenes && imagenes.length > 0){
             imagenes.map((item) => {
                 const formData = new FormData();
+                const id = uuidv4()
+                ids_imagenes.push(id)
+                formData.append("id", id)
                 formData.append('expediente', updateId? updateId : idexpediente)
                 formData.append('imagen', item)
                 const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/`
@@ -173,7 +190,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                     body: formData
                 }).then(response => {
                     if(!response.ok){
-                        alert("funciona")
+                        alert(`Error: La foto con nombre ${item.name} no es posible de guardar por el tipo de formato o tamaño. Asegurate de que sea un .jpg o .png y comprimelo.s`)
                         throw new Error('Error al enviar la imagen')
                     }
                 }).catch((error) => {
@@ -183,6 +200,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                         console.log(`${key}: ${value}`);
                     }
                 })
+            })
+            ids_imagenes.map((id) => {
+                fetchUpdateLocalImages(id)
             })
         }
     }
@@ -234,7 +254,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         })
     }
 
-    const fetchDeleteImage = async(id:number): Promise<void> => {
+    const fetchDeleteImage = async(id:string): Promise<void> => {
        try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/${id}`, {method: "DELETE"})
             if(!response.ok){
@@ -373,9 +393,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                                         transition={{ type: "spring", stiffness: 100 }}
                                         className="w-96 h-52 rounded flex bg-slate-100 relative ">
                                             <motion.img 
-                                            initial={{x: 100}}
-                                            whileInView={{x: 0}}
-                                            transition={{ type: "spring", stiffness: 100, delay:0.3 }} 
+                                            // initial={{x: 100}}
+                                            // whileInView={{x: 0}}
+                                            // transition={{ type: "spring", stiffness: 100, delay:0.3 }} 
                                             className="w-2/4" src={`${foto.imagen}`} alt="" />
                                             <div className="w-2/4 bg-slate-50 hover:bg-slate-100 cursor-pointer">
                                                 <motion.div initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }} onClick={() => fetchDeleteImage(foto.id!)} className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.50rem] z-10 -right-2"><XMarc className="w-5"/></motion.div>
@@ -393,9 +413,14 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                     }
                     <div className="w-full flex flex-col">
                         <label>Subir imagenes</label>
-                        <input type="file" multiple onChange={(e) => {handleImageChange(e)}}/>
+                        <input type="file" accept=".png, .jpg, .jpeg" multiple onChange={(e) => {handleImageChange(e)}}/>
                     </div>
-                    <button type="submit" className={`bg-slate-800 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</button>
+                    <div className="flex items-center gap-3">
+                        <button onClick={() => setArrowLoading(true)} type="submit" className={`bg-slate-800 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</button>
+                        {arrowLoading ? (
+                            <ArrowPathIcon id="arrowLoading" className="w-5 h-5"/>
+                        ) : (``)}
+                    </div>
                 </form>
             </div>
         </section>

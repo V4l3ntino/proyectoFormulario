@@ -21,8 +21,8 @@ export interface ExpedienteJson {
 
 
 export interface ImagenJson {
-    id?: number
+    id?: string
     expediente: string
     imagen_path?: string
-    imagen?: File
+    imagen?: File|string
 }
