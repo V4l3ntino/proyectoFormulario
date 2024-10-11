@@ -141,7 +141,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                 localStorage.clear()
                 window.location.reload()
             }
-            const timeout = await new Promise((r) => setTimeout(r, 500))
+            const timeout = await new Promise((r) => setTimeout(r, 1000))
             window.location.reload()
             return
         }
@@ -391,11 +391,11 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                                         whileInView={{scale:1}}
                                         viewport={{once:true}}
                                         transition={{ type: "spring", stiffness: 100 }}
-                                        className="w-96 h-52 rounded flex bg-slate-100 relative ">
+                                        className="w-[30rem] h-52 rounded flex bg-slate-100 relative ">
                                             <motion.img 
-                                            // initial={{x: 100}}
-                                            // whileInView={{x: 0}}
-                                            // transition={{ type: "spring", stiffness: 100, delay:0.3 }} 
+                                            initial={{x: 100}}
+                                            whileInView={{x: 0}}
+                                            transition={{ type: "spring", stiffness: 100, delay:0.3 }} 
                                             className="w-2/4" src={`${foto.imagen}`} alt="" />
                                             <div className="w-2/4 bg-slate-50 hover:bg-slate-100 cursor-pointer">
                                                 <motion.div initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }} onClick={() => fetchDeleteImage(foto.id!)} className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.50rem] z-10 -right-2"><XMarc className="w-5"/></motion.div>
