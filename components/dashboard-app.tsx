@@ -33,7 +33,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
 
     }, [])
     const changeState = async(state: boolean) => {
-        const timeout = await new Promise((r) => setTimeout(r, 100))
+        const timeout = await new Promise((r) => setTimeout(r, 200))
         setState(state);
         localStorage.setItem('state', JSON.stringify(state))
     }
