@@ -36,6 +36,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
     const [imagenes, setImagenes] = useState<File[]|null>(null)
     const [puestoTrabajo, setPuestoTrabajo] = useState<string>("")
     const [estado, setEstado] = useState<boolean>(true)
+    const [updateId, setUpdateId] = useState<string|undefined>()
 
     const imagenesGuardadas: ImagenJson[] = (
         () => {
@@ -103,6 +104,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         lesionTipoStorage ? setLesiontipo(lesionTipoStorage) : ``;
         lesionDescripcionStorage ? setLesiondescripcion(lesionDescripcionStorage) : ``;
 
+        const storeId = localStorage.getItem("updateId")
+        setUpdateId(storeId ? JSON.parse(storeId) : undefined)
+
         try {
             edad < 100 ? edadRefElement.current!.value = edad : edadRefElement.current!.value = "18";
             experienciaRefElement.current!.value = experiencia
@@ -130,13 +134,17 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
       }, [imagenes]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        // e.preventDefault();
         const sexo = men? `H` : `M`
         const lesion = `${lesiontipo}|${lesiondescripcion}`
         
         if(idtrabajador){
             const expediente = new Expediente(idtrabajador, sexo, edad, lugar, fechasuceso, lesionado? lesion: `|`, descripcion, lesionado, puestoTrabajo)
             fetchExpedientePost(expediente)
+            if(!updateId){
+                localStorage.clear()
+                window.location.reload()
+            }
             return
         }
         alert("Id no especificado")
@@ -155,7 +163,6 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
     const fetchExpedienteImagenes = async(): Promise<void> => {
         if(imagenes && imagenes.length > 0){
             imagenes.map((item) => {
-                const updateId:string = JSON.parse(localStorage.getItem("updateId")!)
                 const formData = new FormData();
                 formData.append('expediente', updateId? updateId : idexpediente)
                 formData.append('imagen', item)
@@ -166,6 +173,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                     body: formData
                 }).then(response => {
                     if(!response.ok){
+                        alert("funciona")
                         throw new Error('Error al enviar la imagen')
                     }
                 }).catch((error) => {
@@ -179,10 +187,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         }
     }
     const fetchExpedientePost = async(formulario: Expediente):Promise<void> =>{
-        const updateId:string = JSON.parse(localStorage.getItem("updateId")!)
         const methodtype = updateId ? 'PUT' : 'POST'
         const url = updateId ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${updateId}/` : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/`
-        
         if(!verificarOperario(formulario.trabajador)) {
             alert('No existe dicho trabajador en la base de datos')
             return
@@ -215,8 +221,6 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
                 router.refresh()
                 fetchExpedienteImagenes()
                 router.refresh()
-                localStorage.clear()
-                window.location.reload()
                 return
             }
             alert('Algo ha ido mal')
