@@ -5,6 +5,9 @@ import { ClipboardDocumentIcon, TrashIcon, PencilSquareIcon, DocumentIcon,TableC
 import { abel } from '@/app/ui/fonts'
 import { ExpedienteJson } from "@/interfaces/interfaces";
 import { useRouter } from "next/navigation";
+import WordSvg from "./icons/word";
+import ExcelSvg from "./icons/excel";
+import EditSvg from "./icons/edit";
 
 type Props = {
     expediente: ExpedienteJson
@@ -58,10 +61,12 @@ const CardForm:React.FC<Props> = ({expediente, update, changeStateDownload}) => 
                 </div>
             </div>
             <div className="flex gap-4">
-                <TrashIcon onClick={() => {fetchDeleteExpediente(), animationDelete()}}  className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
-                <PencilSquareIcon onClick={() => {update(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer"/>
-                <DocumentIcon onClick={() => {changeStateDownload(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" />
-                <TableCellsIcon className="h-7 w-7 text-gray-400 md:h-10 md:w-10" />
+                {/* <TrashIcon onClick={() => {fetchDeleteExpediente(), animationDelete()}}  className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" /> */}
+                {/* <PencilSquareIcon onClick={() => {update(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer"/> */}
+                <EditSvg width={28} height={28} onClick={() => {update(expediente)}} className="cursor-pointer"/>
+                {/* <DocumentIcon onClick={() => {changeStateDownload(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" /> */}
+                <WordSvg width={28} height={28} onClick={() => {changeStateDownload(expediente)}} className="cursor-pointer"/>
+                <ExcelSvg width={28} height={28} className="cursor-pointer"/>
             </div>
         </motion.div>
      );
