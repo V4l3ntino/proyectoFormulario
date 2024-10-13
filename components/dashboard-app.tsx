@@ -8,6 +8,7 @@ import CreateFormApp from "./createform-app"
 import NewformApp from "./newform-app"
 import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline"
 import Downloading from "./downloading";
+import { useRouter } from "next/navigation";
 
 
 
@@ -20,7 +21,7 @@ type Props = {
 }
 
 const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes, errorServidor}) => {
-
+    const router = useRouter()
     const [state, setState] = useState<boolean>(true)
     const [update, setUpdate] = useState<string|undefined>()
     const [stateDownload, setStateDownload] = useState<boolean>(false)
@@ -53,18 +54,17 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
         saveInStorage("lesionTipo", expediente.lesion.split("|")[0])
         saveInStorage("lesionDescripcion", expediente.lesion.split("|")[1])
         saveInStorage("puesto_trabajo", expediente.puesto_trabajo)
+        saveInStorage("id", expediente.id)
         setUpdate(expediente.id)
 
         saveInStorage("imagenes", jsonImagenes.filter((item) => item.expediente == expediente.id ))
 
         changeState(false)
     }
-    const changeStateDownload = (expediente: ExpedienteJson) => {
-        setStateDownload(true)
-        fetchDownloadWord(expediente.id)
-    }
+
 
     const fetchDownloadWord = async(id:string):Promise<void> => {
+        setStateDownload(true)
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/generate-word-document/${id}/`,{method: 'POST'})
             if(!response.ok){
@@ -76,6 +76,23 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
             console.log(error)
         }
     }
+
+    const fetchDeleteExpediente = async(id:string): Promise<void> => {
+        try{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${id}/`,{method: 'DELETE'})
+            if(!response.ok){
+                throw new Error("Error al eliminar el expediente")
+            }
+            if (response.status === 204){
+                router.refresh()
+                localStorage.clear()
+                window.location.reload()
+            }
+        }catch(Error){
+            console.log(Error)
+        }
+    }
+
 
     const saveInStorage = (tipo: string, value: any) => {
         localStorage.setItem(tipo, JSON.stringify(value))
@@ -103,8 +120,8 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
             <br />
             {
                 state ? (
-                    <CreateFormApp changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} changeStateDownload={changeStateDownload} errorServidor={errorServidor}/>
-                ) : (<NewformApp propJson={jsonTrabajadores} idExpediente={update? update : uuidv4()}/>)
+                    <CreateFormApp changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} fetchDownloadWord={fetchDownloadWord} errorServidor={errorServidor}/>
+                ) : (<NewformApp propJson={jsonTrabajadores} idExpediente={update? update : uuidv4()} fetchDeleteExpediente={fetchDeleteExpediente} fetchDownloadWord={fetchDownloadWord} />)
             }
             {
                 stateDownload ? (

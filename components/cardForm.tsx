@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ClipboardDocumentIcon, TrashIcon, PencilSquareIcon, DocumentIcon,TableCellsIcon } from "@heroicons/react/24/outline";
 import { abel } from '@/app/ui/fonts'
 import { ExpedienteJson } from "@/interfaces/interfaces";
-import { useRouter } from "next/navigation";
 import WordSvg from "./icons/word";
 import ExcelSvg from "./icons/excel";
 import EditSvg from "./icons/edit";
@@ -12,38 +11,18 @@ import EditSvg from "./icons/edit";
 type Props = {
     expediente: ExpedienteJson
     update: (object: ExpedienteJson) => void
-    changeStateDownload: (expediente: ExpedienteJson) => void
+    fetchDownloadWord: (expediente: string) => void
 }
 
 
-const CardForm:React.FC<Props> = ({expediente, update, changeStateDownload}) => {
-    const router = useRouter()
+const CardForm:React.FC<Props> = ({expediente, update, fetchDownloadWord}) => {
+    
     const [style, setStyle] = useState(false)
-    const [deleteAnimation, setDeleteAnimation] = useState<boolean>(false)
 
-    const fetchDeleteExpediente = async(): Promise<void> => {
-        try{
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${expediente.id}/`,{method: 'DELETE'})
-            if(!response.ok){
-                throw new Error("Error al eliminar el expediente")
-            }
-            if (response.status === 204){
-                router.refresh()
-                // window.location.reload()
-            }
-        }catch(Error){
-            console.log(Error)
-        }
-    }
-    const animationDelete = async() => {
-        setDeleteAnimation(true)
-        const hola = await new Promise((r) => {setTimeout(r,200)})
-        setDeleteAnimation(false)
-    }
     return ( 
         <motion.div 
         initial={{opacity:0}}
-        whileInView={deleteAnimation? {opacity:0, width: 0} : {opacity:1}}
+        whileInView={{opacity:1}}
         transition={{duration:0.5}}
         viewport={{ margin: "-10px", once: true }}
         onViewportEnter={() => { setStyle(true)}}
@@ -65,7 +44,7 @@ const CardForm:React.FC<Props> = ({expediente, update, changeStateDownload}) => 
                 {/* <PencilSquareIcon onClick={() => {update(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer"/> */}
                 <EditSvg width={28} height={28} onClick={() => {update(expediente)}} className="cursor-pointer"/>
                 {/* <DocumentIcon onClick={() => {changeStateDownload(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" /> */}
-                <WordSvg width={28} height={28} onClick={() => {changeStateDownload(expediente)}} className="cursor-pointer"/>
+                <WordSvg width={28} height={28} onClick={() => {fetchDownloadWord(expediente.id)}} className="cursor-pointer"/>
                 <ExcelSvg width={28} height={28} className="cursor-pointer"/>
             </div>
         </motion.div>

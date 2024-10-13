@@ -8,14 +8,17 @@ import { Expediente } from "@/models/Expediente";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
+import WordSvg from "./icons/word";
 
 
 type Props = {
     propJson: Person[]
     idExpediente: string
+    fetchDeleteExpediente: (id:string)=>void
+    fetchDownloadWord: (id:string)=>void
 }
 
-const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
+const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
     const router = useRouter()
@@ -288,15 +291,35 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente}) => {
         localStorage.setItem("idTrabajador", JSON.stringify(operario.id))
         setLista([])
     }
+
+    const borrarIncidente = () => {
+        let verificacion = confirm("Esta seguro de que quiere borrar el incidente?")
+        if(verificacion){
+            fetchDeleteExpediente(updateId!)
+        }
+    }
+
     const Trash = TrashIcon;
     const XMarc = XMarkIcon;
     return (
         <section>
-            <div className="flex justify-between">
-                <div></div>
-                <span onClick={() => { clearStorage() }} className="cursor-pointer hover:underline flex gap-1">Limpiar formulario <TrashIcon className="w-4" /></span>
-            </div>
+            {
+                !updateId ? (
+                    <div className="flex justify-between">
+                        <div></div>
+                        <span onClick={() => { clearStorage() }} className="cursor-pointer hover:underline flex gap-1">Limpiar formulario <TrashIcon className="w-4" /></span>
+                    </div>
+                ) : (
+                    <div className="flex justify-between">
+                        <div></div>
+                        <span onClick={() => {borrarIncidente()}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md text-white">Borrar incidente <TrashIcon className="w-4" /></span>
+                    </div>
+                )
+            }
             <div className="bg-slate-200 p-2 lg:p-5 rounded flex-col overflow-hidden">
+                {updateId? (
+                    <WordSvg onClick={() => fetchDownloadWord(updateId)} width={28} height={28} className="cursor-pointer"/>
+                ):(``)}
                 <form action="" onSubmit={handleSubmit} className="w-full">
                     <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
                         <div className="lg:w-2/3 w-full">

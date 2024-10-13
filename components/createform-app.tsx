@@ -12,11 +12,11 @@ type Props = {
     trabajadores: Person[]
     expedientesJson: ExpedienteJson[]
     update: (object: ExpedienteJson) => void
-    changeStateDownload: (expediente: ExpedienteJson) => void
+    fetchDownloadWord: (expediente: string) => void
     errorServidor: boolean
 }
 
-const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJson, update, changeStateDownload, errorServidor}) => {
+const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJson, update, fetchDownloadWord, errorServidor}) => {
 
     const expedientes2: ExpedienteJson[] = []
     if(expedientesJson && expedientesJson.length > 0 && trabajadores && trabajadores.length > 0){
@@ -90,7 +90,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                         )
                     }                    
                     {(expedientes2).map((item, key) => (
-                        <CardForm key={key} expediente={item} update={update} changeStateDownload={changeStateDownload}/>
+                        <CardForm key={key} expediente={item} update={update} fetchDownloadWord={fetchDownloadWord}/>
                     ))}
                 </div>
         </section>
