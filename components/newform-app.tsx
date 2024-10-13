@@ -312,7 +312,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 ) : (
                     <div className="flex justify-between">
                         <div></div>
-                        <span onClick={() => {borrarIncidente()}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md text-white">Borrar incidente <TrashIcon className="w-4" /></span>
+                        <span onClick={() => {borrarIncidente()}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md mb-3 text-white">Borrar incidente <TrashIcon className="w-4" /></span>
                     </div>
                 )
             }

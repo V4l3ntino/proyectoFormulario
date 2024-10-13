@@ -37,7 +37,7 @@ const Downloading = () => {
                                     word.split("").map((char, indexChar) => (
                                         <motion.span
                                         initial={{filter: "blur(0px)"}}
-                                        animate={state ? {filter: "blur(1px)"} : {filter: "blur(0px)"}}
+                                        animate={state ? {filter: "blur(1px)"} : {filter: "blur(0px)", fontFamily: "Lato, sans-serif"}}
                                         transition={{delay: (indexWord * 0.5) + (indexChar * 0.1)}}
                                         key={indexChar+indexWord}>{char}</motion.span>
                                     ))
