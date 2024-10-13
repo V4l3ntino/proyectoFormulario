@@ -40,10 +40,7 @@ const CardForm:React.FC<Props> = ({expediente, update, fetchDownloadWord}) => {
                 </div>
             </div>
             <div className="flex gap-4">
-                {/* <TrashIcon onClick={() => {fetchDeleteExpediente(), animationDelete()}}  className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" /> */}
-                {/* <PencilSquareIcon onClick={() => {update(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer"/> */}
                 <EditSvg width={28} height={28} onClick={() => {update(expediente)}} className="cursor-pointer"/>
-                {/* <DocumentIcon onClick={() => {changeStateDownload(expediente)}} className="h-7 w-7 text-gray-400 md:h-10 md:w-10 cursor-pointer" /> */}
                 <WordSvg width={28} height={28} onClick={() => {fetchDownloadWord(expediente.id)}} className="cursor-pointer"/>
                 <ExcelSvg width={28} height={28} className="cursor-pointer"/>
             </div>

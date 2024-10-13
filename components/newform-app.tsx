@@ -293,7 +293,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     }
 
     const borrarIncidente = () => {
-        let verificacion = confirm("Esta seguro de que quiere borrar el incidente?")
+        let verificacion = confirm("Esta seguro de que quiere borrar el expediente?")
         if(verificacion){
             fetchDeleteExpediente(updateId!)
         }
@@ -303,6 +303,15 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const XMarc = XMarkIcon;
     return (
         <section>
+            { updateId ? (
+                <>
+                    <h1>Actualizar Expediente</h1>
+                    <br />
+                </>
+            ) : (``)
+            }
+            <hr />
+            <br />
             {
                 !updateId ? (
                     <div className="flex justify-between">
@@ -312,13 +321,13 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 ) : (
                     <div className="flex justify-between">
                         <div></div>
-                        <span onClick={() => {borrarIncidente()}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md mb-3 text-white">Borrar incidente <TrashIcon className="w-4" /></span>
+                        <span onClick={() => {borrarIncidente()}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md mb-3 text-white">Eliminar <TrashIcon className="w-4" /></span>
                     </div>
                 )
             }
             <div className="bg-slate-200 p-2 lg:p-5 rounded flex-col overflow-hidden">
                 {updateId? (
-                    <WordSvg onClick={() => fetchDownloadWord(updateId)} width={28} height={28} className="cursor-pointer"/>
+                    <WordSvg onClick={() => fetchDownloadWord(updateId)} width={28} height={28} className="cursor-pointer mb-3 mt-2"/>
                 ):(``)}
                 <form action="" onSubmit={handleSubmit} className="w-full">
                     <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">

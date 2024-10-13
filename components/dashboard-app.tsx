@@ -108,14 +108,14 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
     return ( 
         <main>
             { state ? (
+                <>
                 <h1>Historial</h1>
-            ) : (<div>
-                <h1>Nuevo Expediente</h1>
-            </div>)
+                <br />
+                <hr />
+                <br />
+                </>
+            ) : (``)
             }
-            <br />
-            <hr />
-            <br />
             { state ? (``) : (<span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit" onClick={() => {changeState(true); localStorage.clear(); setUpdate(undefined)}}>Volver <Icon className="w-6" /></span>)}
             <br />
             {
