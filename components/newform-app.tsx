@@ -77,11 +77,11 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     }
 
     useEffect(() => {
-        const name = localStorage.getItem("name")
-        const edad = JSON.parse(localStorage.getItem("edad")!) || 18
-        const experiencia = JSON.parse(localStorage.getItem("experiencia")!) || ``
-        const men = JSON.parse(localStorage.getItem("men")!) || false
-        const women = JSON.parse(localStorage.getItem("women")!) || false
+        const nameStorage = localStorage.getItem("name")
+        const edadStorage = JSON.parse(localStorage.getItem("edad")!) || 18
+        const experienciaStorage = JSON.parse(localStorage.getItem("experiencia")!) || ``
+        const menStorage = JSON.parse(localStorage.getItem("men")!) || false
+        const womenStorage = JSON.parse(localStorage.getItem("women")!) || false
         const lugarAccidenteStorage = JSON.parse(localStorage.getItem("lugarAccidente")!)
         const fechaSucesoStorage = JSON.parse(localStorage.getItem("fechaSuceso")!)
         const descripcionStorage = JSON.parse(localStorage.getItem("descripcion")!)
@@ -91,7 +91,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const lesionDescripcionStorage = JSON.parse(localStorage.getItem("lesionDescripcion")!)
         const puestoTrabajoStorage = JSON.parse(localStorage.getItem("puesto_trabajo")!)
         puestoTrabajoStorage ? setPuestoTrabajo(puestoTrabajoStorage) : ``; 
-        name ? setName(JSON.parse(name)) : ``;
+        nameStorage ? setName(JSON.parse(nameStorage)) : ``;
         lugarAccidenteStorage ? setLugar(lugarAccidenteStorage) : ``;
         fechasuceso ? setFechasuceso(fechaSucesoStorage) : ``;
         descripcionStorage ? setDescripcion(descripcionStorage) : ``;
@@ -107,13 +107,14 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         setImagenesGuardadas(storedImages ? JSON.parse(storedImages) as ImagenJson[] : [])
 
         try {
-            edad < 100 ? edadRefElement.current!.value = edad : edadRefElement.current!.value = "18";
-            experienciaRefElement.current!.value = experiencia
-            if (men) {
+            edadStorage < 100 ? edadRefElement.current!.value = edadStorage : edadRefElement.current!.value = "18";
+            experienciaRefElement.current!.value = experienciaStorage
+            setEdad(+(edadRefElement.current!.value))
+            if (menStorage) {
                 setMen(true); setWomen(false);
                 return
             }
-            if (women) {
+            if (womenStorage) {
                 setMen(false); setWomen(true);
             }
         } catch (error) {
