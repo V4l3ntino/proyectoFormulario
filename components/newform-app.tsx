@@ -133,6 +133,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
 
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setArrowLoading(true)
         const sexo = men? `H` : `M`
         const lesion = `${lesiontipo}|${lesiondescripcion}`
         
@@ -430,7 +431,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <input type="file" accept=".png, .jpg, .jpeg" multiple onChange={(e) => {handleImageChange(e)}}/>
                     </div>
                     <div className="flex items-center gap-3">
-                        <button onClick={() => setArrowLoading(true)} type="submit" className={`bg-slate-800 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</button>
+                        <button type="submit" className={`bg-slate-800 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</button>
                         {arrowLoading ? (
                             <ArrowPathIcon id="arrowLoading" className="w-5 h-5"/>
                         ) : (``)}
