@@ -9,6 +9,7 @@ import NewformApp from "./newform-app"
 import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline"
 import Downloading from "./downloading";
 import { useRouter } from "next/navigation";
+import {saveInStorage} from "../lib/data"
 
 
 
@@ -94,9 +95,6 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
     }
 
 
-    const saveInStorage = (tipo: string, value: any) => {
-        localStorage.setItem(tipo, JSON.stringify(value))
-    }
     const Icon = ArrowLeftCircleIcon;
     useEffect(()=>{
         if(update){

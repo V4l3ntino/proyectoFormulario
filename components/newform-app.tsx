@@ -152,13 +152,15 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         
     }
     const verificarOperario = (id: number) => {
-        let estado = false
+        let estadoDefault = false
 
-        const persona = json.find((item) => item.id == id)
+        const persona:Person|undefined = json.find((item) => item.id == id)
         if(persona){
-            estado = true
+            estadoDefault = true;
+            setName(`${persona.nombre}, ${persona.apellido}`)
+            saveInStorage("name", `${persona.nombre}, ${persona.apellido}`)
         }
-        setEstado(estado)
+        setEstado(estadoDefault)
         return estado
     }
 

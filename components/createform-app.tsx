@@ -26,7 +26,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                     const expedienteNuevo:ExpedienteJson = {
                         id: item.id,
                         trabajador: user.id,
-                        trabajador_nombre: user.nombre,
+                        trabajador_nombre: `${user.nombre}, ${user.apellido}`,
                         descripcion_hechos: item.descripcion_hechos,
                         edad: item.edad,
                         fecha_suceso: item.fecha_suceso,
