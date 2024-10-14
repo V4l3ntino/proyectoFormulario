@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
 import WordSvg from "./icons/word";
+import ExcelSvg from "./icons/excel";
 
 
 type Props = {
@@ -328,7 +329,16 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             }
             <div className="bg-slate-200 p-2 lg:p-5 rounded flex-col overflow-hidden">
                 {updateId? (
-                    <WordSvg onClick={() => fetchDownloadWord(updateId)} width={28} height={28} className="cursor-pointer mb-3 mt-2"/>
+                    <div className="flex gap-2">
+                        <div onClick={() => fetchDownloadWord(updateId)}  className="mb-3 flex items-center gap-1 cursor-pointer p-2 rounded-sm bg-blue-400 text-white">
+                            <WordSvg width={28} height={28}/>
+                            <p className="hover:underline">Exportar a Word</p>
+                        </div>
+                        <div onClick={() => fetchDownloadWord(updateId)}  className="mb-3 flex items-center gap-1 cursor-pointer p-2 rounded-sm bg-green-500 text-white">
+                            <ExcelSvg width={28} height={28}/>
+                            <p className="hover:underline">Exportar a Excel</p>
+                        </div>
+                    </div>
                 ):(``)}
                 <form action="" onSubmit={handleSubmit} className="w-full">
                     <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
