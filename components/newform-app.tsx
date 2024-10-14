@@ -294,21 +294,27 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 ) : (
                     <div className="flex justify-between">
                         <div></div>
-                        <span onClick={() => {borrarIncidente()}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md mb-3 text-white">Eliminar <TrashIcon className="w-4" /></span>
+                        <motion.span
+                        whileTap={{scale:0.73}}
+                        onClick={() => {borrarIncidente()}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md mb-3 text-white">Eliminar <TrashIcon className="w-4" /></motion.span>
                     </div>
                 )
             }
             <div className="bg-slate-200 p-2 lg:p-5 rounded flex-col overflow-hidden">
                 {updateId? (
                     <div className="flex gap-2">
-                        <div onClick={() => fetchDownloadWord(updateId)}  className="mb-3 flex items-center gap-1 cursor-pointer p-2 rounded-sm bg-blue-400 text-white">
+                        <motion.div
+                        whileTap={{scale:0.93}}
+                        onClick={() => fetchDownloadWord(updateId)}  className="mb-3 flex items-center gap-1 cursor-pointer p-2 rounded-sm bg-blue-400 text-white">
                             <WordSvg width={28} height={28}/>
                             <p className="hover:underline">Exportar a Word</p>
-                        </div>
-                        <div onClick={() => fetchDownloadWord(updateId)}  className="mb-3 flex items-center gap-1 cursor-pointer p-2 rounded-sm bg-green-500 text-white">
+                        </motion.div>
+                        <motion.div
+                        whileTap={{scale:0.93}}
+                        onClick={() => fetchDownloadWord(updateId)}  className="mb-3 flex items-center gap-1 cursor-pointer p-2 rounded-sm bg-green-500 text-white">
                             <ExcelSvg width={28} height={28}/>
                             <p className="hover:underline">Exportar a Excel</p>
-                        </div>
+                        </motion.div>
                     </div>
                 ):(``)}
                 <form action="" onSubmit={handleSubmit} className="w-full">
@@ -437,9 +443,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <input type="file" accept=".png, .jpg, .jpeg" multiple onChange={(e) => {handleImageChange(e)}}/>
                     </div>
                     <div className="flex items-center gap-3">
-                        <button type="submit" className={`bg-slate-800 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</button>
+                        <motion.button
+                        whileTap={{scale:0.8}}
+                        type="submit" className={`bg-slate-800 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</motion.button>
                         {arrowLoading ? (
-                            // <ArrowPathIcon id="arrowLoading" className="w-5 h-5"/>
                             <div className="loaderForm"></div>
                         ) : (``)}
                     </div>

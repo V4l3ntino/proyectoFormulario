@@ -40,9 +40,21 @@ const CardForm:React.FC<Props> = ({expediente, update, fetchDownloadWord}) => {
                 </div>
             </div>
             <div className="flex gap-4">
-                <EditSvg width={28} height={28} onClick={() => {update(expediente)}} className="cursor-pointer"/>
-                <WordSvg width={28} height={28} onClick={() => {fetchDownloadWord(expediente.id)}} className="cursor-pointer"/>
-                <ExcelSvg width={28} height={28} className="cursor-pointer"/>
+                <motion.div
+                whileTap={{scale:1.5}}
+                >
+                    <EditSvg width={28} height={28} onClick={() => {update(expediente)}} className="cursor-pointer"/>
+                </motion.div>
+                <motion.div
+                whileTap={{scale:1.5}}
+                >
+                    <WordSvg width={28} height={28} onClick={() => {fetchDownloadWord(expediente.id)}} className="cursor-pointer"/>
+                </motion.div>
+                <motion.div
+                whileTap={{scale:1.5}}
+                >
+                    <ExcelSvg width={28} height={28} className="cursor-pointer"/>
+                </motion.div>
             </div>
         </motion.div>
      );

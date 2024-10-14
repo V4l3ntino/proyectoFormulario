@@ -65,6 +65,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
 
 
     const fetchDownloadWord = async(id:string):Promise<void> => {
+        const timeOut = await new Promise<void>((r) => setTimeout(r, 200))
         setStateDownload(true)
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/generate-word-document/${id}/`,{method: 'POST'})
