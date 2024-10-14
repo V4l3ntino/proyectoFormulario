@@ -52,6 +52,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                             initial={{opacity:0}}
                             whileInView={{opacity:1}}
                             transition={{duration:0.5}}
+                            whileTap={{scale:0.8}}
                             viewport={{ margin: "-100px", once: true }}
                             onViewportEnter={() => { setStyle(true)}}
                             onViewportLeave={() => { setStyle(false)}}
