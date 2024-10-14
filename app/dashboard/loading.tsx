@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const Loading = () => {
     return ( 
         <main>
-            Cargando...
+            <div className="loaderCargando"></div>
         </main>
      );
 }

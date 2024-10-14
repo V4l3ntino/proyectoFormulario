@@ -433,7 +433,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     <div className="flex items-center gap-3">
                         <button type="submit" className={`bg-slate-800 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</button>
                         {arrowLoading ? (
-                            <ArrowPathIcon id="arrowLoading" className="w-5 h-5"/>
+                            // <ArrowPathIcon id="arrowLoading" className="w-5 h-5"/>
+                            <div className="loaderForm"></div>
                         ) : (``)}
                     </div>
                 </form>
