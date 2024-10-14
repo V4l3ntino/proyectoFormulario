@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
 import WordSvg from "./icons/word";
 import ExcelSvg from "./icons/excel";
-
+import {saveInStorage, fetchUpdateLocalImages, fetchDeleteImage} from "../lib/data"
 
 type Props = {
     propJson: Person[]
@@ -51,9 +51,6 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     }, [name])
 
 
-    const saveInStorage = (tipo: string, value: any) => {
-        localStorage.setItem(tipo, JSON.stringify(value))
-    }
     const clearStorage = () => {
         localStorage.removeItem('name')
         setName(``)
@@ -164,21 +161,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         setEstado(estado)
         return estado
     }
-    const fetchUpdateLocalImages = async(id:string): Promise<void> => {
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/${id}`)
-            if(!response.ok){
-                throw new Error(`Error al buscar la imagen ${id} en la base de datos`)
-            }
-            const foto = await response.json() as ImagenJson
-            let imagenesStorage = localStorage.getItem("imagenes")
-            let fotosGuardados = imagenesStorage ? JSON.parse(imagenesStorage) as ImagenJson[] : []
-            fotosGuardados.push(foto)
-            saveInStorage("imagenes", fotosGuardados)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+
     const fetchExpedienteImagenes = async(): Promise<void> => {
         let ids_imagenes:string[] = []
         if(imagenes && imagenes.length > 0){
@@ -260,21 +243,6 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         })
     }
 
-    const fetchDeleteImage = async(id:string): Promise<void> => {
-       try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/imagenes/${id}`, {method: "DELETE"})
-            if(!response.ok){
-                throw new Error("Error al eliminar la foto")
-            }
-            let lista: ImagenJson[] = JSON.parse(localStorage.getItem("imagenes")||`[]`) as ImagenJson[]
-            lista = lista.filter((item) => item.id !== id)
-            localStorage.setItem("imagenes", JSON.stringify(lista))
-            window.location.reload()
-       } catch (error) {
-            console.log(error)
-       }
-
-    }
     const filter = async () => {
         // new Promise((resolve) => {
         //     setTimeout(resolve, 1000)
