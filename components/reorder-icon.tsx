@@ -12,6 +12,7 @@ export function ReorderIcon({ dragControls }: Props) {
       viewBox="0 0 39 39"
       width="60"
       height="60"
+      className="hover:cursor-n-resize"
       onPointerDown={(event) => {
         event.preventDefault(); 
         dragControls.start(event);
