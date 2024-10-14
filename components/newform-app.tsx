@@ -312,6 +312,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     </div>
                 ):(``)}
                 <form action="" onSubmit={handleSubmit} className="w-full">
+                    <h1 className="border-black border-b-[1px]">1. Datos del suceso</h1>
+                    <br />
                     <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
                         <div className="lg:w-2/3 w-full">
                             <label htmlFor="">Operario</label>
@@ -377,6 +379,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         {
                             lesionado ? (
                                 <div className="w-full">
+                                    <h1 className="border-black border-b-[1px]">2. Consecuencias</h1>
+                                    <br />
                                     <div className="flex lg:flex-row flex-col lg:gap-5 mb-2">
                                         <label>Tipo de lesión</label>
                                         <select value={lesiontipo} onChange={(e) => {setLesiontipo(e.target.value); saveInStorage("lesionTipo", e.target.value)}} className="h-11 lg:w-2/6 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600 text-[17px]" name="" id="">
@@ -392,8 +396,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         }
                     </div>
                     <br />
+                    <h1 className="border-black border-b-[1px]">3. Descripción de los hechos</h1>
+                    <br />
                     <div className="w-full flex flex-col">
-                        <label>Descripción del Suceso</label>
+                        <label>Describe detalladamente lo sucedido</label>
                         <textarea onChange={(e) => {setDescripcion(e.target.value); saveInStorage("descripcion", e.target.value)}} value={descripcion} name="" id=""></textarea>
                     </div>
                     {
