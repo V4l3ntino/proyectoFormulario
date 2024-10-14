@@ -1,8 +1,8 @@
 "use client"
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { ExpedienteJson, ImagenJson, Person } from "@/interfaces/interfaces";
-import { TrashIcon, XMarkIcon, ArrowPathIcon } from "@heroicons/react/24/outline"
+import { ExpedienteJson, ImagenJson, Person, PuestoTrabajoJson } from "@/interfaces/interfaces";
+import { TrashIcon, XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
 import { abel, inter } from "@/app/ui/fonts";
 import { Expediente } from "@/models/Expediente";
 import { motion } from "framer-motion";
@@ -17,9 +17,10 @@ type Props = {
     idExpediente: string
     fetchDeleteExpediente: (id:string)=>void
     fetchDownloadWord: (id:string)=>void
+    jsonPuestoTrabajo: PuestoTrabajoJson[]
 }
 
-const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord}) => {
+const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
     const router = useRouter()
@@ -345,8 +346,14 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             <input ref={edadRefElement} onChange={(e) => { setEdad(+e.target.value);saveInStorage("edad", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
                         </div>
                         <div className="lg:w-1/3 w-full">
-                            <label htmlFor="">Puesto de Trabajo</label>
-                            <input value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} type="text" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Puesto" required />
+                            <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon className="w-5 h-5"/></label>
+                            <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
+                                {
+                                    jsonPuestoTrabajo.map((item, index) => (
+                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                    ))
+                                }
+                            </select>
                         </div>
                     </div>
                     <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-ful">

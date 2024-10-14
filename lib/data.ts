@@ -1,4 +1,4 @@
-import { ImagenJson } from "@/interfaces/interfaces"
+import { ImagenJson, PuestoTrabajoJson } from "@/interfaces/interfaces"
 
 export const saveInStorage = (tipo: string, value: any) => {
     localStorage.setItem(tipo, JSON.stringify(value))
@@ -35,3 +35,48 @@ export const fetchDeleteImage = async(id:string): Promise<void> => {
 
  }
  
+ export const fetchPuestoTrabajo = async(): Promise<PuestoTrabajoJson[]|undefined> => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/puesto_trabajo/`)
+      if(!response){
+        throw new Error('Error al cargar las imágenes')
+      }
+      return await response.json() as PuestoTrabajoJson[]
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+export const updatePuestoTrabajo = async(puestos: string[]): Promise<void> =>{
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/puesto_trabajo/deleteall`, {
+            method: "DELETE"
+        })
+        if(!response.ok){
+            throw new Error(`Error al eliminar los puesto`)
+        }
+        let contador = 1
+        console.log(puestos)
+        for (const nombre of puestos) {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/puesto_trabajo/`, {
+                method: "POST",
+                body: JSON.stringify({ id: contador,nombre: nombre }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error al crear el puesto -> ${nombre}`);
+            }
+            contador++;
+        }  
+
+    } catch (error) {
+        console.log(error)
+    }
+
+
+}
+  

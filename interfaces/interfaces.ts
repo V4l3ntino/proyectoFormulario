@@ -26,3 +26,8 @@ export interface ImagenJson {
     imagen_path?: string
     imagen?: File|string
 }
+
+export interface PuestoTrabajoJson {
+    id: number
+    nombre: string
+}
