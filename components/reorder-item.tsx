@@ -1,3 +1,4 @@
+"use client"
 import * as React from "react";
 import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { useRaisedShadow } from "./use-raised.shadow";
@@ -16,7 +17,7 @@ export const Item = ({ item }: Props) => {
     <Reorder.Item
       value={item}
       id={item}
-      style={{ boxShadow, y }}
+      style={{ boxShadow, y , touchAction:"none"}}
       dragListener={false}
       dragControls={dragControls}
       className="p-5 rounded-lg bg-slate-200 flex justify-between items-center"
