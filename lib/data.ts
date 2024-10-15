@@ -50,17 +50,10 @@ export const fetchDeleteImage = async(id:string): Promise<void> => {
 export const updatePuestoTrabajo = async(puestos: string[]): Promise<void> =>{
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/puesto_trabajo/deleteall`, {
-            method: "DELETE"
-        })
-        if(!response.ok){
-            throw new Error(`Error al eliminar los puesto`)
-        }
         let contador = 1
-        console.log(puestos)
         for (const nombre of puestos) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/puesto_trabajo/`, {
-                method: "POST",
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/puesto_trabajo/${contador}/`, {
+                method: "PUT",
                 body: JSON.stringify({ id: contador,nombre: nombre }),
                 headers: {
                     "Content-Type": "application/json",
