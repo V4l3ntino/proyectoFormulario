@@ -74,6 +74,6 @@ export const updateSelector = async(opciones: string[], tipo: string): Promise<v
 
 export const redirectToEdit = (tipo:string) => {
     localStorage.setItem("tipo_selector", tipo)
-    window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard/editform/puesto`
+    window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard/editar/`
 }
   
