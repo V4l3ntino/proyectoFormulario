@@ -1,11 +1,12 @@
 "use client"
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Reorder } from "framer-motion";
 import { Item } from "./reorder-item";
 import { selectJson } from "@/interfaces/interfaces";
-import { updateSelector } from "@/lib/data";
+import { updateSelector,fetchSelectorNewValue, fetchSelectorDeleteValue, validarSiExisteOpcion } from "@/lib/data";
 import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
 
 type Props = {
@@ -17,6 +18,8 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente}: Props) {
     const [initialItems, setInitialItems] = useState<string[]>([])
     const [tipo, setTipo] = useState<string|null>()
     const [menu, setMenu] = useState(false)
+    const [newOption, setNewOption] = useState<string>("")
+    const inputRefElement = useRef<HTMLInputElement>(null);
     useEffect(() => {
       const tipoRead:string|null = localStorage.getItem("tipo_selector")
       switch(tipoRead){
@@ -66,6 +69,28 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente}: Props) {
       localStorage.setItem("tipo_selector", value)
       cargaDatos()
     }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      const opcion: selectJson = {
+        id: items.length + 1,
+        nombre: newOption
+      }
+      if(validarSiExisteOpcion(newOption, items)){
+        alert("Esa opción ya está registrada")
+        return
+      }
+      fetchSelectorNewValue(opcion, tipo!)
+      setItems((prevItems) => [...prevItems, newOption]);
+      inputRefElement.current!.value = ""
+
+    }
+
+    const deletOption = (nombre:string) => {
+      const newList = items.filter((item) => item !== nombre)
+      fetchSelectorDeleteValue(newList, tipo!)
+      setItems(newList)
+    }
   return (
     <>
       {
@@ -90,17 +115,23 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente}: Props) {
             <div className="w-full h-screen flex flex-wrap gap-2">
               {
                 tipos.map((item, index)=> (
-                  <div key={index} onClick={() => choise(item)} className="bg-slate-100 w-1/4 h-1/4 p-2 flex items-center justify-center rounded-3xl text-3xl hover:bg-slate-50 hover:cursor-pointer">{item}</div>
+                  <div key={index} onClick={() => choise(item)} className="bg-slate-100 w-full sm:w-1/4 sm:h-1/4 p-2 flex items-center justify-center rounded-3xl text-3xl hover:bg-slate-50 hover:cursor-pointer">{item}</div>
                 ))
               }
             </div>
           </>
         ) : (
-          <Reorder.Group axis="y" onReorder={setItems} values={items} className="flex flex-col gap-2">
-            {items.map((item) => (
-              <Item key={item} item={item} />
-            ))}
-          </Reorder.Group>
+          <>
+            <Reorder.Group axis="y" onReorder={setItems} values={items} className="flex flex-col gap-2">
+              {items.map((item) => (
+                <Item key={item} item={item} deletOption={deletOption}/>
+              ))}
+            </Reorder.Group>
+            <br />
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <input ref={inputRefElement} onChange={(e) => setNewOption(e.target.value)} type="text" className="p-5 rounded-lg bg-slate-200 flex justify-between items-center w-full" placeholder="Escribe un nuevo valor" name="" id="newOptionInput" />
+            </form>
+          </>
           )
       }
     </>

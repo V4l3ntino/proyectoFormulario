@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import ReorderGroup from "@/components/reorder-group";
 import { fetchSelector } from "@/lib/data";
 
