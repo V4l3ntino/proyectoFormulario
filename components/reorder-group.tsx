@@ -15,34 +15,25 @@ type Props = {
 }
 const tipos:string[] = ["puesto_trabajo","lugar_accidente"]
 export default function ReorderGroup({puestoTrabajo, lugarAccidente}: Props) {
+    const router = useRouter();
     const [initialItems, setInitialItems] = useState<string[]>([])
     const [tipo, setTipo] = useState<string|null>()
     const [menu, setMenu] = useState(false)
     const [newOption, setNewOption] = useState<string>("")
     const inputRefElement = useRef<HTMLInputElement>(null);
     useEffect(() => {
-      const tipoRead:string|null = localStorage.getItem("tipo_selector")
-      switch(tipoRead){
-        case tipos[0]:
-          setInitialItems(puestoTrabajo.map((item) => item.nombre))
-          break;
-        case tipos[1]:
-          setInitialItems(lugarAccidente.map((item) => item.nombre))
-          break;
-        default:
-          setMenu(true)
-          break;
-      }  
-      setTipo(tipoRead)
+      cargaDatos()
     }, [])
     const [items, setItems] = useState(initialItems);
 
     useEffect(()=>{
       setItems(initialItems)
     },[initialItems])
+
     useEffect(() => {
       if(tipo){
         updateSelector(items, tipo)
+        router.refresh()
       }
       console.log(initialItems)
     },[items])
@@ -81,6 +72,7 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente}: Props) {
         return
       }
       fetchSelectorNewValue(opcion, tipo!)
+      router.refresh()
       setItems((prevItems) => [...prevItems, newOption]);
       inputRefElement.current!.value = ""
 
@@ -89,6 +81,7 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente}: Props) {
     const deletOption = (nombre:string) => {
       const newList = items.filter((item) => item !== nombre)
       fetchSelectorDeleteValue(newList, tipo!)
+      router.refresh()
       setItems(newList)
     }
   return (
