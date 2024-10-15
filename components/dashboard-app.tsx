@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { ExpedienteJson, ImagenJson, Person, PuestoTrabajoJson } from "@/interfaces/interfaces"
+import { ExpedienteJson, ImagenJson, Person, selectJson } from "@/interfaces/interfaces"
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -18,11 +18,13 @@ type Props = {
     jsonExpedientes: ExpedienteJson[]
     jsonImagenes: ImagenJson[]
     errorServidor: boolean,
-    jsonPuestoTrabajo: PuestoTrabajoJson[]
+    jsonPuestoTrabajo: selectJson[]
+    jsonLugarAccidente: selectJson[]
+
 
 }
 
-const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes, errorServidor, jsonPuestoTrabajo}) => {
+const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes, errorServidor, jsonPuestoTrabajo, jsonLugarAccidente}) => {
     const router = useRouter()
     const [state, setState] = useState<boolean>(true)
     const [update, setUpdate] = useState<string|undefined>()
@@ -121,7 +123,13 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
             {
                 state ? (
                     <CreateFormApp changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} fetchDownloadWord={fetchDownloadWord} errorServidor={errorServidor}/>
-                ) : (<NewformApp propJson={jsonTrabajadores} idExpediente={update? update : uuidv4()} fetchDeleteExpediente={fetchDeleteExpediente} fetchDownloadWord={fetchDownloadWord} jsonPuestoTrabajo={jsonPuestoTrabajo}/>)
+                ) : (<NewformApp 
+                    propJson={jsonTrabajadores} 
+                    idExpediente={update? update : uuidv4()} 
+                    fetchDeleteExpediente={fetchDeleteExpediente} 
+                    fetchDownloadWord={fetchDownloadWord} 
+                    jsonPuestoTrabajo={jsonPuestoTrabajo} 
+                    jsonLugarAccidente={jsonLugarAccidente}/>)
             }
             {
                 stateDownload ? (

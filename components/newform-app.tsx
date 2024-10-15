@@ -1,7 +1,7 @@
 "use client"
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { ExpedienteJson, ImagenJson, Person, PuestoTrabajoJson } from "@/interfaces/interfaces";
+import { ExpedienteJson, ImagenJson, Person, selectJson } from "@/interfaces/interfaces";
 import { TrashIcon, XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
 import { abel, inter } from "@/app/ui/fonts";
 import { Expediente } from "@/models/Expediente";
@@ -10,17 +10,18 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
 import WordSvg from "./icons/word";
 import ExcelSvg from "./icons/excel";
-import {saveInStorage, fetchUpdateLocalImages, fetchDeleteImage} from "../lib/data"
+import {saveInStorage, fetchUpdateLocalImages, fetchDeleteImage, redirectToEdit} from "../lib/data"
 
 type Props = {
     propJson: Person[]
     idExpediente: string
     fetchDeleteExpediente: (id:string)=>void
     fetchDownloadWord: (id:string)=>void
-    jsonPuestoTrabajo: PuestoTrabajoJson[]
+    jsonPuestoTrabajo: selectJson[]
+    jsonLugarAccidente: selectJson[]
 }
 
-const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo}) => {
+const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
     const router = useRouter()
@@ -346,7 +347,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             <input ref={edadRefElement} onChange={(e) => { setEdad(+e.target.value);saveInStorage("edad", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
                         </div>
                         <div className="lg:w-1/3 w-full">
-                            <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon className="w-5 h-5"/></label>
+                            <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
                             <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
                                 {
                                     jsonPuestoTrabajo.map((item, index) => (
@@ -375,8 +376,14 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     </div>
                     <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
                         <div className="lg:w-1/2 w-full">
-                            <label htmlFor="">Lugar accidente</label>
-                            <input type="text" value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" />
+                            <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                            <select value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" >
+                                {
+                                    jsonLugarAccidente.map((item, index) => (
+                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                    ))
+                                }
+                            </select>
                         </div>
                         <div className="lg:w-1/3 w-full">
                             <label htmlFor="">Fecha suceso</label>

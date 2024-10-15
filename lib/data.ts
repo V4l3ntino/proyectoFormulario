@@ -1,4 +1,4 @@
-import { ImagenJson, PuestoTrabajoJson } from "@/interfaces/interfaces"
+import { ImagenJson, selectJson } from "@/interfaces/interfaces"
 
 export const saveInStorage = (tipo: string, value: any) => {
     localStorage.setItem(tipo, JSON.stringify(value))
@@ -35,24 +35,24 @@ export const fetchDeleteImage = async(id:string): Promise<void> => {
 
  }
  
- export const fetchPuestoTrabajo = async(): Promise<PuestoTrabajoJson[]|undefined> => {
+ export const fetchSelector = async(tipo: string): Promise<selectJson[]|undefined> => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/puesto_trabajo/`)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/${tipo}`)
       if(!response){
         throw new Error('Error al cargar las imágenes')
       }
-      return await response.json() as PuestoTrabajoJson[]
+      return await response.json() as selectJson[]
     } catch (error) {
       console.log(error)
     }
   }
 
-export const updatePuestoTrabajo = async(puestos: string[]): Promise<void> =>{
+export const updateSelector = async(opciones: string[], tipo: string): Promise<void> =>{
 
     try {
         let contador = 1
-        for (const nombre of puestos) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/puesto_trabajo/${contador}/`, {
+        for (const nombre of opciones) {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/${tipo}/${contador}/`, {
                 method: "PUT",
                 body: JSON.stringify({ id: contador,nombre: nombre }),
                 headers: {
@@ -70,6 +70,10 @@ export const updatePuestoTrabajo = async(puestos: string[]): Promise<void> =>{
         console.log(error)
     }
 
+}
 
+export const redirectToEdit = (tipo:string) => {
+    localStorage.setItem("tipo_selector", tipo)
+    window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard/editform/puesto`
 }
   

@@ -1,6 +1,6 @@
 import DashboardApp from "@/components/dashboard-app";
-import { ExpedienteJson, ImagenJson, Person, PuestoTrabajoJson } from "@/interfaces/interfaces";
-import { fetchPuestoTrabajo } from "@/lib/data";
+import { ExpedienteJson, ImagenJson, Person } from "@/interfaces/interfaces";
+import { fetchSelector } from "@/lib/data";
 export const dynamic = "force-dynamic"
 const fetchUsers = async (): Promise<Person[]|undefined> => {
     try {
@@ -47,7 +47,8 @@ const Dashboard = async() => {
     const trabajadores = await fetchUsers()
     const expedientes = await fechExpedientes()
     const imagenes = await fetchImagenes()
-    const puestoTrabajo = await fetchPuestoTrabajo()
+    const puestoTrabajo = await fetchSelector("puesto_trabajo")
+    const lugarAccidente = await fetchSelector("lugar_accidente")
     const errorServidor = trabajadores && expedientes && imagenes ? false : true
     
     return ( 
@@ -56,6 +57,7 @@ const Dashboard = async() => {
         jsonExpedientes={expedientes ? expedientes : []} 
         jsonImagenes={imagenes ? imagenes : []}
         jsonPuestoTrabajo={puestoTrabajo? puestoTrabajo : []}
+        jsonLugarAccidente={lugarAccidente? lugarAccidente : []}
         errorServidor={errorServidor}
         />
      );

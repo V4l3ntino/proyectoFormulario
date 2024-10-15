@@ -1,11 +1,12 @@
 import ReorderGroup from "@/components/reorder-group";
-import { fetchPuestoTrabajo } from "@/lib/data";
+import { fetchSelector } from "@/lib/data";
 
 const Puesto = async() => {
-    const puestoTrabajo = await fetchPuestoTrabajo()
+    const puestoTrabajo = await fetchSelector("puesto_trabajo")
+    const lugarAccidente = await fetchSelector("lugar_accidente")
     return ( 
         <div>
-            <ReorderGroup opciones={puestoTrabajo? puestoTrabajo : []}/>
+            <ReorderGroup lugarAccidente={lugarAccidente? lugarAccidente : []} puestoTrabajo={puestoTrabajo ? puestoTrabajo : []}/>
         </div>
      );
 }

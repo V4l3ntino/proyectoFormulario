@@ -27,7 +27,7 @@ export interface ImagenJson {
     imagen?: File|string
 }
 
-export interface PuestoTrabajoJson {
+export interface selectJson {
     id: number
     nombre: string
 }
