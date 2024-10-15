@@ -161,6 +161,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         if(persona){
             estadoDefault = true;
             setName(`${persona.nombre}, ${persona.apellido}`)
+            experienciaRefElement.current!.value = `${persona.experiencia}`
             saveInStorage("name", `${persona.nombre}, ${persona.apellido}`)
         }
         setEstado(estadoDefault)
@@ -340,7 +341,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         </div>
                         <div className="lg:w-1/3 w-full">
                         {estado? (<label>Id</label>) : (<span className="border-b-2 border-rose-700 text-red-400">No se ha encontrado a dicho operario</span>)}
-                            <input value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(+e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
+                            <input min={0} value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(+e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
                         </div>
                         <div className="lg:w-1/3 w-full">
                             <label htmlFor="">Edad</label>
@@ -360,7 +361,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-ful">
                         <div className="lg:w-1/6 w-full">
                             <label htmlFor="">Meses</label>
-                            <input onChange={(e) => { setExperiencia(+e.target.value);saveInStorage("experiencia", e.target.value) }}
+                            <input min={0} onChange={(e) => { setExperiencia(+e.target.value);saveInStorage("experiencia", e.target.value) }}
                                 type="number" ref={experienciaRefElement} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Experiencia " required />
                         </div>
                         <div className="flex gap-2 w-2/3">
