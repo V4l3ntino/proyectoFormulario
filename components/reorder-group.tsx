@@ -98,7 +98,7 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente}: Props) {
             <h1>Opciones</h1>
             <hr />
             <br />
-            <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {setMenu(true)}}>Volver <ArrowLeftCircleIcon className="w-6" /></span>
+            <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {setMenu(true); localStorage.setItem("tipo_selector", "")}}>Volver <ArrowLeftCircleIcon className="w-6" /></span>
           </>
         )
       }
