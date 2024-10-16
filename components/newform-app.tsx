@@ -19,9 +19,10 @@ type Props = {
     fetchDownloadWord: (id:string)=>void
     jsonPuestoTrabajo: selectJson[]
     jsonLugarAccidente: selectJson[]
+    jsonFormasProducirseAccidente: selectJson[]
 }
 
-const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente}) => {
+const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
     const router = useRouter()
@@ -422,6 +423,18 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     <div className="w-full flex flex-col">
                         <label>Describe detalladamente lo sucedido</label>
                         <textarea onChange={(e) => {setDescripcion(e.target.value); saveInStorage("descripcion", e.target.value)}} value={descripcion} name="" id=""></textarea>
+                    </div>
+                    <br />
+                    <h1 className="border-black border-b-[1px] flex gap-2">4. FORMA DE PRODUCIRSE EL ACCIDENTE <PencilSquareIcon onClick={() => {redirectToEdit("forma_producirse_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></h1>
+                    <br />
+                    <div className="w-full flex flex-col">
+                        <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="">
+                            {
+                                jsonFormasProducirseAccidente.map((item,index) => (
+                                    <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                ))
+                            }
+                        </select>
                     </div>
                     {
                         imagenesGuardadas.length > 0 ? (

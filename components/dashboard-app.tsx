@@ -20,11 +20,12 @@ type Props = {
     errorServidor: boolean,
     jsonPuestoTrabajo: selectJson[]
     jsonLugarAccidente: selectJson[]
+    jsonFormasProducirseAccidente: selectJson[]
 
 
 }
 
-const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes, errorServidor, jsonPuestoTrabajo, jsonLugarAccidente}) => {
+const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes, errorServidor, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente}) => {
     const router = useRouter()
     const [state, setState] = useState<boolean>(true)
     const [update, setUpdate] = useState<string|undefined>()
@@ -129,7 +130,9 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
                     fetchDeleteExpediente={fetchDeleteExpediente} 
                     fetchDownloadWord={fetchDownloadWord} 
                     jsonPuestoTrabajo={jsonPuestoTrabajo} 
-                    jsonLugarAccidente={jsonLugarAccidente}/>)
+                    jsonLugarAccidente={jsonLugarAccidente}
+                    jsonFormasProducirseAccidente={jsonFormasProducirseAccidente}
+                    />)
             }
             {
                 stateDownload ? (
