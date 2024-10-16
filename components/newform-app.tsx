@@ -322,120 +322,122 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     </div>
                 ):(``)}
                 <form action="" onSubmit={handleSubmit} className="w-full">
-                    <h1 className="border-black border-b-[1px]">1. Datos del suceso</h1>
-                    <br />
-                    <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
-                        <div className="lg:w-2/3 w-full">
-                            <label htmlFor="">Operario</label>
-                            <input onChange={(e: ChangeEvent<HTMLInputElement>) => { setName(e.target.value); saveInStorage("name", e.target.value) }} value={name}
-                                type="text" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Escribe el apellido " required />
-
-                            {lista.length > 0 ?
-                                <div className="bg-slate-100 flex flex-col border-[1px] border-solid border-gray-50 max-h-40 overflow-auto rounded mt-2">
+                    <fieldset className="border-2 border-gray-300 rounded-lg p-5">
+                        <legend>1. Datos del suceso</legend>
+                        <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
+                            <div className="lg:w-2/3 w-full">
+                                <label htmlFor="">Operario</label>
+                                <input onChange={(e: ChangeEvent<HTMLInputElement>) => { setName(e.target.value); saveInStorage("name", e.target.value) }} value={name}
+                                    type="text" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Escribe el apellido " required />
+                                {lista.length > 0 ?
+                                    <div className="bg-slate-100 flex flex-col border-[1px] border-solid border-gray-50 max-h-40 overflow-auto rounded mt-2">
+                                        {
+                                            (lista).map((item, index) => (
+                                                <span key={index} onClick={() => { choose(item) }} className="cursor-pointer text-start mx-[2px] hover:bg-black/15 rounded px-2">{item.nombre}, {item.apellido} | Id: {item.id}</span>
+                                            ))
+                                        }
+                                    </div>
+                                    : ``}
+                            </div>
+                            <div className="lg:w-1/3 w-full">
+                            {estado? (<label>Id</label>) : (<span className="border-b-2 border-rose-700 text-red-400">No se ha encontrado a dicho operario</span>)}
+                                <input min={0} value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(+e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
+                            </div>
+                            <div className="lg:w-1/3 w-full">
+                                <label htmlFor="">Edad</label>
+                                <input ref={edadRefElement} onChange={(e) => { setEdad(+e.target.value);saveInStorage("edad", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
+                            </div>
+                            <div className="lg:w-1/3 w-full">
+                                <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
                                     {
-                                        (lista).map((item, index) => (
-                                            <span key={index} onClick={() => { choose(item) }} className="cursor-pointer text-start mx-[2px] hover:bg-black/15 rounded px-2">{item.nombre}, {item.apellido} | Id: {item.id}</span>
+                                        jsonPuestoTrabajo.map((item, index) => (
+                                            <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
                                         ))
                                     }
+                                </select>
+                            </div>
+                        </div>
+                        <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-ful">
+                            <div className="lg:w-1/6 w-full">
+                                <label htmlFor="">Meses</label>
+                                <input min={0} onChange={(e) => { setExperiencia(+e.target.value);saveInStorage("experiencia", e.target.value) }}
+                                    type="number" ref={experienciaRefElement} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Experiencia " required />
+                            </div>
+                            <div className="flex gap-2 w-2/3">
+                                <div className="lg:w-1/6 w-full">
+                                    <label htmlFor="">Hombre</label>
+                                    <input type="checkbox" onChange={() => { setMen(true); setWomen(false); saveInStorage("men", true) }} checked={men} name="floating_email" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " />
                                 </div>
-                                : ``}
-                        </div>
-                        <div className="lg:w-1/3 w-full">
-                        {estado? (<label>Id</label>) : (<span className="border-b-2 border-rose-700 text-red-400">No se ha encontrado a dicho operario</span>)}
-                            <input min={0} value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(+e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
-                        </div>
-                        <div className="lg:w-1/3 w-full">
-                            <label htmlFor="">Edad</label>
-                            <input ref={edadRefElement} onChange={(e) => { setEdad(+e.target.value);saveInStorage("edad", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
-                        </div>
-                        <div className="lg:w-1/3 w-full">
-                            <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                            <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
-                                {
-                                    jsonPuestoTrabajo.map((item, index) => (
-                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
-                                    ))
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-ful">
-                        <div className="lg:w-1/6 w-full">
-                            <label htmlFor="">Meses</label>
-                            <input min={0} onChange={(e) => { setExperiencia(+e.target.value);saveInStorage("experiencia", e.target.value) }}
-                                type="number" ref={experienciaRefElement} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Experiencia " required />
-                        </div>
-                        <div className="flex gap-2 w-2/3">
-                            <div className="lg:w-1/6 w-full">
-                                <label htmlFor="">Hombre</label>
-                                <input type="checkbox" onChange={() => { setMen(true); setWomen(false); saveInStorage("men", true) }} checked={men} name="floating_email" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " />
-                            </div>
-                            <div className="lg:w-1/6 w-full">
-                                <label htmlFor="">Mujer</label>
-                                <input type="checkbox" onChange={() => { setWomen(true); setMen(false); saveInStorage("women", true); saveInStorage("men", false) }} checked={women} name="floating_email" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " />
+                                <div className="lg:w-1/6 w-full">
+                                    <label htmlFor="">Mujer</label>
+                                    <input type="checkbox" onChange={() => { setWomen(true); setMen(false); saveInStorage("women", true); saveInStorage("men", false) }} checked={women} name="floating_email" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
-                        <div className="lg:w-1/2 w-full">
-                            <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                            <select value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" >
-                                {
-                                    jsonLugarAccidente.map((item, index) => (
-                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
-                                    ))
-                                }
-                            </select>
+                        <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
+                            <div className="lg:w-1/2 w-full">
+                                <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                <select value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" >
+                                    {
+                                        jsonLugarAccidente.map((item, index) => (
+                                            <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                            <div className="lg:w-1/3 w-full">
+                                <label htmlFor="">Fecha suceso</label>
+                                <input type="datetime-local" value={fechasuceso} onChange={(e) => {setFechasuceso(e.target.value); saveInStorage("fechaSuceso", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" />
+                            </div>
                         </div>
-                        <div className="lg:w-1/3 w-full">
-                            <label htmlFor="">Fecha suceso</label>
-                            <input type="datetime-local" value={fechasuceso} onChange={(e) => {setFechasuceso(e.target.value); saveInStorage("fechaSuceso", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" />
-                        </div>
-                    </div>
+                    </fieldset>
                     <br />
-                    <div className="flex lg:gap-5 flex-col lg:flex-row justify-left lg:items-center w-full">
-                        <div className="flex gap-2 items-center mb-1">
-                            <label>Ha habido lesión?</label>
-                            <input type="checkbox" checked={lesionado? true : false} onChange={(e) => {setLesionado(e.target.checked); saveInStorage("lesionado", e.target.checked)}} name="" id="" />
-                        </div>
-                        {
-                            lesionado ? (
-                                <div className="w-full">
-                                    <h1 className="border-black border-b-[1px]">2. Consecuencias</h1>
-                                    <br />
-                                    <div className="flex lg:flex-row flex-col lg:gap-5 mb-2">
-                                        <label>Tipo de lesión</label>
-                                        <select value={lesiontipo} onChange={(e) => {setLesiontipo(e.target.value); saveInStorage("lesionTipo", e.target.value)}} className="h-11 lg:w-2/6 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600 text-[17px]" name="" id="">
-                                            <option value="Leve">Leve</option>
-                                            <option value="Grave">Grave</option>
-                                            <option value="MuyGrave">Muy grave</option>
-                                            <option value="Mortal">Mortal</option>
-                                        </select>
+                    <fieldset className="border-2 border-gray-300 rounded-lg p-5">
+                        <legend>2. Consecuencias</legend>
+                        <div className="flex lg:gap-5 flex-col lg:flex-row justify-left lg:items-center w-full">
+                            <div className="flex gap-2 items-center mb-1">
+                                <label>Ha habido lesión?</label>
+                                <input type="checkbox" checked={lesionado? true : false} onChange={(e) => {setLesionado(e.target.checked); saveInStorage("lesionado", e.target.checked)}} name="" id="" />
+                            </div>
+                            {
+                                lesionado ? (
+                                    <div className="w-full">
+                                        <div className="flex lg:flex-row flex-col lg:gap-5 mb-2">
+                                            <label>Tipo de lesión</label>
+                                            <select value={lesiontipo} onChange={(e) => {setLesiontipo(e.target.value); saveInStorage("lesionTipo", e.target.value)}} className="h-11 lg:w-2/6 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600 text-[17px]" name="" id="">
+                                                <option value="Leve">Leve</option>
+                                                <option value="Grave">Grave</option>
+                                                <option value="MuyGrave">Muy grave</option>
+                                                <option value="Mortal">Mortal</option>
+                                            </select>
+                                        </div>
+                                        <textarea name="" placeholder="Describe la lesión" value={lesiondescripcion} onChange={(e) => {setLesiondescripcion(e.target.value); saveInStorage("lesionDescripcion", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" id=""></textarea>
                                     </div>
-                                    <textarea name="" placeholder="Describe la lesión" value={lesiondescripcion} onChange={(e) => {setLesiondescripcion(e.target.value); saveInStorage("lesionDescripcion", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" id=""></textarea>
-                                </div>
-                            ) : (``)
-                        }
-                    </div>
+                                ) : (``)
+                            }
+                        </div>
+                    </fieldset>
                     <br />
-                    <h1 className="border-black border-b-[1px]">3. Descripción de los hechos</h1>
-                    <br />
-                    <div className="w-full flex flex-col">
+                    <fieldset className="w-full flex flex-col border-2 border-gray-300 rounded-lg p-5">
+                        <legend>3. Descripción de los hechos</legend>
                         <label>Describe detalladamente lo sucedido</label>
                         <textarea onChange={(e) => {setDescripcion(e.target.value); saveInStorage("descripcion", e.target.value)}} value={descripcion} name="" id=""></textarea>
-                    </div>
+                    </fieldset>
                     <br />
-                    <h1 className="border-black border-b-[1px] flex gap-2">4. FORMA DE PRODUCIRSE EL ACCIDENTE <PencilSquareIcon onClick={() => {redirectToEdit("forma_producirse_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></h1>
-                    <br />
-                    <div className="w-full flex flex-col">
-                        <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="">
-                            {
-                                jsonFormasProducirseAccidente.map((item,index) => (
-                                    <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
-                                ))
-                            }
-                        </select>
-                    </div>
+                    <fieldset className="border-2 border-gray-300 rounded-lg p-5">
+                        <legend>4. FORMA DE PRODUCIRSE EL ACCIDENTE </legend>
+                        <div className="w-full flex flex-col">
+                            <label className="flex gap-2" htmlFor="">Opciones <PencilSquareIcon className="w-5 h-5 hover:cursor-pointer" onClick={() => {redirectToEdit("forma_producirse_accidente")}} /></label>
+                            <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="">
+                                {
+                                    jsonFormasProducirseAccidente.map((item,index) => (
+                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                    </fieldset>
                     {
                         imagenesGuardadas.length > 0 ? (
                             <div className="w-full flex flex-wrap flex-row  gap-5 p-10 border-2 border-blue-400 border-dashed mt-5">
