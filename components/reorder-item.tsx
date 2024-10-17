@@ -8,9 +8,10 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 interface Props {
   item: string;
   deletOption: (nombre: string) => void
+  optionDelete: boolean
 }
 
-export const Item = ({ item, deletOption }: Props) => {
+export const Item = ({ item, deletOption, optionDelete }: Props) => {
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();
@@ -24,7 +25,7 @@ export const Item = ({ item, deletOption }: Props) => {
       dragControls={dragControls}
       className="p-5 rounded-lg bg-slate-200 flex justify-between items-center"
     >
-      <div><TrashIcon  className="w-5 h-5 hover:cursor-pointer" onClick={() => deletOption(item)}/></div>
+      <div>{optionDelete ? (<TrashIcon  className="w-5 h-5 hover:cursor-pointer" onClick={() => deletOption(item)}/>) : (``)}</div>
       <span>{item}</span>
       <ReorderIcon dragControls={dragControls}/>
     </Reorder.Item>

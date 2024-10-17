@@ -21,6 +21,7 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
     const [initialItems, setInitialItems] = useState<string[]>([])
     const [tipo, setTipo] = useState<string|null>()
     const [menu, setMenu] = useState(false)
+    const [optionDelete, setOptionDelete] = useState<boolean>(true)
     const [newOption, setNewOption] = useState<string>("")
     const inputRefElement = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -55,6 +56,7 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
           case tipos[2]:
             setInitialItems(formasProducirseAccidenete.map((item) => item.nombre))
             setMenu(false)
+            setOptionDelete(false)
             break;
           default:
             setMenu(true)
@@ -105,7 +107,7 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
             <h1>Opciones</h1>
             <hr />
             <br />
-            <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {setMenu(true); localStorage.setItem("tipo_selector", "")}}>Volver <ArrowLeftCircleIcon className="w-6" /></span>
+            <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {setMenu(true); localStorage.setItem("tipo_selector", ""); setOptionDelete(true)}}>Volver <ArrowLeftCircleIcon className="w-6" /></span>
           </>
         )
       }
@@ -124,13 +126,17 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
           <>
             <Reorder.Group axis="y" onReorder={setItems} values={items} className="flex flex-col gap-2">
               {items.map((item) => (
-                <Item key={item} item={item} deletOption={deletOption}/>
+                <Item key={item} item={item} deletOption={deletOption} optionDelete={optionDelete}/>
               ))}
             </Reorder.Group>
             <br />
-            <form onSubmit={(e) => handleSubmit(e)}>
-              <input ref={inputRefElement} onChange={(e) => setNewOption(e.target.value)} type="text" className="p-5 rounded-lg bg-slate-200 flex justify-between items-center w-full" placeholder="Escribe un nuevo valor" name="" id="newOptionInput" />
-            </form>
+            {
+              optionDelete? (
+                <form onSubmit={(e) => handleSubmit(e)}>
+                  <input ref={inputRefElement} onChange={(e) => setNewOption(e.target.value)} type="text" className="p-5 rounded-lg bg-slate-200 flex justify-between items-center w-full" placeholder="Escribe un nuevo valor" name="" id="newOptionInput" />
+                </form>
+              ) : (``)
+            }
           </>
           )
       }
