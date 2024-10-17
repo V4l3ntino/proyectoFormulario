@@ -15,6 +15,7 @@ type Props = {
   formasProducirseAccidenete: selectJson[]
 }
 const tipos:string[] = ["puesto_trabajo","lugar_accidente", "forma_producirse_accidente"]
+const nombreTipos: string[] = ["Puesto de Trabajo", "Lugar del Accidente", "Tipos de Accidente"]
 export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProducirseAccidenete}: Props) {
     const router = useRouter();
     const [initialItems, setInitialItems] = useState<string[]>([])
@@ -62,8 +63,8 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
         setTipo(tipoRead)
     }
 
-    const choise = (value:string) => {
-      localStorage.setItem("tipo_selector", value)
+    const choise = (index:number) => {
+      localStorage.setItem("tipo_selector", tipos[index])
       cargaDatos()
     }
 
@@ -113,8 +114,8 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
           <>
             <div className="w-full h-screen flex flex-wrap gap-2">
               {
-                tipos.map((item, index)=> (
-                  <div key={index} onClick={() => choise(item)} className="bg-slate-100 w-full sm:w-1/4 sm:h-1/4 p-2 flex items-center justify-center rounded-3xl text-3xl hover:bg-slate-50 hover:cursor-pointer">{item}</div>
+                nombreTipos.map((item, index)=> (
+                  <div key={index} onClick={() => choise(index)} className="bg-slate-100 w-full xl:w-1/4 xl:h-1/4 p-2 flex items-center justify-center rounded-3xl text-3xl hover:bg-slate-50 hover:cursor-pointer">{item}</div>
                 ))
               }
             </div>
