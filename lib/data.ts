@@ -1,4 +1,6 @@
 import { ImagenJson, selectJson } from "@/interfaces/interfaces"
+import imageCompression from 'browser-image-compression';
+
 
 export const saveInStorage = (tipo: string, value: any) => {
     localStorage.setItem(tipo, JSON.stringify(value))
@@ -34,6 +36,28 @@ export const fetchDeleteImage = async(id:string): Promise<void> => {
     }
 
  }
+
+ export const compressImage = async (file: File): Promise<File> => {
+    const options = {
+        maxSizeMB: 0.2, // Tamaño máximo en MB 
+        maxWidthOrHeight: 800, // Dimensiones máximas (en píxeles)
+        useWebWorker: true, // Habilitar el uso de Web Workers para mayor rendimiento
+    };
+    try {
+        const compressedBlob = await imageCompression(file, options);
+
+        // Convertir el Blob comprimido a un File nuevamente
+        const compressedFile = new File([compressedBlob], file.name, {
+            type: file.type,
+            lastModified: Date.now(),
+        });
+
+        return compressedFile;
+    } catch (error) {
+        console.error('Error compressing image:', error);
+        throw error;
+    }
+};
  
  export const fetchSelector = async(tipo: string): Promise<selectJson[]|undefined> => {
     try {

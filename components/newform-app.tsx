@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
 import WordSvg from "./icons/word";
 import ExcelSvg from "./icons/excel";
-import {saveInStorage, fetchUpdateLocalImages, fetchDeleteImage, redirectToEdit} from "../lib/data"
+import {saveInStorage, fetchUpdateLocalImages, fetchDeleteImage, redirectToEdit, compressImage} from "../lib/data"
 
 type Props = {
     propJson: Person[]
@@ -123,9 +123,16 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         }
     }, [])
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(e.target.files && e.target.files.length > 0){
-            setImagenes([...e.target.files])
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if(e.target.files && (e.target.files.length + imagenesGuardadas.length > 0) && (e.target.files.length + imagenesGuardadas.length) <= 3){
+            const compressedImages = await Promise.all(
+                Array.from(e.target.files).map((file) => compressImage(file))
+            );
+            setImagenes(compressedImages);
+        }else{
+            alert("Solo puedes subir hasta 3 imágenes como máximo.");
+            e.target.value = "";
+            return;
         }
     }
     useEffect(() => {
@@ -186,7 +193,6 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     body: formData
                 }).then(response => {
                     if(!response.ok){
-                        alert(`Error: La foto con nombre ${item.name} no es posible de guardar por el tipo de formato o tamaño. Asegurate de que sea un .jpg o .png y comprimelo.s`)
                         throw new Error('Error al enviar la imagen')
                     }
                 }).catch((error) => {
@@ -468,10 +474,14 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                         )
                     }
-                    <div className="w-full flex flex-col">
-                        <label>Subir imagenes</label>
-                        <input type="file" accept=".png, .jpg, .jpeg" multiple onChange={(e) => {handleImageChange(e)}}/>
-                    </div>
+                    {
+                        imagenesGuardadas.length < 3 ? (
+                            <div className="w-full flex flex-col">
+                                <label>Subir imagenes</label>
+                                <input type="file" accept=".png, .jpg, .jpeg" multiple onChange={(e) => {handleImageChange(e)}}/>
+                            </div>
+                        ) : (``)
+                    }
                     <div className="flex items-center gap-3">
                         <motion.button
                         whileTap={{scale:0.8}}
