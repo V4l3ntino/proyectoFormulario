@@ -48,6 +48,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [updateId, setUpdateId] = useState<string|undefined>()
     const [arrowLoading, setArrowLoading] = useState<boolean>(false)
     const [valoracionHechos, setValoracionHechos] = useState<string[]>(new Array(5).fill(""))
+    const [formasAccidente, setFormasAccidente] = useState<string>("")
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
     useEffect(() => {
@@ -78,6 +79,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         setPuestoTrabajo('')
         localStorage.removeItem('valoracionHechos')
         setValoracionHechos(new Array(5).fill(""))
+        localStorage.removeItem('formas_accidente')
+        setFormasAccidente('')
     }
 
     useEffect(() => {
@@ -95,6 +98,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const lesionDescripcionStorage = JSON.parse(localStorage.getItem("lesionDescripcion")!)
         const puestoTrabajoStorage = JSON.parse(localStorage.getItem("puesto_trabajo")!)
         const valoracionHechosStorage = JSON.parse(localStorage.getItem("valoracionHechos")!)
+        const formasAccidenteStorage = JSON.parse(localStorage.getItem("formas_accidente")!)
 
         puestoTrabajoStorage ? setPuestoTrabajo(puestoTrabajoStorage) : ``; 
         nameStorage ? setName(JSON.parse(nameStorage)) : ``;
@@ -106,6 +110,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         lesionTipoStorage ? setLesiontipo(lesionTipoStorage) : ``;
         lesionDescripcionStorage ? setLesiondescripcion(lesionDescripcionStorage) : ``;
         valoracionHechosStorage ? setValoracionHechos(valoracionHechosStorage) : ``;
+        formasAccidenteStorage ? setFormasAccidente(formasAccidenteStorage) : ``;
 
         const storeId = localStorage.getItem("updateId")
         setUpdateId(storeId ? JSON.parse(storeId) : undefined)
@@ -171,7 +176,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 lesion: lesionado? lesion : `|`,
                 descripcion_hechos: descripcion,
                 puesto_trabajo: puestoTrabajo,
-                valoracion_hechos: valoracionHechos.toString()
+                valoracion_hechos: valoracionHechos.toString(),
+                formas_accidente: formasAccidente
             }
             fetchExpedientePost(expediente)
             if(!updateId){
@@ -447,7 +453,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <legend>4. FORMA DE PRODUCIRSE EL ACCIDENTE </legend>
                         <div className="w-full flex flex-col">
                             <label className="flex gap-2" htmlFor="">Opciones <PencilSquareIcon className="w-5 h-5 hover:cursor-pointer" onClick={() => {redirectToEdit("forma_producirse_accidente")}} /></label>
-                            <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="">
+                            <select value={formasAccidente} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {saveInStorage("formas_accidente", e.target.value); setFormasAccidente(e.target.value);}} name="" id="">
                                 {
                                     jsonFormasProducirseAccidente.map((item,index) => (
                                         <option key={index} value={`${item.nombre}`}>{item.nombre}</option>

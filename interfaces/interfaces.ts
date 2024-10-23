@@ -18,6 +18,7 @@ export interface ExpedienteJson {
     lesionado_check: boolean
     descripcion_hechos: string
     valoracion_hechos: string
+    formas_accidente: string
 }
 
 
