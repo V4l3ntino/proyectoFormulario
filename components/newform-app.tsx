@@ -47,6 +47,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [estado, setEstado] = useState<boolean>(true)
     const [updateId, setUpdateId] = useState<string|undefined>()
     const [arrowLoading, setArrowLoading] = useState<boolean>(false)
+    const [valoracionHechos, setValoracionHechos] = useState<string[]>(new Array(5).fill(""))
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
     useEffect(() => {
@@ -75,6 +76,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         setIdtrabajador(undefined)
         localStorage.removeItem('puesto_trabajo')
         setPuestoTrabajo('')
+        localStorage.removeItem('valoracionHechos')
+        setValoracionHechos(new Array(5).fill(""))
     }
 
     useEffect(() => {
@@ -91,6 +94,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const lesionTipoStorage = JSON.parse(localStorage.getItem("lesionTipo")!)
         const lesionDescripcionStorage = JSON.parse(localStorage.getItem("lesionDescripcion")!)
         const puestoTrabajoStorage = JSON.parse(localStorage.getItem("puesto_trabajo")!)
+        const valoracionHechosStorage = JSON.parse(localStorage.getItem("valoracionHechos")!)
+
         puestoTrabajoStorage ? setPuestoTrabajo(puestoTrabajoStorage) : ``; 
         nameStorage ? setName(JSON.parse(nameStorage)) : ``;
         lugarAccidenteStorage ? setLugar(lugarAccidenteStorage) : ``;
@@ -100,6 +105,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         lesionadoStorage ? setLesionado(lesionadoStorage) : ``;
         lesionTipoStorage ? setLesiontipo(lesionTipoStorage) : ``;
         lesionDescripcionStorage ? setLesiondescripcion(lesionDescripcionStorage) : ``;
+        valoracionHechosStorage ? setValoracionHechos(valoracionHechosStorage) : ``;
 
         const storeId = localStorage.getItem("updateId")
         setUpdateId(storeId ? JSON.parse(storeId) : undefined)
@@ -122,6 +128,11 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             console.warn(error)
         }
     }, [])
+
+    const updateValoracionHechos = (value: string, index: number) => {
+        let lista = [...valoracionHechos]; lista[index] = `${value}`; setValoracionHechos(lista);
+        saveInStorage("valoracionHechos", lista)
+    }
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.files && (e.target.files.length + imagenesGuardadas.length > 0) && (e.target.files.length + imagenesGuardadas.length) <= 3){
@@ -148,7 +159,20 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const lesion = `${lesiontipo}|${lesiondescripcion}`
         
         if(idtrabajador){
-            const expediente = new Expediente(idtrabajador, sexo, edad, lugar, fechasuceso, lesionado? lesion: `|`, descripcion, lesionado, puestoTrabajo)
+            // const expediente = new Expediente(idtrabajador, sexo, edad, lugar, fechasuceso, lesionado? lesion: `|`, descripcion, lesionado, puestoTrabajo)
+            const expediente:ExpedienteJson = {
+                id: updateId? updateId : idexpediente,
+                trabajador: idtrabajador,
+                sexo: sexo,
+                edad: edad,
+                lugar_accidente: lugar,
+                fecha_suceso: fechasuceso,
+                lesionado_check: lesionado,
+                lesion: lesionado? lesion : `|`,
+                descripcion_hechos: descripcion,
+                puesto_trabajo: puestoTrabajo,
+                valoracion_hechos: valoracionHechos.toString()
+            }
             fetchExpedientePost(expediente)
             if(!updateId){
                 localStorage.clear()
@@ -208,7 +232,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             })
         }
     }
-    const fetchExpedientePost = async(formulario: Expediente):Promise<void> =>{
+    const fetchExpedientePost = async(formulario: ExpedienteJson):Promise<void> =>{
         const methodtype = updateId ? 'PUT' : 'POST'
         const url = updateId ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${updateId}/` : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/`
         if(!verificarOperario(formulario.trabajador)) {
@@ -216,24 +240,12 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             return
         }
 
-        const data:ExpedienteJson = {
-            id: updateId? updateId : idexpediente,
-            trabajador: formulario.trabajador,
-            descripcion_hechos: formulario.descripcionHechos,
-            edad: formulario.edad,
-            fecha_suceso: formulario.fechaSuceso,
-            lesion: formulario.lesion,
-            lesionado_check: formulario.lesionado_check,
-            lugar_accidente: formulario.lugarAccidente,
-            sexo: formulario.sexo,
-            puesto_trabajo: formulario.puesto_trabajo
-        }
         fetch(url, {
             method: methodtype,
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(formulario)
         }).then(response => {
             if(!response.ok){
                 alert('Algo ha ido mal')
@@ -251,7 +263,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             console.group
                 console.error('No se puede establecer conexión con el servidor: ', error)
                 console.log(url)
-                console.dir(data)
+                console.dir(formulario)
             console.groupEnd
         })
     }
@@ -442,6 +454,61 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     ))
                                 }
                             </select>
+                        </div>
+                    </fieldset>
+                    <br />
+                    <fieldset className="border-2 border-gray-300 rounded-lg p-5">
+                        <legend>6. Valoración de los hechos </legend>
+                        <div className="w-full flex flex-col gap-5">
+                            <div className="w-full flex">
+                                <label className="flex w-full" htmlFor="">LA REPETICIÓN DE ESTE HECHO ES:</label>
+                                <div className="flex w-full justify-end gap-5">
+                                    <label>BAJA</label>
+                                    <input type="radio" value="BAJA" name="repeticion" required checked={valoracionHechos[0] == "BAJA"} onChange={() => {updateValoracionHechos("BAJA", 0)}}/>
+                                    <label>MEDIA</label>
+                                    <input type="radio" value="MEDIA" name="repeticion" required checked={valoracionHechos[0] == "MEDIA"} onChange={() => {updateValoracionHechos("MEDIA", 0)}}/>
+                                    <label>ALTA</label>
+                                    <input type="radio" value="ALTA" name="repeticion" required checked={valoracionHechos[0] == "ALTA"} onChange={() => {updateValoracionHechos("ALTA", 0)}}/>
+                                </div>
+                            </div>
+                            <div className="w-full flex">
+                                <label className="flex w-full" htmlFor="">LA GRAVEDAD QUE PODÍA HABER TENIDO EL HECHO ES:</label>
+                                <div className="flex  gap-3 w-full justify-end">
+                                    <label>LEVE</label>
+                                    <input type="radio" value="LEVE" name="gravedad" required checked={valoracionHechos[1] == "LEVE"} onChange={() => {updateValoracionHechos("LEVE", 1)}}/>
+                                    <label>GRAVE</label>
+                                    <input type="radio" value="GRAVE" name="gravedad" required checked={valoracionHechos[1] == "GRAVE"} onChange={() => {updateValoracionHechos("GRAVE", 1)}}/>
+                                    <label>MUY GRAVE</label>
+                                    <input type="radio" value="MUY GRAVE" name="gravedad" required checked={valoracionHechos[1] == "MUY GRAVE"} onChange={() => {updateValoracionHechos("MUY GRAVE", 1)}}/>
+                                </div>
+                            </div>
+                            <div className="w-full flex">
+                                <label className="flex w-full" htmlFor="">EXISTÍAN MEDIDAS DE CONTROL PARA EL RIESGO:</label>
+                                <div className="flex  gap-5">
+                                    <label>SI</label>
+                                    <input type="radio" value="si" name="medidasControl" required checked={valoracionHechos[2] == "SI"} onChange={() => {updateValoracionHechos("SI", 2)}}/>
+                                    <label>NO</label>
+                                    <input type="radio" value="no" name="medidasControl" required checked={valoracionHechos[2] == "NO"} onChange={() => {updateValoracionHechos("NO", 2)}}/>
+                                </div>
+                            </div>
+                            <div className="w-full flex">
+                                <label className="flex w-full" htmlFor="">EL ACCIDENTADO/A CONOCÍA EL RIESGO:</label>
+                                <div className="flex  gap-5">
+                                    <label>SI</label>
+                                    <input type="radio" value="si" name="riesgo" required checked={valoracionHechos[3] == "SI"} onChange={() => {updateValoracionHechos("SI", 3)}}/>
+                                    <label>NO</label>
+                                    <input type="radio" value="no" name="riesgo" required checked={valoracionHechos[3] == "NO"} onChange={() => {updateValoracionHechos("NO", 3)}}/>
+                                </div>
+                            </div>
+                            <div className="w-full flex">
+                                <label className="flex w-full" htmlFor="">EL ACCIDENTADO/A CONOCÍA LAS MEDIDAS DE PREVENCIÓN:</label>
+                                <div className="flex  gap-5">
+                                    <label>SI</label>
+                                    <input type="radio" value="si" name="prevencion" required checked={valoracionHechos[4] == "SI"} onChange={() => {updateValoracionHechos("SI", 4)}}/>
+                                    <label>NO</label>
+                                    <input type="radio" value="no" name="prevencion" required checked={valoracionHechos[4] == "NO"} onChange={() => {updateValoracionHechos("NO", 4)}}/>
+                                </div>
+                            </div>
                         </div>
                     </fieldset>
                     {
