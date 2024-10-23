@@ -460,9 +460,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
                         <legend>6. Valoración de los hechos </legend>
                         <div className="w-full flex flex-col gap-5">
-                            <div className="w-full flex">
+                            <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">LA REPETICIÓN DE ESTE HECHO ES:</label>
-                                <div className="flex w-full justify-end gap-5">
+                                <div className="flex w-full lg:justify-end gap-5">
                                     <label>BAJA</label>
                                     <input type="radio" value="BAJA" name="repeticion" required checked={valoracionHechos[0] == "BAJA"} onChange={() => {updateValoracionHechos("BAJA", 0)}}/>
                                     <label>MEDIA</label>
@@ -471,9 +471,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     <input type="radio" value="ALTA" name="repeticion" required checked={valoracionHechos[0] == "ALTA"} onChange={() => {updateValoracionHechos("ALTA", 0)}}/>
                                 </div>
                             </div>
-                            <div className="w-full flex">
+                            <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">LA GRAVEDAD QUE PODÍA HABER TENIDO EL HECHO ES:</label>
-                                <div className="flex  gap-3 w-full justify-end">
+                                <div className="flex  gap-3 w-full lg:justify-end">
                                     <label>LEVE</label>
                                     <input type="radio" value="LEVE" name="gravedad" required checked={valoracionHechos[1] == "LEVE"} onChange={() => {updateValoracionHechos("LEVE", 1)}}/>
                                     <label>GRAVE</label>
@@ -482,7 +482,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     <input type="radio" value="MUY GRAVE" name="gravedad" required checked={valoracionHechos[1] == "MUY GRAVE"} onChange={() => {updateValoracionHechos("MUY GRAVE", 1)}}/>
                                 </div>
                             </div>
-                            <div className="w-full flex">
+                            <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">EXISTÍAN MEDIDAS DE CONTROL PARA EL RIESGO:</label>
                                 <div className="flex  gap-5">
                                     <label>SI</label>
@@ -491,7 +491,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     <input type="radio" value="no" name="medidasControl" required checked={valoracionHechos[2] == "NO"} onChange={() => {updateValoracionHechos("NO", 2)}}/>
                                 </div>
                             </div>
-                            <div className="w-full flex">
+                            <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">EL ACCIDENTADO/A CONOCÍA EL RIESGO:</label>
                                 <div className="flex  gap-5">
                                     <label>SI</label>
@@ -500,7 +500,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     <input type="radio" value="no" name="riesgo" required checked={valoracionHechos[3] == "NO"} onChange={() => {updateValoracionHechos("NO", 3)}}/>
                                 </div>
                             </div>
-                            <div className="w-full flex">
+                            <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">EL ACCIDENTADO/A CONOCÍA LAS MEDIDAS DE PREVENCIÓN:</label>
                                 <div className="flex  gap-5">
                                     <label>SI</label>
