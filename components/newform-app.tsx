@@ -49,6 +49,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [arrowLoading, setArrowLoading] = useState<boolean>(false)
     const [valoracionHechos, setValoracionHechos] = useState<string[]>(new Array(5).fill(""))
     const [formasAccidente, setFormasAccidente] = useState<string>("")
+    const [analisisCausas, setAnalisisCausas] = useState<string[][]>(Array.from({length: 4}, () => {return []}))
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
     useEffect(() => {
@@ -99,6 +100,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const puestoTrabajoStorage = JSON.parse(localStorage.getItem("puesto_trabajo")!)
         const valoracionHechosStorage = JSON.parse(localStorage.getItem("valoracionHechos")!)
         const formasAccidenteStorage = JSON.parse(localStorage.getItem("formas_accidente")!)
+        const analisisCausasStorage = JSON.parse(localStorage.getItem("analisis_causas")!)
+        
 
         puestoTrabajoStorage ? setPuestoTrabajo(puestoTrabajoStorage) : ``; 
         nameStorage ? setName(JSON.parse(nameStorage)) : ``;
@@ -111,6 +114,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         lesionDescripcionStorage ? setLesiondescripcion(lesionDescripcionStorage) : ``;
         valoracionHechosStorage ? setValoracionHechos(valoracionHechosStorage) : ``;
         formasAccidenteStorage ? setFormasAccidente(formasAccidenteStorage) : ``;
+        analisisCausasStorage ? setAnalisisCausas(analisisCausasStorage) : ``;
 
         const storeId = localStorage.getItem("updateId")
         setUpdateId(storeId ? JSON.parse(storeId) : undefined)
@@ -138,6 +142,22 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         let lista = [...valoracionHechos]; lista[index] = `${value}`; setValoracionHechos(lista);
         saveInStorage("valoracionHechos", lista)
     }
+
+    const pushOptions = (index: number,value:string) => {
+        let lista = [...analisisCausas]; 
+        if(lista[index].includes(value)){
+            let deleteOption = lista[index].filter((item) => item !== value)
+            lista[index] = [...deleteOption] 
+        }else{
+            lista[index].push(value)
+        }
+        setAnalisisCausas(lista)
+        saveInStorage("analisis_causas", lista)
+    }
+    
+    useEffect(() => {
+        console.log(analisisCausas)
+    },[analisisCausas])
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.files && (e.target.files.length + imagenesGuardadas.length > 0) && (e.target.files.length + imagenesGuardadas.length) <= 3){
@@ -460,6 +480,47 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     ))
                                 }
                             </select>
+                        </div>
+                    </fieldset>
+                    <br />
+                    <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex gap-3 flex-wrap">
+                        <legend>5. ANÁLISIS DE LAS CAUSAS </legend>
+                        <div className=" flex flex-col gap-1 border-2 border-gray-300 rounded-lg p-5">
+                            <label>5.1 MÁQUINAS</label>
+                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Ausencia resguardos y/o dispositivos protección")} onChange={() => {pushOptions(0,"Ausencia resguardos y/o dispositivos protección")}} className="mt-1" name="" id="" /><span>Ausencia resguardos y/o dispositivos protección</span></div>
+                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Sistemas mando inseguros")} onChange={() => {pushOptions(0,"Sistemas mando inseguros")}} className="mt-1" name="" id="" /><span>Sistemas mando inseguros</span></div>
+                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Paro emergencia inexistente ó ineficaz")} onChange={() => {pushOptions(0,"Paro emergencia inexistente ó ineficaz")}} className="mt-1" name="" id="" /><span>Paro emergencia inexistente ó ineficaz</span></div>
+                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Dispositivos enclavamiento violados")} onChange={() => {pushOptions(0,"Dispositivos enclavamiento violados")}} className="mt-1" name="" id="" /><span>Dispositivos enclavamiento violados</span></div>
+                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Máquina mal utilizada")} onChange={() => {pushOptions(0,"Máquina mal utilizada")}} className="mt-1" name="" id="" /><span>Máquina mal utilizada</span></div>
+                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Riesgos debidos a movilidad máquinas automotrices.")} onChange={() => {pushOptions(0,"Riesgos debidos a movilidad máquinas automotrices.")}} className="mt-1" name="" id="" /><span>Riesgos debidos a movilidad máquinas automotrices.</span></div>
+                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Otros")} onChange={() => {pushOptions(0,"Otros")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                            </div>
+                        </div>
+                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
+                            <label>5.2 EQUIPOS, HERRAMIENTAS MEDIOS AUXILIARES</label>
+                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Equipos, herramientas, medios auxiliares en mal estado.")} onChange={() => {pushOptions(1, "Equipos, herramientas, medios auxiliares en mal estado.")}} className="mt-1" name="" id="" /><span>Equipos, herramientas, medios auxiliares en mal estado.</span></div>
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Equipos, herramientas, medios auxiliares mal utilizados.")} onChange={() => {pushOptions(1, "Equipos, herramientas, medios auxiliares mal utilizados.")}} className="mt-1" name="" id="" /><span>Equipos, herramientas, medios auxiliares mal utilizados.</span></div>
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Inestabilidad de apilamientos, estanterías.")} onChange={() => {pushOptions(1, "Inestabilidad de apilamientos, estanterías.")}} className="mt-1" name="" id="" /><span>Inestabilidad de apilamientos, estanterías.</span></div>
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Otros")} onChange={() => {pushOptions(1, "Otros")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                            </div>
+                        </div>
+                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
+                            <label className="flex gap-2" htmlFor="">5.3 INCENDIOS</label>
+                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Mal almacenamiento de sustancias inflamables")} onChange={() => {pushOptions(2, "Mal almacenamiento de sustancias inflamables")}} className="mt-1" name="" id="" /><span>Mal almacenamiento de sustancias inflamables</span></div>
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Insuficiencia / ausencia medios extinción.")} onChange={() => {pushOptions(2, "Insuficiencia / ausencia medios extinción.")}} className="mt-1" name="" id="" /><span>Insuficiencia / ausencia medios extinción.</span></div>
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Otros")} onChange={() => {pushOptions(2, "Otros")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                            </div>
+                        </div>
+                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
+                            <label className="flex gap-2" htmlFor="">5.4 ELECTRICIDAD</label>
+                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Inexistencia / fallo protección contra contactos directos.")} onChange={() => {pushOptions(3, "Inexistencia / fallo protección contra contactos directos.")}} className="mt-1" name="" id="" /><span>Inexistencia / fallo protección contra contactos directos.</span></div>
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Inexistencia / fallo protección contra contactos indirectos.")} onChange={() => {pushOptions(3, "Inexistencia / fallo protección contra contactos indirectos.")}} className="mt-1" name="" id="" /><span>Inexistencia / fallo protección contra contactos indirectos.</span></div>
+                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Otros")} onChange={() => {pushOptions(3, "Otros")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                            </div>
                         </div>
                     </fieldset>
                     <br />
