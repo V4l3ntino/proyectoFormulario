@@ -165,17 +165,19 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         saveInStorage("analisis_causas", lista)
     }
 
-    // const pushCausasAccidente = (value:string) => { 
-    //     let lista = [...causasAccidente];
-    //     if(lista.includes(value)){
-    //         let deleteOption = lista.filter((item) => item !== value)
-    //         lista = [...deleteOption]
-    //     }else{
-    //         lista.push(value)
-    //     }
-    //     setCausasAccidente(lista)
-    //     saveInStorage("causas_accidente", lista)
-    // }
+    const pushCausasAccidente = (value:string) => { 
+        let lista = [...causasAccidente];
+        if(lista.includes(value)){
+            lista = lista.filter((item) => item !== value)
+            setCausasAccidente(lista)
+            saveInStorage("causas_accidente", lista)
+            return
+        }
+        lista = [...lista, value]
+        setCausasAccidente(lista)
+        saveInStorage("causas_accidente", lista)
+        
+   }
     
     useEffect(() => {
         console.log(analisisCausas)
@@ -609,7 +611,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             {/* <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Ausencia resguardos y/o dispositivos protección")} onChange={() => {pushOptions(0,"Ausencia resguardos y/o dispositivos protección")}} className="mt-1" name="" id="" /><span>Ausencia resguardos y/o dispositivos protección</span></div> */}
                             {
                                 jsonCausasAccidente.map((item, key) => (
-                                    <div key={key} className="flex gap-1 "><input checked={causasAccidente.includes(item.nombre)} type="checkbox" className="mt-1" name="" id="" onChange={() => {}} /><span>{item.nombre}</span></div>
+                                    <div key={key} className="flex gap-1 "><input checked={causasAccidente.includes(item.nombre)} type="checkbox" className="mt-1" name="" id="" onChange={() => {pushCausasAccidente(item.nombre)}} /><span>{item.nombre}</span></div>
                                 ))
                             }
                         </div>
