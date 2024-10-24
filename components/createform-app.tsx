@@ -36,7 +36,8 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                         puesto_trabajo: item.puesto_trabajo,
                         lesionado_check: item.lesionado_check,
                         valoracion_hechos: item.valoracion_hechos,
-                        formas_accidente: item.formas_accidente
+                        formas_accidente: item.formas_accidente,
+                        analisis_causas: item.analisis_causas
                     }
                     expedientes2.push(expedienteNuevo)
                 }

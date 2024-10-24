@@ -19,6 +19,7 @@ export interface ExpedienteJson {
     descripcion_hechos: string
     valoracion_hechos: string
     formas_accidente: string
+    analisis_causas: string
 }
 
 

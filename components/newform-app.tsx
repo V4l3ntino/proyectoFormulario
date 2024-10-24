@@ -197,7 +197,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 descripcion_hechos: descripcion,
                 puesto_trabajo: puestoTrabajo,
                 valoracion_hechos: valoracionHechos.toString(),
-                formas_accidente: formasAccidente
+                formas_accidente: formasAccidente,
+                analisis_causas: JSON.stringify(analisisCausas)
             }
             fetchExpedientePost(expediente)
             if(!updateId){
