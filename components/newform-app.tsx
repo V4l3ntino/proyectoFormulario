@@ -3,7 +3,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ExpedienteJson, ImagenJson, Person, selectJson } from "@/interfaces/interfaces";
 import { TrashIcon, XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
-import { abel, inter } from "@/app/ui/fonts";
+import { abel, inter, roboto } from "@/app/ui/fonts";
 import { Expediente } from "@/models/Expediente";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -20,9 +20,10 @@ type Props = {
     jsonPuestoTrabajo: selectJson[]
     jsonLugarAccidente: selectJson[]
     jsonFormasProducirseAccidente: selectJson[]
+    jsonCausasAccidente: selectJson[]
 }
 
-const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente}) => {
+const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente, jsonCausasAccidente}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
     const router = useRouter()
@@ -50,6 +51,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [valoracionHechos, setValoracionHechos] = useState<string[]>(new Array(5).fill(""))
     const [formasAccidente, setFormasAccidente] = useState<string>("")
     const [analisisCausas, setAnalisisCausas] = useState<string[][]>(Array.from({length: 8}, () => {return []}))
+    const [causasAccidente, setCausasAccidente] = useState<string[]>([])
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
     useEffect(() => {
@@ -82,6 +84,12 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         setValoracionHechos(new Array(5).fill(""))
         localStorage.removeItem('formas_accidente')
         setFormasAccidente('')
+        
+        localStorage.removeItem('analisis_causas')
+        setAnalisisCausas(Array.from({length: 8}, () => {return []}))
+
+        localStorage.removeItem('causas_accidente')
+        setCausasAccidente([])
     }
 
     useEffect(() => {
@@ -101,6 +109,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const valoracionHechosStorage = JSON.parse(localStorage.getItem("valoracionHechos")!)
         const formasAccidenteStorage = JSON.parse(localStorage.getItem("formas_accidente")!)
         const analisisCausasStorage = JSON.parse(localStorage.getItem("analisis_causas")!)
+        const causasAccidenteStorage = JSON.parse(localStorage.getItem("causas_accidente")!)
         
 
         puestoTrabajoStorage ? setPuestoTrabajo(puestoTrabajoStorage) : ``; 
@@ -115,6 +124,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         valoracionHechosStorage ? setValoracionHechos(valoracionHechosStorage) : ``;
         formasAccidenteStorage ? setFormasAccidente(formasAccidenteStorage) : ``;
         analisisCausasStorage ? setAnalisisCausas(analisisCausasStorage) : ``;
+        causasAccidenteStorage ? setCausasAccidente(causasAccidenteStorage) : ``;
 
         const storeId = localStorage.getItem("updateId")
         setUpdateId(storeId ? JSON.parse(storeId) : undefined)
@@ -154,6 +164,18 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         setAnalisisCausas(lista)
         saveInStorage("analisis_causas", lista)
     }
+
+    // const pushCausasAccidente = (value:string) => { 
+    //     let lista = [...causasAccidente];
+    //     if(lista.includes(value)){
+    //         let deleteOption = lista.filter((item) => item !== value)
+    //         lista = [...deleteOption]
+    //     }else{
+    //         lista.push(value)
+    //     }
+    //     setCausasAccidente(lista)
+    //     saveInStorage("causas_accidente", lista)
+    // }
     
     useEffect(() => {
         console.log(analisisCausas)
@@ -198,7 +220,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 puesto_trabajo: puestoTrabajo,
                 valoracion_hechos: valoracionHechos.toString(),
                 formas_accidente: formasAccidente,
-                analisis_causas: JSON.stringify(analisisCausas)
+                analisis_causas: JSON.stringify(analisisCausas),
+                causas_accidente: causasAccidente.toString()
             }
             fetchExpedientePost(expediente)
             if(!updateId){
@@ -485,7 +508,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     </fieldset>
                     <br />
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex gap-3 flex-wrap">
-                        <legend>5. ANÁLISIS DE LAS CAUSAS </legend>
+                        <legend className="flex flex-col">5. ANÁLISIS DE LAS CAUSAS <span className={`text-[13px] ${roboto.className}`}>Marcar con un tick las opciones que consideres</span></legend>
                         <div className=" flex flex-col gap-1 border-2 border-gray-300 rounded-lg p-5">
                             <label>5.1 MÁQUINAS</label>
                             <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
@@ -580,6 +603,18 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         </div>
                     </fieldset>
                     <br />
+                    <div className=" flex flex-col gap-1 border-2 border-gray-300 rounded-lg p-5">
+                        <label className="flex gap-2">Cáusas que han provocado el Accidente. <PencilSquareIcon className="w-5 h-5 hover:cursor-pointer" onClick={() => {redirectToEdit("causas_accidente")}} /></label>
+                        <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                            {/* <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Ausencia resguardos y/o dispositivos protección")} onChange={() => {pushOptions(0,"Ausencia resguardos y/o dispositivos protección")}} className="mt-1" name="" id="" /><span>Ausencia resguardos y/o dispositivos protección</span></div> */}
+                            {
+                                jsonCausasAccidente.map((item, key) => (
+                                    <div key={key} className="flex gap-1 "><input checked={causasAccidente.includes(item.nombre)} type="checkbox" className="mt-1" name="" id="" onChange={() => {}} /><span>{item.nombre}</span></div>
+                                ))
+                            }
+                        </div>
+                    </div>
+
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
                         <legend>6. Valoración de los hechos </legend>
                         <div className="w-full flex flex-col gap-5">

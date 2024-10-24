@@ -13,10 +13,11 @@ type Props = {
   puestoTrabajo: selectJson[]
   lugarAccidente: selectJson[]
   formasProducirseAccidenete: selectJson[]
+  causasAccidente: selectJson[]
 }
-const tipos:string[] = ["puesto_trabajo","lugar_accidente", "forma_producirse_accidente"]
-const nombreTipos: string[] = ["Puesto de Trabajo", "Lugar del Accidente", "Tipos de Accidente"]
-export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProducirseAccidenete}: Props) {
+const tipos:string[] = ["puesto_trabajo","lugar_accidente", "forma_producirse_accidente", "causas_accidente"]
+const nombreTipos: string[] = ["Puesto de Trabajo", "Lugar del Accidente", "Tipos de Accidente", "Causas accidente"]
+export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProducirseAccidenete, causasAccidente}: Props) {
     const router = useRouter();
     const [initialItems, setInitialItems] = useState<string[]>([])
     const [tipo, setTipo] = useState<string|null>()
@@ -57,6 +58,10 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
             setInitialItems(formasProducirseAccidenete.map((item) => item.nombre))
             setMenu(false)
             setOptionDelete(false)
+            break;
+          case tipos[3]:
+            setInitialItems(causasAccidente.map((item) => item.nombre))
+            setMenu(false)
             break;
           default:
             setMenu(true)
