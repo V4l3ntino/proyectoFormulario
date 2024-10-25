@@ -166,17 +166,18 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     }
 
     const pushCausasAccidente = (value:string) => { 
-        let lista = [...causasAccidente];
+        let lista = causasAccidente.slice().toString().split(",");
         if(lista.includes(value)){
             lista = lista.filter((item) => item !== value)
             setCausasAccidente(lista)
             saveInStorage("causas_accidente", lista)
+            console.log(lista)
             return
         }
         lista = [...lista, value]
         setCausasAccidente(lista)
         saveInStorage("causas_accidente", lista)
-        
+        console.log(lista)
    }
     
     useEffect(() => {
