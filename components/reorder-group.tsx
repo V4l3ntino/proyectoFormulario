@@ -93,10 +93,13 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
     }
 
     const deletOption = (nombre:string) => {
-      const newList = items.filter((item) => item !== nombre)
-      fetchSelectorDeleteValue(newList, tipo!)
-      router.refresh()
-      setItems(newList)
+      let confirmacion = confirm("Está seguro de borrar esta opción? Ten en cuenta que si ha sido seleccionada en algún expediente no se mostrará y se guardará permanentemente en el expediente")
+      if(confirmacion){
+        const newList = items.filter((item) => item !== nombre)
+        fetchSelectorDeleteValue(newList, tipo!)
+        router.refresh()
+        setItems(newList)  
+      }
     }
   return (
     <>

@@ -11,6 +11,8 @@ import { v4 as uuidv4 } from 'uuid';
 import WordSvg from "./icons/word";
 import ExcelSvg from "./icons/excel";
 import {saveInStorage, fetchUpdateLocalImages, fetchDeleteImage, redirectToEdit, compressImage} from "../lib/data"
+import { format } from 'date-fns';
+
 
 type Props = {
     propJson: Person[]
@@ -30,6 +32,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const edadRefElement = useRef<HTMLInputElement>(null);
     const experienciaRefElement = useRef<HTMLInputElement>(null);
     
+    const fechaActual = new Date();
+    const fechaFormateada = format(fechaActual, "yyyy-MM-dd'T'HH:mm");
+
     const [idexpediente, setIdexpediente] = useState<string>(idExpediente)
     const [name, setName] = useState('');
     const [edad, setEdad] = useState<number>(18);
@@ -40,7 +45,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [lesionado, setLesionado] = useState<boolean>(false)
     const [lesiontipo, setLesiontipo] = useState<string>(`Leve`)
     const [lesiondescripcion, setLesiondescripcion] = useState<string>("")
-    const [fechasuceso, setFechasuceso] = useState<string>("2024-10-11T11:47")
+    const [fechasuceso, setFechasuceso] = useState<string>(fechaFormateada)
     const [descripcion, setDescripcion] = useState<string>("")
     const [idtrabajador, setIdtrabajador] = useState<number|undefined>(undefined)
     const [imagenes, setImagenes] = useState<File[]|null>(null)
@@ -52,6 +57,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [formasAccidente, setFormasAccidente] = useState<string>("")
     const [analisisCausas, setAnalisisCausas] = useState<string[][]>(Array.from({length: 8}, () => {return []}))
     const [causasAccidente, setCausasAccidente] = useState<string[]>([])
+    
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
     useEffect(() => {
@@ -115,7 +121,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         puestoTrabajoStorage ? setPuestoTrabajo(puestoTrabajoStorage) : ``; 
         nameStorage ? setName(JSON.parse(nameStorage)) : ``;
         lugarAccidenteStorage ? setLugar(lugarAccidenteStorage) : ``;
-        fechasuceso ? setFechasuceso(fechaSucesoStorage) : ``;
+        fechaSucesoStorage ? setFechasuceso(fechaSucesoStorage) : ``;
         descripcionStorage ? setDescripcion(descripcionStorage) : ``;
         idTrabajadorStorage ? setIdtrabajador(idTrabajadorStorage) : ``;
         lesionadoStorage ? setLesionado(lesionadoStorage) : ``;
@@ -180,9 +186,6 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         console.log(lista)
    }
     
-    useEffect(() => {
-        console.log(analisisCausas)
-    },[analisisCausas])
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.files && (e.target.files.length + imagenesGuardadas.length > 0) && (e.target.files.length + imagenesGuardadas.length) <= 3){
@@ -617,7 +620,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             }
                         </div>
                     </div>
-
+                    <br />
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
                         <legend>6. Valoración de los hechos </legend>
                         <div className="w-full flex flex-col gap-5">
