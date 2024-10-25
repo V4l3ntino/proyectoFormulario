@@ -35,3 +35,9 @@ export interface selectJson {
     id: number
     nombre: string
 }
+
+export interface aplicarAcciones {
+    accion: string,
+    prioridad: number,
+    responsable: string
+}

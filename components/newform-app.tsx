@@ -1,7 +1,7 @@
 "use client"
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { ExpedienteJson, ImagenJson, Person, selectJson } from "@/interfaces/interfaces";
+import { aplicarAcciones, ExpedienteJson, ImagenJson, Person, selectJson } from "@/interfaces/interfaces";
 import { TrashIcon, XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
 import { abel, inter, roboto } from "@/app/ui/fonts";
 import { Expediente } from "@/models/Expediente";
@@ -57,6 +57,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [formasAccidente, setFormasAccidente] = useState<string>("")
     const [analisisCausas, setAnalisisCausas] = useState<string[][]>(Array.from({length: 8}, () => {return []}))
     const [causasAccidente, setCausasAccidente] = useState<string[]>([])
+    const [listaAcciones, setListaAcciones] = useState<aplicarAcciones[]>([])
+    const [accionAplicar, setAccionAplicar] = useState<string>("")
+    const [prioridad, setPrioridad] = useState<number>(1)
+    const [responsable, setResponsable] = useState<string>("Envasado")
     
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
@@ -348,6 +352,21 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         if(verificacion){
             fetchDeleteExpediente(updateId!)
         }
+    }
+
+    const addNewAction = () => {
+        const accion:aplicarAcciones = {
+            accion: accionAplicar,
+            prioridad: prioridad,
+            responsable: responsable
+        }
+        setAccionAplicar("")
+        setPrioridad(1)
+        setResponsable("Envasado") 
+        let lista = [...listaAcciones]
+        lista.push(accion)
+        console.log(lista)
+        setListaAcciones(lista)
     }
 
     const Trash = TrashIcon;
@@ -674,6 +693,42 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 </div>
                             </div>
                         </div>
+                    </fieldset>
+                    <br />
+                    <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex lg:flex-row flex-col gap-5">
+                        <legend>7. Medidas correctoras propuestas</legend>
+                        <div className="lg:w-1/4">
+                            <div className="w-full">
+                                <fieldset className="border-2 border-gray-400 rounded-lg p-3 flex flex-col ">
+                                    <label>Acción aplicar</label>
+                                    <textarea onChange={(e) => {setAccionAplicar(e.target.value); saveInStorage("accion_aplicar", e.target.value)}} value={accionAplicar} name="" id=""></textarea>
+                                    <label>Prioridad</label>
+                                    <select onChange={(e) => {setPrioridad(+(e.target.value)); saveInStorage("accion_prioridad", +(e.target.value))}} value={prioridad} name="" id="">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                    <label>Responsable</label>
+                                    <select onChange={(e) => {setResponsable(e.target.value); saveInStorage("accion_responsable", e.target.value)}} value={responsable} name="" id="">
+                                        <option value="Envasado">Envasado</option>
+                                        <option value="Autos">Autos</option>
+                                        <option value="Planchas">Planchas</option>
+                                    </select>
+                                    <br />
+                                    <span onClick={() => addNewAction()} className="bg-slate-300 hover:bg-slate-100 cursor-pointer text-center">+</span>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div className="w-full">
+                            {
+                                listaAcciones.map((item, key) => (
+                                    <fieldset className="border-2 border-gray-400 rounded-lg p-3 mb-5">
+                                        <legend>Responsable:{item.responsable} - Prioridad:{item.prioridad}</legend>
+                                        <p>{item.accion}</p>
+                                    </fieldset>
+                                ))
+                            }
+                        </div>
+
                     </fieldset>
                     {
                         imagenesGuardadas.length > 0 ? (
