@@ -62,6 +62,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [prioridad, setPrioridad] = useState<number>(1)
     const [responsable, setResponsable] = useState<string>("Envasado")
     const [idAccion, setIdAccion] = useState<number>(0)
+    const [itinere, setItinere] = useState<boolean>(false)
     
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
@@ -122,6 +123,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const analisisCausasStorage = JSON.parse(localStorage.getItem("analisis_causas")!)
         const causasAccidenteStorage = JSON.parse(localStorage.getItem("causas_accidente")!)
         const aplicar_accionStorage = JSON.parse(localStorage.getItem("aplicar_accion")!)
+        const itinereStorage = JSON.parse(localStorage.getItem("itinere")!)
 
         if(aplicar_accionStorage){
             let lista: aplicarAcciones[] = []
@@ -150,6 +152,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         formasAccidenteStorage ? setFormasAccidente(formasAccidenteStorage) : ``;
         analisisCausasStorage ? setAnalisisCausas(analisisCausasStorage) : ``;
         causasAccidenteStorage ? setCausasAccidente(causasAccidenteStorage) : ``;
+        itinereStorage ? setItinere(itinereStorage) : ``;
 
         const storeId = localStorage.getItem("updateId")
         setUpdateId(storeId ? JSON.parse(storeId) : undefined)
@@ -255,7 +258,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 formas_accidente: formasAccidente,
                 analisis_causas: JSON.stringify(analisisCausas),
                 causas_accidente: causasAccidente.toString(),
-                aplicar_accion: JSON.stringify(aplicar_accion)
+                aplicar_accion: JSON.stringify(aplicar_accion),
+                itinere: itinere
             }
             fetchExpedientePost(expediente)
             if(!updateId){
@@ -482,14 +486,37 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 <input ref={edadRefElement} onChange={(e) => { setEdad(+e.target.value);saveInStorage("edad", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
                             </div>
                             <div className="lg:w-1/3 w-full">
-                                <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
-                                    {
-                                        jsonPuestoTrabajo.map((item, index) => (
-                                            <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
-                                        ))
-                                    }
-                                </select>
+                                {
+                                    !itinere ? (
+                                        <>
+                                            <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/>
+                                                <div className="flex gap-2 items-center mb-1">
+                                                    <label>Itinere?</label>
+                                                    <input type="checkbox" checked={itinere? true : false} onChange={(e) => {if(!updateId){setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}}} name="" id="" />
+                                                </div>
+
+                                            </label>
+                                            <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
+                                                {
+                                                    jsonPuestoTrabajo.map((item, index) => (
+                                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <label htmlFor="" className="flex gap-2">Puesto de Trabajo 
+                                                <div className="flex gap-2 items-center mb-1">
+                                                    <label>Itinere?</label>
+                                                    <input type="checkbox" checked={itinere? true : false} onChange={(e) => {if(!updateId){setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}}} name="" id="" />
+                                                </div>
+
+                                            </label>
+                                            <input type="text" value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
+                                        </>
+                                    )
+                                }
                             </div>
                         </div>
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-ful">
