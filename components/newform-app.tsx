@@ -391,8 +391,18 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         setResponsable("Envasado") 
         let lista = [...listaAcciones]
         lista.push(accion)
-        console.log(lista)
         setListaAcciones(lista)
+        
+        let aplicar_accion:string[][] = []
+        lista.map((item) => {
+            aplicar_accion.push([
+                item.accion,
+                item.prioridad.toString(),
+                item.responsable
+            ]);
+        })
+        console.log(aplicar_accion)
+        saveInStorage("aplicar_accion", aplicar_accion)
     }
     const deleteAction = (id:number) => {
         let lista = [...listaAcciones]
