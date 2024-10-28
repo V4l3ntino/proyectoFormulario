@@ -20,7 +20,8 @@ export interface ExpedienteJson {
     valoracion_hechos: string
     formas_accidente: string
     analisis_causas: string
-    causas_accidente: string
+    causas_accidente: string,
+    aplicar_accion: string
 }
 
 
@@ -37,6 +38,7 @@ export interface selectJson {
 }
 
 export interface aplicarAcciones {
+    id:number,
     accion: string,
     prioridad: number,
     responsable: string

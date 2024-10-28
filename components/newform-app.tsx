@@ -61,6 +61,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [accionAplicar, setAccionAplicar] = useState<string>("")
     const [prioridad, setPrioridad] = useState<number>(1)
     const [responsable, setResponsable] = useState<string>("Envasado")
+    const [idAccion, setIdAccion] = useState<number>(0)
     
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
@@ -120,7 +121,21 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const formasAccidenteStorage = JSON.parse(localStorage.getItem("formas_accidente")!)
         const analisisCausasStorage = JSON.parse(localStorage.getItem("analisis_causas")!)
         const causasAccidenteStorage = JSON.parse(localStorage.getItem("causas_accidente")!)
-        
+        const aplicar_accionStorage = JSON.parse(localStorage.getItem("aplicar_accion")!)
+
+        if(aplicar_accionStorage){
+            let lista: aplicarAcciones[] = []
+            aplicar_accionStorage.map((item:string[], index:number) => {
+                const accion: aplicarAcciones = {
+                    id: index,
+                    accion: item[0],
+                    prioridad: JSON.parse(item[1]),
+                    responsable: item[2]
+                }
+                lista.push(accion)
+            })
+            setListaAcciones(lista)    
+        }
 
         puestoTrabajoStorage ? setPuestoTrabajo(puestoTrabajoStorage) : ``; 
         nameStorage ? setName(JSON.parse(nameStorage)) : ``;
@@ -216,6 +231,14 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const lesion = `${lesiontipo}|${lesiondescripcion}`
         
         if(idtrabajador){
+            let aplicar_accion:string[][] = []
+            listaAcciones.map((item) => {
+                aplicar_accion.push([
+                    item.accion,
+                    item.prioridad.toString(),
+                    item.responsable
+                ]);
+            })
             // const expediente = new Expediente(idtrabajador, sexo, edad, lugar, fechasuceso, lesionado? lesion: `|`, descripcion, lesionado, puestoTrabajo)
             const expediente:ExpedienteJson = {
                 id: updateId? updateId : idexpediente,
@@ -231,7 +254,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 valoracion_hechos: valoracionHechos.toString(),
                 formas_accidente: formasAccidente,
                 analisis_causas: JSON.stringify(analisisCausas),
-                causas_accidente: causasAccidente.toString()
+                causas_accidente: causasAccidente.toString(),
+                aplicar_accion: JSON.stringify(aplicar_accion)
             }
             fetchExpedientePost(expediente)
             if(!updateId){
@@ -356,16 +380,23 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
 
     const addNewAction = () => {
         const accion:aplicarAcciones = {
+            id: idAccion + 1,
             accion: accionAplicar,
             prioridad: prioridad,
             responsable: responsable
         }
+        setIdAccion(accion.id)
         setAccionAplicar("")
         setPrioridad(1)
         setResponsable("Envasado") 
         let lista = [...listaAcciones]
         lista.push(accion)
         console.log(lista)
+        setListaAcciones(lista)
+    }
+    const deleteAction = (id:number) => {
+        let lista = [...listaAcciones]
+        lista = lista.filter((item) => item.id != id)
         setListaAcciones(lista)
     }
 
@@ -695,7 +726,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         </div>
                     </fieldset>
                     <br />
-                    <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex lg:flex-row flex-col gap-5">
+                    <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex xl:flex-row flex-col gap-5">
                         <legend>7. Medidas correctoras propuestas</legend>
                         <div className="lg:w-1/4">
                             <div className="w-full">
@@ -721,8 +752,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <div className="w-full">
                             {
                                 listaAcciones.map((item, key) => (
-                                    <fieldset className="border-2 border-gray-400 rounded-lg p-3 mb-5">
+                                    <fieldset className="border-2 border-gray-400 rounded-lg p-3 mb-5 relative">
                                         <legend>Responsable:{item.responsable} - Prioridad:{item.prioridad}</legend>
+                                        <motion.div initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }} onClick={() => {deleteAction(item.id)}} className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.1rem] cursor-pointer z-10 -right-2"><XMarc className="w-5"/></motion.div>
                                         <p>{item.accion}</p>
                                     </fieldset>
                                 ))
