@@ -60,6 +60,9 @@ input[type='number']::-webkit-outer-spin-button {
   100%{transform: rotate(1turn)}
 }
 
+.listaDesordenada{
+  list-style-type: disc;
+}
 
 .loaderCargando {
   font-size: 15px;

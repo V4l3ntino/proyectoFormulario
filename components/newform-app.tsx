@@ -63,6 +63,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [responsable, setResponsable] = useState<string>("Envasado")
     const [idAccion, setIdAccion] = useState<number>(0)
     const [itinere, setItinere] = useState<boolean>(false)
+    const [descripcionCausaAccidente, setDescripcionCausaAccidente] = useState<string>("")
     
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
@@ -124,7 +125,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const causasAccidenteStorage = JSON.parse(localStorage.getItem("causas_accidente")!)
         const aplicar_accionStorage = JSON.parse(localStorage.getItem("aplicar_accion")!)
         const itinereStorage = JSON.parse(localStorage.getItem("itinere")!)
-
+        
         if(aplicar_accionStorage){
             let lista: aplicarAcciones[] = []
             aplicar_accionStorage.map((item:string[], index:number) => {
@@ -193,19 +194,22 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         saveInStorage("analisis_causas", lista)
     }
 
-    const pushCausasAccidente = (value:string) => { 
-        let lista = causasAccidente.slice().toString().split(",");
-        if(lista.includes(value)){
-            lista = lista.filter((item) => item !== value)
-            setCausasAccidente(lista)
-            saveInStorage("causas_accidente", lista)
-            console.log(lista)
-            return
-        }
+    const pushCausasAccidente = () => { 
+        let lista = causasAccidente;
+        let value = descripcionCausaAccidente
         lista = [...lista, value]
+        lista = lista.filter((item) => item !== "")
         setCausasAccidente(lista)
         saveInStorage("causas_accidente", lista)
+        setDescripcionCausaAccidente("")
         console.log(lista)
+   }
+
+   const deleteCausaAccidente = (index:number) => {
+        let lista = causasAccidente;
+        lista = lista.filter((item,key) => key != index)
+        setCausasAccidente(lista)
+        saveInStorage("causas_accidente", lista)
    }
     
 
@@ -257,7 +261,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 valoracion_hechos: valoracionHechos.toString(),
                 formas_accidente: formasAccidente,
                 analisis_causas: JSON.stringify(analisisCausas),
-                causas_accidente: causasAccidente.toString(),
+                causas_accidente: JSON.stringify(causasAccidente),
                 aplicar_accion: JSON.stringify(aplicar_accion),
                 itinere: itinere
             }
@@ -697,14 +701,32 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     </fieldset>
                     <br />
                     <div className=" flex flex-col gap-1 border-2 border-gray-300 rounded-lg p-5">
-                        <label className="flex gap-2">Cáusas que han provocado el Accidente. <PencilSquareIcon className="w-5 h-5 hover:cursor-pointer" onClick={() => {redirectToEdit("causas_accidente")}} /></label>
-                        <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
-                            {/* <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Ausencia resguardos y/o dispositivos protección")} onChange={() => {pushOptions(0,"Ausencia resguardos y/o dispositivos protección")}} className="mt-1" name="" id="" /><span>Ausencia resguardos y/o dispositivos protección</span></div> */}
-                            {
-                                jsonCausasAccidente.map((item, key) => (
-                                    <div key={key} className="flex gap-1 "><input checked={causasAccidente.includes(item.nombre)} type="checkbox" className="mt-1" name="" id="" onChange={() => {pushCausasAccidente(item.nombre)}} /><span>{item.nombre}</span></div>
-                                ))
-                            }
+
+                        <label className="flex gap-2">Causas que han provocado el Accidente.</label>
+                        <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex lg:flex-row flex-col sm:gap-10 gap-5">
+                            <div className="lg:w-1/4">
+                                <div className="w-full">
+                                    <fieldset className="border-2 border-gray-400 rounded-lg p-3 flex flex-col ">
+                                        <label>Descripción</label>
+                                        <textarea onChange={(e) => {setDescripcionCausaAccidente(e.target.value); saveInStorage("descripcion_causa_accidente", descripcionCausaAccidente)}}  name="" id=""></textarea>
+                                        <br />
+                                        <span onClick={() => {pushCausasAccidente()}} className="bg-slate-300 hover:bg-slate-100 cursor-pointer text-center">+</span>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div className="w-full lg:pl-20">
+                                <ul className="listaDesordenada">
+                                    {
+                                        causasAccidente.map((item, key) => (
+                                            <div className="relative">
+                                                <li className="bg-slate-300 p-4 rounded shadow-sm mt-2" key={key}>{item}</li>
+                                                <motion.div onClick={() => {deleteCausaAccidente(key)}} initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }}  className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.1rem] cursor-pointer z-10 -right-2"><XMarc className="w-5"/></motion.div>
+                                            </div>
+                                        ))
+                                    }
+                                </ul>
+                            </div>
+
                         </div>
                     </div>
                     <br />
