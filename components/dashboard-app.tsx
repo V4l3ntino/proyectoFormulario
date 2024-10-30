@@ -78,17 +78,33 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
 
     const fetchDownloadWord = async(id:string):Promise<void> => {
         const timeOut = await new Promise<void>((r) => setTimeout(r, 200))
-        setStateDownload(true)
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/generate-word-document/${id}/`,{method: 'POST'})
-            if(!response.ok){
-                throw new Error("Error al generar el documento word")
+        let input = confirm("Exportar el word completo?")
+        if(input){
+            setStateDownload(true)
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/generate-word-document/${id}/completo`,{method: 'POST'})
+                if(!response.ok){
+                    throw new Error("Error al generar el documento word")
+                }
+                setStateDownload(false)
+                window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/media/word/ficha_${id}.docx`
+            } catch (error) {
+                console.log(error)
             }
-            setStateDownload(false)
-            window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/media/word/ficha_${id}.docx`
-        } catch (error) {
-            console.log(error)
+        }else{
+            setStateDownload(true)
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/generate-word-document/${id}/simplificado`,{method: 'POST'})
+                if(!response.ok){
+                    throw new Error("Error al generar el documento word")
+                }
+                setStateDownload(false)
+                window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/media/word/ficha_${id}.docx`
+            } catch (error) {
+                console.log(error)
+            }
         }
+
     }
 
     const fetchDeleteExpediente = async(id:string): Promise<void> => {
