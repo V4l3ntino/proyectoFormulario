@@ -577,7 +577,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                                 <option value="Mortal">Mortal</option>
                                             </select>
                                         </div>
-                                        <textarea name="" placeholder="Describe la lesión" value={lesiondescripcion} onChange={(e) => {setLesiondescripcion(e.target.value); saveInStorage("lesionDescripcion", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" id=""></textarea>
+                                        <textarea name="" placeholder="Describe la lesión" value={lesiondescripcion} onChange={(e) => {setLesiondescripcion(e.target.value); saveInStorage("lesionDescripcion", e.target.value)}} className="min-h-20 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" id=""></textarea>
                                     </div>
                                 ) : (``)
                             }
@@ -587,7 +587,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     <fieldset className="w-full flex flex-col border-2 border-gray-300 rounded-lg p-5">
                         <legend>3. Descripción de los hechos</legend>
                         <label>Describe detalladamente lo sucedido</label>
-                        <textarea onChange={(e) => {setDescripcion(e.target.value); saveInStorage("descripcion", e.target.value)}} value={descripcion} name="" id=""></textarea>
+                        <textarea className="min-h-20 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {setDescripcion(e.target.value); saveInStorage("descripcion", e.target.value)}} value={descripcion} name="" id=""></textarea>
                     </fieldset>
                     <br />
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
@@ -708,7 +708,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 <div className="w-full">
                                     <fieldset className="border-2 border-gray-400 rounded-lg p-3 flex flex-col ">
                                         <label>Descripción</label>
-                                        <textarea onChange={(e) => {setDescripcionCausaAccidente(e.target.value); saveInStorage("descripcion_causa_accidente", descripcionCausaAccidente)}}  name="" id=""></textarea>
+                                        <textarea className="min-h-20" onChange={(e) => {setDescripcionCausaAccidente(e.target.value); saveInStorage("descripcion_causa_accidente", descripcionCausaAccidente)}}  name="" id=""></textarea>
                                         <br />
                                         <span onClick={() => {pushCausasAccidente()}} className="bg-slate-300 hover:bg-slate-100 cursor-pointer text-center">+</span>
                                     </fieldset>
@@ -791,7 +791,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             <div className="w-full">
                                 <fieldset className="border-2 border-gray-400 rounded-lg p-3 flex flex-col ">
                                     <label>Acción aplicar</label>
-                                    <textarea onChange={(e) => {setAccionAplicar(e.target.value); saveInStorage("accion_aplicar", e.target.value)}} value={accionAplicar} name="" id=""></textarea>
+                                    <textarea className="min-h-20" onChange={(e) => {setAccionAplicar(e.target.value); saveInStorage("accion_aplicar", e.target.value)}} value={accionAplicar} name="" id=""></textarea>
                                     <label>Prioridad</label>
                                     <select onChange={(e) => {setPrioridad(+(e.target.value)); saveInStorage("accion_prioridad", +(e.target.value))}} value={prioridad} name="" id="">
                                         <option value="1">1</option>
