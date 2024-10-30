@@ -63,7 +63,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [responsable, setResponsable] = useState<string>("Envasado")
     const [idAccion, setIdAccion] = useState<number>(0)
     const [itinere, setItinere] = useState<boolean>(false)
-    const [descripcionCausaAccidente, setDescripcionCausaAccidente] = useState<string>("")
+    const [descripcionCausaAccidente, setDescripcionCausaAccidente] = useState<string>("Accidente con baja")
+    const [tipoSuceso, setTipoSuceso] = useState<string>("")
     
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
@@ -125,6 +126,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const causasAccidenteStorage = JSON.parse(localStorage.getItem("causas_accidente")!)
         const aplicar_accionStorage = JSON.parse(localStorage.getItem("aplicar_accion")!)
         const itinereStorage = JSON.parse(localStorage.getItem("itinere")!)
+        const tipoSucesoStorage = JSON.parse(localStorage.getItem("tipo_suceso")!)
         
         if(aplicar_accionStorage){
             let lista: aplicarAcciones[] = []
@@ -154,6 +156,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         analisisCausasStorage ? setAnalisisCausas(analisisCausasStorage) : ``;
         causasAccidenteStorage ? setCausasAccidente(causasAccidenteStorage) : ``;
         itinereStorage ? setItinere(itinereStorage) : ``;
+        tipoSucesoStorage ? setTipoSuceso(tipoSucesoStorage) : ``;
 
         const storeId = localStorage.getItem("updateId")
         setUpdateId(storeId ? JSON.parse(storeId) : undefined)
@@ -263,7 +266,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 analisis_causas: JSON.stringify(analisisCausas),
                 causas_accidente: JSON.stringify(causasAccidente),
                 aplicar_accion: JSON.stringify(aplicar_accion),
-                itinere: itinere
+                itinere: itinere,
+                tipo_suceso: tipoSuceso
             }
             fetchExpedientePost(expediente)
             if(!updateId){
@@ -482,7 +486,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     : ``}
                             </div>
                             <div className="lg:w-1/3 w-full">
-                            {estado? (<label>Id</label>) : (<span className="border-b-2 border-rose-700 text-red-400">No se ha encontrado a dicho operario</span>)}
+                                {estado? (<label>Id</label>) : (<span className="border-b-2 border-rose-700 text-red-400">No se ha encontrado a dicho operario</span>)}
                                 <input min={0} value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(+e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
                             </div>
                             <div className="lg:w-1/3 w-full">
@@ -554,6 +558,14 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             <div className="lg:w-1/3 w-full">
                                 <label htmlFor="">Fecha suceso</label>
                                 <input type="datetime-local" value={fechasuceso} onChange={(e) => {setFechasuceso(e.target.value); saveInStorage("fechaSuceso", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" />
+                            </div>
+                            <div className="lg:w-1/3 w-full">
+                                <label>Tipo de suceso</label>
+                                <select value={tipoSuceso} onChange={(e) => {setTipoSuceso(e.target.value); saveInStorage("tipo_suceso", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="">
+                                    <option value="Accidente con baja">Accidente con baja</option>
+                                    <option value="Accidente sin baja">Accidente sin baja</option>
+                                    <option value="Incidente">Incidente</option>
+                                </select>
                             </div>
                         </div>
                     </fieldset>
