@@ -63,8 +63,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [responsable, setResponsable] = useState<string>("Envasado")
     const [idAccion, setIdAccion] = useState<number>(0)
     const [itinere, setItinere] = useState<boolean>(false)
-    const [descripcionCausaAccidente, setDescripcionCausaAccidente] = useState<string>("Accidente con baja")
-    const [tipoSuceso, setTipoSuceso] = useState<string>("")
+    const [descripcionCausaAccidente, setDescripcionCausaAccidente] = useState<string>("")
+    const [tipoSuceso, setTipoSuceso] = useState<string>("Accidente con baja")
     
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
@@ -720,7 +720,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 <div className="w-full">
                                     <fieldset className="border-2 border-gray-400 rounded-lg p-3 flex flex-col ">
                                         <label>Descripción</label>
-                                        <textarea className="min-h-20" onChange={(e) => {setDescripcionCausaAccidente(e.target.value); saveInStorage("descripcion_causa_accidente", descripcionCausaAccidente)}}  name="" id=""></textarea>
+                                        <textarea value={descripcionCausaAccidente} className="min-h-20" onChange={(e) => {setDescripcionCausaAccidente(e.target.value); saveInStorage("descripcion_causa_accidente", descripcionCausaAccidente)}}  name="" id=""></textarea>
                                         <br />
                                         <span onClick={() => {pushCausasAccidente()}} className="bg-slate-300 hover:bg-slate-100 cursor-pointer text-center">+</span>
                                     </fieldset>
