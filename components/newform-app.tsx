@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
 import WordSvg from "./icons/word";
 import ExcelSvg from "./icons/excel";
-import {saveInStorage, fetchUpdateLocalImages, fetchDeleteImage, redirectToEdit, compressImage} from "../lib/data"
+import {saveInStorage, fetchUpdateLocalImages, fetchDeleteImage, redirectToEdit, compressImage, existValue} from "../lib/data"
 import { format } from 'date-fns';
 
 
@@ -24,6 +24,17 @@ type Props = {
     jsonFormasProducirseAccidente: selectJson[]
     jsonCausasAccidente: selectJson[]
     jsonCreador: selectJson[]
+}
+
+type Variant = {
+    creador: boolean
+    puesto_trabajo: boolean
+    lugar_accidente: boolean
+}
+let variant:Variant = {
+    creador: false,
+    puesto_trabajo: false,
+    lugar_accidente: false
 }
 
 const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente, jsonCausasAccidente, jsonCreador}) => {
@@ -68,6 +79,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [descripcionCausaAccidente, setDescripcionCausaAccidente] = useState<string>("")
     const [tipoSuceso, setTipoSuceso] = useState<string>("Accidente con baja")
     const [creador, setCreador] = useState<string>(jsonCreador[0].nombre)
+    const [exception, setException] = useState<Variant>(variant)
+    
     
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
@@ -189,7 +202,22 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         } catch (error) {
             console.warn(error)
         }
+        // if(!existValue(creadorStorage, jsonCreador)){
+        //     variant.creador = true
+        // }
+        // if(!existValue(puestoTrabajoStorage, jsonPuestoTrabajo)){
+        //     variant.puesto_trabajo = true
+        // }
+        // if(!existValue(lugarAccidenteStorage, jsonLugarAccidente)){
+        //     variant.lugar_accidente = true
+        // }
+        // setException(variant)
+
     }, [])
+    
+    useEffect(() => {
+        console.log("hola",exception)
+    }, [exception])
 
     const updateValoracionHechos = (value: string, index: number) => {
         let lista = [...valoracionHechos]; lista[index] = `${value}`; setValoracionHechos(lista);
@@ -484,14 +512,25 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex lg:flex-row flex-col gap-5">
                         <legend>Firmas</legend>
                         <div className="w-full">
-                            <label className="flex gap-3">Persona que efectúa la investigación <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                            <select value={creador} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {setCreador(e.target.value); saveInStorage("creador", e.target.value)}} >
-                                {
-                                    jsonCreador.map((item, key) => (
-                                        <option key={key} value={item.nombre}>{item.nombre}</option>
-                                    ))
-                                }
-                            </select>
+                            {
+                                exception.creador ? (
+                                    <>
+                                        <label className="flex gap-3">Persona que efectúa la investigación <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                        <input value={creador} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {setCreador(e.target.value); saveInStorage("creador", e.target.value)}} />
+                                    </>
+                                ) : (
+                                    <>
+                                        <label className="flex gap-3">Persona que efectúa la investigación <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                        <select value={creador} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {setCreador(e.target.value); saveInStorage("creador", e.target.value)}} >
+                                            {
+                                                jsonCreador.map((item, key) => (
+                                                    <option key={key} value={item.nombre}>{item.nombre}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </>
+                                )
+                            }
                         </div>
                         <div className="lg:w-1/3 w-full">
                             <label>Fecha de investigación</label>
@@ -527,20 +566,37 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 {
                                     !itinere ? (
                                         <>
-                                            <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/>
-                                                <div className="flex gap-2 items-center mb-1">
-                                                    <label>Itinere?</label>
-                                                    <input type="checkbox" checked={itinere? true : false} onChange={(e) => {if(!updateId){setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}}} name="" id="" />
-                                                </div>
+                                            {
+                                                exception.puesto_trabajo ? (
+                                                    <>
+                                                      <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/>
+                                                        <div className="flex gap-2 items-center mb-1">
+                                                            <label>Itinere?</label>
+                                                            <input type="checkbox" checked={itinere? true : false} onChange={(e) => {if(!updateId){setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}}} name="" id="" />
+                                                        </div>
 
-                                            </label>
-                                            <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
-                                                {
-                                                    jsonPuestoTrabajo.map((item, index) => (
-                                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
-                                                    ))
-                                                }
-                                            </select>
+                                                        </label>
+                                                        <input type="text" value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/>
+                                                        <div className="flex gap-2 items-center mb-1">
+                                                            <label>Itinere?</label>
+                                                            <input type="checkbox" checked={itinere? true : false} onChange={(e) => {if(!updateId){setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}}} name="" id="" />
+                                                        </div>
+
+                                                        </label>
+                                                        <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
+                                                            {
+                                                                jsonPuestoTrabajo.map((item, index) => (
+                                                                    <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </>
+                                                )
+                                            }
                                         </>
                                     ) : (
                                         <>
@@ -576,14 +632,25 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         </div>
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
                             <div className="lg:w-1/2 w-full">
-                                <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                <select value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" >
-                                    {
-                                        jsonLugarAccidente.map((item, index) => (
-                                            <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
-                                        ))
-                                    }
-                                </select>
+                                {
+                                    exception.lugar_accidente ? (
+                                        <>
+                                            <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                            <input type="text" value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                            <select value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" >
+                                                {
+                                                    jsonLugarAccidente.map((item, index) => (
+                                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </>
+                                    )
+                                }
                             </div>
                             <div className="lg:w-1/3 w-full">
                                 <label htmlFor="">Fecha suceso</label>

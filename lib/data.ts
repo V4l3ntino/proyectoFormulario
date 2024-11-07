@@ -162,3 +162,8 @@ export const validarSiExisteOpcion = (nombre: string, lista:string[]): boolean =
     }
     return found
 }
+
+export const existValue = (value:string, listValues: selectJson[]) => {
+    const listValuesString = listValues.map((item) => item.nombre)
+    return listValuesString.includes(value);
+}
