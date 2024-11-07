@@ -23,7 +23,9 @@ export interface ExpedienteJson {
     causas_accidente: string,
     aplicar_accion: string,
     itinere: boolean,
-    tipo_suceso: string
+    tipo_suceso: string,
+    creador: string,
+    fecha_investigacion: string
 }
 
 

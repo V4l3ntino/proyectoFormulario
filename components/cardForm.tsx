@@ -35,7 +35,7 @@ const CardForm:React.FC<Props> = ({expediente, update, fetchDownloadWord}) => {
                 <span className="h-full w-5 before:border-r-2 before:border-r-black before:border-solid before:absolute before:w-1 before:h-10 hidden md:flex"></span>
                 <div className="flex-col">
                     <h1 className={`${abel.className} text-2xl`}>{expediente.trabajador_nombre}</h1>
-                    <p>{expediente.fecha_suceso}</p>
+                    <p>{expediente.fecha_investigacion}</p>
                     <p>{expediente.lugar_accidente}</p>
                 </div>
             </div>

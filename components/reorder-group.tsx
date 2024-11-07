@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { Reorder } from "framer-motion";
 import { Item } from "./reorder-item";
 import { selectJson } from "@/interfaces/interfaces";
-import { updateSelector,fetchSelectorNewValue, fetchSelectorDeleteValue, validarSiExisteOpcion } from "@/lib/data";
-import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline";
+import { updateSelector,fetchSelectorNewValue, fetchSelectorDeleteValue, validarSiExisteOpcion, redirectToDashboard } from "@/lib/data";
+import { ArrowLeftCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 
 
@@ -14,15 +14,17 @@ type Props = {
   lugarAccidente: selectJson[]
   formasProducirseAccidenete: selectJson[]
   causasAccidente: selectJson[]
+  creador: selectJson[]
 }
-const tipos:string[] = ["puesto_trabajo","lugar_accidente", "forma_producirse_accidente", "causas_accidente"]
-const nombreTipos: string[] = ["Puesto de Trabajo", "Lugar del Accidente", "Tipos de Accidente", "Causas accidente"]
-export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProducirseAccidenete, causasAccidente}: Props) {
+const tipos:string[] = ["puesto_trabajo","lugar_accidente", "forma_producirse_accidente","creador"]
+const nombreTipos: string[] = ["Puesto de Trabajo", "Lugar del Accidente", "Tipos de Accidente","Creador"]
+export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProducirseAccidenete, causasAccidente, creador}: Props) {
     const router = useRouter();
     const [initialItems, setInitialItems] = useState<string[]>([])
     const [tipo, setTipo] = useState<string|null>()
     const [menu, setMenu] = useState(false)
     const [optionDelete, setOptionDelete] = useState<boolean>(true)
+    const [reorderOption, setReorderOption] = useState<boolean>(true)
     const [newOption, setNewOption] = useState<string>("")
     const inputRefElement = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -49,19 +51,23 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
           case tipos[0]:
             setInitialItems(puestoTrabajo.map((item) => item.nombre))
             setMenu(false)
+            setReorderOption(true)
             break;
           case tipos[1]:
             setInitialItems(lugarAccidente.map((item) => item.nombre))
             setMenu(false)
+            setReorderOption(true)
             break;
           case tipos[2]:
             setInitialItems(formasProducirseAccidenete.map((item) => item.nombre))
             setMenu(false)
             setOptionDelete(false)
+            setReorderOption(false)
             break;
           case tipos[3]:
-            setInitialItems(causasAccidente.map((item) => item.nombre))
+            setInitialItems(creador.map((item) => item.nombre))
             setMenu(false)
+            setReorderOption(false)
             break;
           default:
             setMenu(true)
@@ -93,7 +99,7 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
     }
 
     const deletOption = (nombre:string) => {
-      let confirmacion = confirm("Está seguro de borrar esta opción? Ten en cuenta que si ha sido seleccionada en algún expediente no se mostrará y se guardará permanentemente en el expediente")
+      let confirmacion = confirm("Está seguro de borrar esta opción? Ten en cuenta que puede haber sido seleccionada en algún expediente")
       if(confirmacion){
         const newList = items.filter((item) => item !== nombre)
         fetchSelectorDeleteValue(newList, tipo!)
@@ -115,7 +121,10 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
             <h1>Opciones</h1>
             <hr />
             <br />
-            <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {setMenu(true); localStorage.setItem("tipo_selector", ""); setOptionDelete(true)}}>Volver <ArrowLeftCircleIcon className="w-6" /></span>
+            <div className="flex flex-col gap-10">
+              <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {redirectToDashboard()}}>Volver <ArrowLeftCircleIcon className="w-6" /></span>
+              <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {setMenu(true); localStorage.setItem("tipo_selector", ""); setOptionDelete(true)}}>Menu</span>
+            </div>
           </>
         )
       }
@@ -125,18 +134,35 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
             <div className="w-full h-screen flex flex-wrap gap-2">
               {
                 nombreTipos.map((item, index)=> (
-                  <div key={index} onClick={() => choise(index)} className="bg-slate-100 w-full xl:w-1/4 xl:h-1/4 p-2 flex items-center justify-center rounded-3xl text-3xl hover:bg-slate-50 hover:cursor-pointer">{item}</div>
+                  <div key={index} onClick={() => choise(index)} className="bg-slate-100 w-full p-5 flex items-center justify-center rounded-3xl text-3xl hover:bg-slate-50 hover:cursor-pointer text-center">{item}</div>
                 ))
               }
             </div>
           </>
         ) : (
           <>
-            <Reorder.Group axis="y" onReorder={setItems} values={items} className="flex flex-col gap-2">
-              {items.map((item) => (
-                <Item key={item} item={item} deletOption={deletOption} optionDelete={optionDelete}/>
-              ))}
-            </Reorder.Group>
+            {
+              reorderOption ? (
+                <Reorder.Group axis="y" onReorder={setItems} values={items} className="flex flex-col gap-2">
+                  {items.map((item) => (
+                    <Item key={item} item={item} deletOption={deletOption} optionDelete={optionDelete}/>
+                  ))}
+                </Reorder.Group>
+              ) : (
+                <div className="flex gap-2 w-full flex-wrap">
+                  {items.map((item, key) => (
+                    <div key={key} className="p-5 rounded-lg bg-slate-200 flex justify-between items-center">
+                      {
+                        optionDelete? (
+                          <TrashIcon  className="w-5 h-5 hover:cursor-pointer" onClick={() => deletOption(item)}/>
+                        ) : (``)
+                      }
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
             <br />
             {
               optionDelete? (

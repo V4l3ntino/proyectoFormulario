@@ -23,9 +23,10 @@ type Props = {
     jsonLugarAccidente: selectJson[]
     jsonFormasProducirseAccidente: selectJson[]
     jsonCausasAccidente: selectJson[]
+    jsonCreador: selectJson[]
 }
 
-const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente, jsonCausasAccidente}) => {
+const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente, jsonCausasAccidente, jsonCreador}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
     const router = useRouter()
@@ -46,6 +47,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [lesiontipo, setLesiontipo] = useState<string>(`Leve`)
     const [lesiondescripcion, setLesiondescripcion] = useState<string>("")
     const [fechasuceso, setFechasuceso] = useState<string>(fechaFormateada)
+    const [fechaInvestigacion, setFechaInvestigacion] = useState<string>(fechaFormateada)
     const [descripcion, setDescripcion] = useState<string>("")
     const [idtrabajador, setIdtrabajador] = useState<number|undefined>(undefined)
     const [imagenes, setImagenes] = useState<File[]|null>(null)
@@ -65,6 +67,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [itinere, setItinere] = useState<boolean>(false)
     const [descripcionCausaAccidente, setDescripcionCausaAccidente] = useState<string>("")
     const [tipoSuceso, setTipoSuceso] = useState<string>("Accidente con baja")
+    const [creador, setCreador] = useState<string>(jsonCreador[0].nombre)
     
 
     const [imagenesGuardadas, setImagenesGuardadas] = useState<ImagenJson[]>([])
@@ -86,8 +89,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         setWomen(false)
         localStorage.removeItem('lugarAccidente')
         setLugar(``)
-        localStorage.removeItem('fechaSuceso')
-        setFechasuceso(``)
+        // localStorage.removeItem('fechaSuceso')
+        // setFechasuceso(``)
         localStorage.removeItem('descripcion')
         setDescripcion(``)
         localStorage.removeItem('idTrabajador')
@@ -104,6 +107,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
 
         localStorage.removeItem('causas_accidente')
         setCausasAccidente([])
+
+        // localStorage.removeItem('fechaInvestigacion')
+        // setFechaInvestigacion("")
+
     }
 
     useEffect(() => {
@@ -127,6 +134,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const aplicar_accionStorage = JSON.parse(localStorage.getItem("aplicar_accion")!)
         const itinereStorage = JSON.parse(localStorage.getItem("itinere")!)
         const tipoSucesoStorage = JSON.parse(localStorage.getItem("tipo_suceso")!)
+        const fechaInvestigacionStorage = JSON.parse(localStorage.getItem("fechaInvestigacion")!)
+        const creadorStorage = JSON.parse(localStorage.getItem("creador")!)
         
         if(aplicar_accionStorage){
             let lista: aplicarAcciones[] = []
@@ -146,6 +155,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         nameStorage ? setName(JSON.parse(nameStorage)) : ``;
         lugarAccidenteStorage ? setLugar(lugarAccidenteStorage) : ``;
         fechaSucesoStorage ? setFechasuceso(fechaSucesoStorage) : ``;
+        fechaInvestigacionStorage ? setFechaInvestigacion(fechaInvestigacionStorage) : ``;
         descripcionStorage ? setDescripcion(descripcionStorage) : ``;
         idTrabajadorStorage ? setIdtrabajador(idTrabajadorStorage) : ``;
         lesionadoStorage ? setLesionado(lesionadoStorage) : ``;
@@ -157,6 +167,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         causasAccidenteStorage ? setCausasAccidente(causasAccidenteStorage) : ``;
         itinereStorage ? setItinere(itinereStorage) : ``;
         tipoSucesoStorage ? setTipoSuceso(tipoSucesoStorage) : ``;
+        creadorStorage ? setCreador(creadorStorage) : ``;
 
         const storeId = localStorage.getItem("updateId")
         setUpdateId(storeId ? JSON.parse(storeId) : undefined)
@@ -267,7 +278,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 causas_accidente: JSON.stringify(causasAccidente),
                 aplicar_accion: JSON.stringify(aplicar_accion),
                 itinere: itinere,
-                tipo_suceso: tipoSuceso
+                tipo_suceso: tipoSuceso,
+                creador: creador,
+                fecha_investigacion: fechaInvestigacion
             }
             fetchExpedientePost(expediente)
             if(!updateId){
@@ -468,6 +481,23 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     </div>
                 ):(``)}
                 <form action="" onSubmit={handleSubmit} className="w-full">
+                    <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex lg:flex-row flex-col gap-5">
+                        <legend>Firmas</legend>
+                        <div className="w-full">
+                            <label className="flex gap-3">Persona que efectúa la investigación <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                            <select value={creador} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {setCreador(e.target.value); saveInStorage("creador", e.target.value)}} >
+                                {
+                                    jsonCreador.map((item, key) => (
+                                        <option key={key} value={item.nombre}>{item.nombre}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                        <div className="lg:w-1/3 w-full">
+                            <label>Fecha de investigación</label>
+                            <input readOnly onChange={(e: ChangeEvent<HTMLInputElement>) => {setFechaInvestigacion(e.target.value); saveInStorage("fechaInvestigacion", e.target.value)}} value={fechaInvestigacion} type="datetime-local" className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
+                        </div>
+                    </fieldset>
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
                         <legend>1. Datos del suceso</legend>
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">

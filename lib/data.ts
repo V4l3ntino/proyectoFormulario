@@ -150,10 +150,14 @@ export const redirectToEdit = (tipo:string) => {
     window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard/editar/`
 }
   
+export const redirectToDashboard = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard`
+}
+
 
 export const validarSiExisteOpcion = (nombre: string, lista:string[]): boolean => {
     let found = false
-    if (lista.find((item) => item == nombre)){
+    if (lista.find((item) => item.toLowerCase() == nombre.toLowerCase())){
         found = true
     }
     return found
