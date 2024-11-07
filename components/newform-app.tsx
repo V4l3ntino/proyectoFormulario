@@ -495,7 +495,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         </div>
                         <div className="lg:w-1/3 w-full">
                             <label>Fecha de investigación</label>
-                            <input readOnly onChange={(e: ChangeEvent<HTMLInputElement>) => {setFechaInvestigacion(e.target.value); saveInStorage("fechaInvestigacion", e.target.value)}} value={fechaInvestigacion} type="datetime-local" className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
+                            <input readOnly onChange={(e: ChangeEvent<HTMLInputElement>) => {setFechaInvestigacion(e.target.value); saveInStorage("fechaInvestigacion", e.target.value)}} value={fechaInvestigacion} type="datetime-local" className="h-10 w-full bg-slate-200 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
                         </div>
                     </fieldset>
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
