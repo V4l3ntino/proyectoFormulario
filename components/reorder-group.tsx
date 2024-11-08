@@ -123,7 +123,7 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
             <br />
             <div className="flex flex-col gap-10">
               <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {redirectToDashboard()}}>Volver <ArrowLeftCircleIcon className="w-6" /></span>
-              <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {setMenu(true); localStorage.setItem("tipo_selector", ""); setOptionDelete(true)}}>Menu</span>
+              <span className="cursor-pointer hover:underline flex gap-1 hover:gap-2 w-fit mb-5" onClick={() => {setMenu(true); localStorage.setItem("tipo_selector", ""); setOptionDelete(true)}}>Ir al Menu</span>
             </div>
           </>
         )
