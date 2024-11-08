@@ -202,16 +202,24 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         } catch (error) {
             console.warn(error)
         }
-        // if(!existValue(creadorStorage, jsonCreador)){
-        //     variant.creador = true
-        // }
-        // if(!existValue(puestoTrabajoStorage, jsonPuestoTrabajo)){
-        //     variant.puesto_trabajo = true
-        // }
-        // if(!existValue(lugarAccidenteStorage, jsonLugarAccidente)){
-        //     variant.lugar_accidente = true
-        // }
-        // setException(variant)
+
+        variant.creador = false
+        variant.puesto_trabajo = false
+        variant.lugar_accidente = false
+        
+        if(storeId){
+            if(!existValue(creadorStorage, jsonCreador)){
+                variant.creador = true
+            }
+            if(!existValue(puestoTrabajoStorage, jsonPuestoTrabajo)){
+                variant.puesto_trabajo = true
+            }
+            if(!existValue(lugarAccidenteStorage, jsonLugarAccidente)){
+                variant.lugar_accidente = true
+            }
+            setException(variant)    
+        }
+
 
     }, [])
     
