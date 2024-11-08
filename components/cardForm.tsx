@@ -18,7 +18,8 @@ type Props = {
 const CardForm:React.FC<Props> = ({expediente, update, fetchDownloadWord}) => {
     
     const [style, setStyle] = useState(false)
-
+    const fecha_investigacion_all = expediente.fecha_investigacion.split("T")
+    const fecha_investigacion = fecha_investigacion_all[0].split("-")
     return ( 
         <motion.div 
         initial={{opacity:0}}
@@ -35,7 +36,7 @@ const CardForm:React.FC<Props> = ({expediente, update, fetchDownloadWord}) => {
                 <span className="h-full w-5 before:border-r-2 before:border-r-black before:border-solid before:absolute before:w-1 before:h-10 hidden md:flex"></span>
                 <div className="flex-col">
                     <h1 className={`${abel.className} text-2xl`}>{expediente.trabajador_nombre}</h1>
-                    <p>{expediente.fecha_investigacion}</p>
+                    <p>{fecha_investigacion_all[1]} {`${fecha_investigacion[2]}/${fecha_investigacion[1]}/${fecha_investigacion[0]}`}</p>
                     <p>{expediente.lugar_accidente}</p>
                 </div>
             </div>
