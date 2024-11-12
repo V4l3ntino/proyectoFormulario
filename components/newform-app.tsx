@@ -80,6 +80,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [tipoSuceso, setTipoSuceso] = useState<string>("Accidente con baja")
     const [creador, setCreador] = useState<string>(jsonCreador[0]?.nombre || "")
     const [exception, setException] = useState<Variant>(variant)
+    const [otros, setOtros] = useState<boolean>(false)
     
     
 
@@ -149,6 +150,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const tipoSucesoStorage = JSON.parse(localStorage.getItem("tipo_suceso")!)
         const fechaInvestigacionStorage = JSON.parse(localStorage.getItem("fechaInvestigacion")!)
         const creadorStorage = JSON.parse(localStorage.getItem("creador")!)
+        const otrosStorage = JSON.parse(localStorage.getItem("otros")!)
         
         if(aplicar_accionStorage){
             let lista: aplicarAcciones[] = []
@@ -181,6 +183,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         itinereStorage ? setItinere(itinereStorage) : ``;
         tipoSucesoStorage ? setTipoSuceso(tipoSucesoStorage) : ``;
         creadorStorage ? setCreador(creadorStorage) : ``;
+        if (otrosStorage){
+            setOtros(true)
+        }
 
         const storeId = localStorage.getItem("updateId")
         setUpdateId(storeId ? JSON.parse(storeId) : undefined)
@@ -316,7 +321,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 itinere: itinere,
                 tipo_suceso: tipoSuceso,
                 creador: creador,
-                fecha_investigacion: fechaInvestigacion
+                fecha_investigacion: fechaInvestigacion,
+                otros: otros
             }
             fetchExpedientePost(expediente)
             if(!updateId){
@@ -469,6 +475,15 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         let lista = [...listaAcciones]
         lista = lista.filter((item) => item.id != id)
         setListaAcciones(lista)
+    }
+
+    const formasProducirseAccidenteSelector = (value: string) => {
+        saveInStorage("formas_accidente", value); setFormasAccidente(value);
+        if(value == "Otros"){
+            setOtros(true)
+            saveInStorage("otros", true)
+            setFormasAccidente("")
+        }
     }
 
     const Trash = TrashIcon;
@@ -711,13 +726,19 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <legend>4. FORMA DE PRODUCIRSE EL ACCIDENTE </legend>
                         <div className="w-full flex flex-col">
                             <label className="flex gap-2" htmlFor="">Opciones <PencilSquareIcon className="w-5 h-5 hover:cursor-pointer" onClick={() => {redirectToEdit("forma_producirse_accidente")}} /></label>
-                            <select value={formasAccidente} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {saveInStorage("formas_accidente", e.target.value); setFormasAccidente(e.target.value);}} name="" id="">
-                                {
-                                    jsonFormasProducirseAccidente.map((item,index) => (
-                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
-                                    ))
-                                }
-                            </select>
+                            {!otros? (
+                                <div>
+                                    <select value={formasAccidente} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {formasProducirseAccidenteSelector(e.target.value)}} name="" id="">
+                                        {
+                                            jsonFormasProducirseAccidente.map((item,index) => (
+                                                <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                            ) : (
+                                <input type="text" value={formasAccidente} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {formasProducirseAccidenteSelector(e.target.value)}}  maxLength={100} />
+                            )}
                         </div>
                     </fieldset>
                     <br />
