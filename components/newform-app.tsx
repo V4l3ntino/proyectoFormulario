@@ -81,6 +81,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [creador, setCreador] = useState<string>(jsonCreador[0]?.nombre || "")
     const [exception, setException] = useState<Variant>(variant)
     const [otros, setOtros] = useState<boolean>(false)
+    const [empresa, setEmpresa] = useState<string>("")
     
     
 
@@ -151,6 +152,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const fechaInvestigacionStorage = JSON.parse(localStorage.getItem("fechaInvestigacion")!)
         const creadorStorage = JSON.parse(localStorage.getItem("creador")!)
         const otrosStorage = JSON.parse(localStorage.getItem("otros")!)
+        const empresaStorage = JSON.parse(localStorage.getItem("empresa")!)
         
         if(aplicar_accionStorage){
             let lista: aplicarAcciones[] = []
@@ -183,6 +185,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         itinereStorage ? setItinere(itinereStorage) : ``;
         tipoSucesoStorage ? setTipoSuceso(tipoSucesoStorage) : ``;
         creadorStorage ? setCreador(creadorStorage) : ``;
+        empresaStorage ? setEmpresa(empresaStorage) : ``;
+
         if (otrosStorage){
             setOtros(true)
         }
@@ -322,7 +326,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 tipo_suceso: tipoSuceso,
                 creador: creador,
                 fecha_investigacion: fechaInvestigacion,
-                otros: otros
+                otros: otros,
+                empresa: empresa
             }
             fetchExpedientePost(expediente)
             if(!updateId){
@@ -523,43 +528,57 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             <WordSvg width={28} height={28}/>
                             <p className="hover:underline">Exportar a Word</p>
                         </motion.div>
-                        <motion.div
+                        {/* <motion.div
                         whileTap={{scale:0.93}}
                         onClick={() => fetchDownloadWord(updateId)}  className="mb-3 flex items-center gap-1 cursor-pointer p-2 rounded-sm bg-green-500 text-white">
                             <ExcelSvg width={28} height={28}/>
                             <p className="hover:underline">Exportar a Excel</p>
-                        </motion.div>
+                        </motion.div> */}
                     </div>
                 ):(``)}
                 <form action="" onSubmit={handleSubmit} className="w-full">
-                    <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex lg:flex-row flex-col gap-5">
-                        <legend>Firmas</legend>
-                        <div className="w-full">
-                            {
-                                exception.creador ? (
-                                    <>
-                                        <label className="flex gap-3">Persona que efectúa la investigación <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                        <input value={creador} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {setCreador(e.target.value); saveInStorage("creador", e.target.value)}} />
-                                    </>
-                                ) : (
-                                    <>
-                                        <label className="flex gap-3">Persona que efectúa la investigación <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                        <select value={creador} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {setCreador(e.target.value); saveInStorage("creador", e.target.value)}} >
-                                            {
-                                                jsonCreador.map((item, key) => (
-                                                    <option key={key} value={item.nombre}>{item.nombre}</option>
-                                                ))
-                                            }
-                                        </select>
-                                    </>
-                                )
-                            }
-                        </div>
-                        <div className="lg:w-1/3 w-full">
-                            <label>Fecha de investigación</label>
-                            <input readOnly onChange={(e: ChangeEvent<HTMLInputElement>) => {setFechaInvestigacion(e.target.value); saveInStorage("fechaInvestigacion", e.target.value)}} value={fechaInvestigacion} type="datetime-local" className="h-10 w-full bg-slate-200 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
-                        </div>
-                    </fieldset>
+                    <div className="flex w-full gap-5">
+                        <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex lg:flex-row flex-col gap-5 w-1/6">
+                            <legend>Empresa</legend>
+                            <div className="flex gap-2 items-center">
+                                <label>Publindal</label>
+                                <input type="radio" value="Publindal" name="empresa" checked={empresa == "Publindal" ? true : false} required onChange={() => {setEmpresa("Publindal"), saveInStorage("empresa", "Publindal")}}/>
+                            </div>
+                            <div className="flex gap-2 items-center">
+                                <label>Catal</label>
+                                <input type="radio" value="Catal" name="empresa" checked={empresa == "Catal" ? true : false} required onChange={() => {setEmpresa("Catal"), saveInStorage("empresa", "Catal")}}/>
+                            </div>
+                        </fieldset>
+                        <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex lg:flex-row flex-col gap-5 w-full">
+                            <legend>Firmas</legend>
+                            <div className="w-full">
+                                {
+                                    exception.creador ? (
+                                        <>
+                                            <label className="flex gap-3">Persona que efectúa la investigación <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                            <input value={creador} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {setCreador(e.target.value); saveInStorage("creador", e.target.value)}} />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <label className="flex gap-3">Persona que efectúa la investigación <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                            <select value={creador} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {setCreador(e.target.value); saveInStorage("creador", e.target.value)}} >
+                                                {
+                                                    jsonCreador.map((item, key) => (
+                                                        <option key={key} value={item.nombre}>{item.nombre}</option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </>
+                                    )
+                                }
+                            </div>
+                            <div className="lg:w-1/3 w-full">
+                                <label>Fecha de investigación</label>
+                                <input readOnly onChange={(e: ChangeEvent<HTMLInputElement>) => {setFechaInvestigacion(e.target.value); saveInStorage("fechaInvestigacion", e.target.value)}} value={fechaInvestigacion} type="datetime-local" className="h-10 w-full bg-slate-200 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
+                            </div>
+                        </fieldset>
+                    </div>
+                    <br />
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
                         <legend>1. Datos del suceso</legend>
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
@@ -725,7 +744,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
                         <legend>4. FORMA DE PRODUCIRSE EL ACCIDENTE </legend>
                         <div className="w-full flex flex-col">
-                            <label className="flex gap-2" htmlFor="">Opciones <PencilSquareIcon className="w-5 h-5 hover:cursor-pointer" onClick={() => {redirectToEdit("forma_producirse_accidente")}} /></label>
+                            <label className="flex gap-2" htmlFor="">Opciones </label>
                             {!otros? (
                                 <div>
                                     <select value={formasAccidente} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" onChange={(e) => {formasProducirseAccidenteSelector(e.target.value)}} name="" id="">

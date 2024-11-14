@@ -54,7 +54,7 @@ const CardForm:React.FC<Props> = ({expediente, update, fetchDownloadWord}) => {
                 <motion.div
                 whileTap={{scale:1.5}}
                 >
-                    <ExcelSvg width={28} height={28} className="cursor-pointer"/>
+                    {/* <ExcelSvg width={28} height={28} className="cursor-pointer"/> */}
                 </motion.div>
             </div>
         </motion.div>

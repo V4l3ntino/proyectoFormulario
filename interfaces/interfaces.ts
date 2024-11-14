@@ -26,7 +26,8 @@ export interface ExpedienteJson {
     tipo_suceso: string,
     creador: string,
     fecha_investigacion: string,
-    otros: boolean
+    otros: boolean,
+    empresa: string
 }
 
 
