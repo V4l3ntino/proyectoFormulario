@@ -882,7 +882,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                         causasAccidente.map((item, key) => (
                                             <div className="relative">
                                                 <li className="bg-slate-300 p-4 rounded shadow-sm mt-2" key={key}>{item}</li>
-                                                <motion.div onClick={() => {deleteCausaAccidente(key)}} initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }}  className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.1rem] cursor-pointer z-10 -right-2"><XMarc className="w-5"/></motion.div>
+                                                <motion.div onClick={() => {deleteCausaAccidente(key)}} initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }}  className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.9rem] cursor-pointer z-10 -right-2"><XMarc className="w-5"/></motion.div>
                                             </div>
                                         ))
                                     }
@@ -975,7 +975,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 listaAcciones.map((item, key) => (
                                     <fieldset className="border-2 border-gray-400 rounded-lg p-3 mb-5 relative">
                                         <legend>Responsable:{item.responsable} - Prioridad:{item.prioridad}</legend>
-                                        <motion.div initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }} onClick={() => {deleteAction(item.id)}} className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.1rem] cursor-pointer z-10 -right-2"><XMarc className="w-5"/></motion.div>
+                                        <motion.div initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }} onClick={() => {deleteAction(item.id)}} className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.9rem] cursor-pointer z-10 -right-2"><XMarc className="w-5"/></motion.div>
                                         <p>{item.accion}</p>
                                     </fieldset>
                                 ))
