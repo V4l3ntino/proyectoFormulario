@@ -356,6 +356,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             setName(`${persona.nombre}, ${persona.apellido}`)
             experienciaRefElement.current!.value = `${persona.experiencia}`
             saveInStorage("name", `${persona.nombre}, ${persona.apellido}`)
+            saveInStorage("experiencia", `${persona.experiencia}`)
         }
         setEstado(estadoDefault)
         return estado
