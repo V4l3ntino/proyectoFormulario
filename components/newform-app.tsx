@@ -82,6 +82,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [exception, setException] = useState<Variant>(variant)
     const [otros, setOtros] = useState<boolean>(false)
     const [empresa, setEmpresa] = useState<string>("")
+    const [estadoCargaImg, setEstadoCargaImg] = useState<boolean>(false)
     
     
 
@@ -273,11 +274,15 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEstadoCargaImg(true)
+        setArrowLoading(true)
         if(e.target.files && (e.target.files.length + imagenesGuardadas.length > 0) && (e.target.files.length + imagenesGuardadas.length) <= 3){
             const compressedImages = await Promise.all(
                 Array.from(e.target.files).map((file) => compressImage(file))
             );
             setImagenes(compressedImages);
+            setEstadoCargaImg(false)
+            setArrowLoading(false)
         }else{
             alert("Solo puedes subir hasta 3 imágenes como máximo.");
             e.target.value = "";
@@ -1017,9 +1022,11 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     }
                     <br />
                     <div className="flex items-center gap-3">
-                        <motion.button
-                        whileTap={{scale:0.8}}
-                        type="submit" className={`bg-slate-800 w-52 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</motion.button>
+                        {!estadoCargaImg ? (
+                            <motion.button
+                            whileTap={{scale:0.8}}
+                            type="submit" className={`bg-slate-800 w-52 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</motion.button>
+                        ) : (``)}
                         {arrowLoading ? (
                             <div className="loaderForm"></div>
                         ) : (``)}
