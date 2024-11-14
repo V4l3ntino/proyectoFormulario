@@ -72,7 +72,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                 value.toString()
             ) !== -1 || item.fecha_investigacion?.split("T")[1].indexOf(
                 value.toString()
-            ) !== -1 || item.tipo_suceso?.indexOf(
+            ) !== -1 || item.tipo_suceso?.toLowerCase().indexOf(
                 value.toString()
             ) !== -1
         })
