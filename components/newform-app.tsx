@@ -670,6 +670,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 </div>
                             </div>
                         </div>
+                        <br />
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
                             <div className="lg:w-1/2 w-full">
                                 {

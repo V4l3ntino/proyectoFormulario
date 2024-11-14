@@ -58,6 +58,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
     const [listaExpedientes, setListaExpedientes] = useState<ExpedienteJson[]>(expedientes2)
 
     const searchFilter = (value: string) => {
+        value = value.toLowerCase()
         const lista = listaExpedientes.filter((item) => {
             return item.trabajador_nombre?.toLowerCase().indexOf(
                 value.toString()
