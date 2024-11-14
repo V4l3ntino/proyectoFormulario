@@ -274,9 +274,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEstadoCargaImg(true)
-        setArrowLoading(true)
         if(e.target.files && (e.target.files.length + imagenesGuardadas.length > 0) && (e.target.files.length + imagenesGuardadas.length) <= 3){
+            setEstadoCargaImg(true)
+            setArrowLoading(true)
             const compressedImages = await Promise.all(
                 Array.from(e.target.files).map((file) => compressImage(file))
             );
