@@ -1016,10 +1016,11 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                         ) : (``)
                     }
+                    <br />
                     <div className="flex items-center gap-3">
                         <motion.button
                         whileTap={{scale:0.8}}
-                        type="submit" className={`bg-slate-800 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</motion.button>
+                        type="submit" className={`bg-slate-800 w-52 p-2 rounded-md mt-2 text-white hover:bg-black ${abel.className}`}>Enviar</motion.button>
                         {arrowLoading ? (
                             <div className="loaderForm"></div>
                         ) : (``)}
