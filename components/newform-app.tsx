@@ -511,15 +511,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <span onClick={() => { clearStorage() }} className="cursor-pointer hover:underline flex gap-1">Limpiar formulario <TrashIcon className="w-4" /></span>
                     </div>
                 ) : (
-                    <div className="flex justify-between">
-                        <div></div>
-                        <motion.span
-                        whileTap={{scale:0.73}}
-                        onClick={() => {borrarIncidente()}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md mb-3 text-white">Eliminar <TrashIcon className="w-4" /></motion.span>
-                    </div>
+                    ``
                 )
             }
-            <div className="bg-slate-200 p-2 lg:p-5 rounded flex-col overflow-hidden">
+            <div className="bg-slate-100 p-2 lg:p-5 rounded flex-col overflow-hidden">
                 {updateId? (
                     <div className="flex gap-2">
                         <motion.div
@@ -528,6 +523,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             <WordSvg width={28} height={28}/>
                             <p className="hover:underline">Exportar a Word</p>
                         </motion.div>
+                        <motion.span
+                        whileTap={{scale:0.73}}
+                        onClick={() => {borrarIncidente()}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md mb-3 text-white items-center">Eliminar <TrashIcon className="w-4" /></motion.span>
                         {/* <motion.div
                         whileTap={{scale:0.93}}
                         onClick={() => fetchDownloadWord(updateId)}  className="mb-3 flex items-center gap-1 cursor-pointer p-2 rounded-sm bg-green-500 text-white">
@@ -537,8 +535,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     </div>
                 ):(``)}
                 <form action="" onSubmit={handleSubmit} className="w-full">
-                    <div className="flex w-full gap-5">
-                        <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex lg:flex-row flex-col gap-5 w-1/6">
+                    <div className="flex sm:flex-row flex-col w-full gap-5">
+                        <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex lg:flex-row flex-col gap-5 sm:w-1/6 w-full">
                             <legend>Empresa</legend>
                             <div className="flex gap-2 items-center">
                                 <label>Publindal</label>

@@ -85,3 +85,13 @@ th, td {
 th {
   background-color: #f2f2f2;
 }
+.tablaDatos{
+  border-collapse: collapse;
+  border: solid #D1D5DB 1px;
+}
+
+.tablaDatos th, 
+.tablaDatos td {
+  border:none;
+  border-bottom: solid #D1D5DB 1px;
+}

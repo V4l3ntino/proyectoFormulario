@@ -32,9 +32,9 @@ const CardForm:React.FC<Props> = ({expediente, update, fetchDownloadWord}) => {
             <div className="flex gap-5 relative">
                 <div className="flex-col">
                     <h1 className={`${abel.className} text-2xl`}>{expediente.trabajador_nombre}</h1>
+                    <p>{expediente.tipo_suceso}</p>
                     <p>{fecha_investigacion_all[1]} {`${fecha_investigacion[2]}/${fecha_investigacion[1]}/${fecha_investigacion[0]}`}</p>
                     <p>{expediente.lugar_accidente}</p>
-                    <br />
                     <p>Creador: {expediente.creador}</p>
                 </div>
             </div>
