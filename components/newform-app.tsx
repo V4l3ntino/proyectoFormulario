@@ -585,30 +585,27 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     <br />
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
                         <legend>1. Datos del suceso</legend>
+                        <div className="w-full">
+                            <label htmlFor="">Operario</label>
+                            <input onChange={(e: ChangeEvent<HTMLInputElement>) => { setName(e.target.value); saveInStorage("name", e.target.value) }} value={name}
+                                type="text" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Escribe el apellido " required />
+                            {lista.length > 0 ?
+                                <div className="bg-slate-100 flex flex-col border-[1px] border-solid border-gray-50 max-h-40 overflow-auto rounded mt-2 gap-2">
+                                    {
+                                        (lista).map((item, index) => (
+                                            <span key={index} onClick={() => { choose(item) }} className="cursor-pointer text-start mx-[2px] hover:bg-black/15 rounded px-2 border-b-[1px] border-b-gray-300 p-2 border-solid">{item.nombre}, {item.apellido} | Id: {item.id}</span>
+                                        ))
+                                    }
+                                </div>
+                                : ``}
+                        </div>
+                        <br />
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
-                            <div className="lg:w-2/3 w-full">
-                                <label htmlFor="">Operario</label>
-                                <input onChange={(e: ChangeEvent<HTMLInputElement>) => { setName(e.target.value); saveInStorage("name", e.target.value) }} value={name}
-                                    type="text" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Escribe el apellido " required />
-                                {lista.length > 0 ?
-                                    <div className="bg-slate-100 flex flex-col border-[1px] border-solid border-gray-50 max-h-40 overflow-auto rounded mt-2 gap-2">
-                                        {
-                                            (lista).map((item, index) => (
-                                                <span key={index} onClick={() => { choose(item) }} className="cursor-pointer text-start mx-[2px] hover:bg-black/15 rounded px-2 border-b-[1px] border-b-gray-300 p-2 border-solid">{item.nombre}, {item.apellido} | Id: {item.id}</span>
-                                            ))
-                                        }
-                                    </div>
-                                    : ``}
-                            </div>
-                            <div className="lg:w-1/3 w-full">
+                            <div className="w-full">
                                 {estado? (<label>Id</label>) : (<span className="border-b-2 border-rose-700 text-red-400">No se ha encontrado a dicho operario</span>)}
                                 <input min={0} value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(+e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
                             </div>
-                            <div className="lg:w-1/3 w-full">
-                                <label htmlFor="">Edad</label>
-                                <input ref={edadRefElement} onChange={(e) => { setEdad(+e.target.value);saveInStorage("edad", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
-                            </div>
-                            <div className="lg:w-1/3 w-full">
+                            <div className="w-full">
                                 {
                                     !itinere ? (
                                         <>
@@ -660,17 +657,21 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                         </div>
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-ful">
-                            <div className="lg:w-1/6 w-full">
+                            <div className="w-full">
                                 <label htmlFor="">Meses</label>
                                 <input min={0} onChange={(e) => { setExperiencia(+e.target.value);saveInStorage("experiencia", e.target.value) }}
                                     type="number" ref={experienciaRefElement} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Experiencia " required />
                             </div>
+                            <div className="w-full">
+                                <label htmlFor="">Edad</label>
+                                <input ref={edadRefElement} onChange={(e) => { setEdad(+e.target.value);saveInStorage("edad", e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " required />
+                            </div>
                             <div className="flex gap-2 w-2/3">
-                                <div className="lg:w-1/6 w-full">
+                                <div className="w-full">
                                     <label htmlFor="">Hombre</label>
                                     <input type="checkbox" onChange={() => { setMen(true); setWomen(false); saveInStorage("men", true) }} checked={men} name="floating_email" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " />
                                 </div>
-                                <div className="lg:w-1/6 w-full">
+                                <div className="w-full">
                                     <label htmlFor="">Mujer</label>
                                     <input type="checkbox" onChange={() => { setWomen(true); setMen(false); saveInStorage("women", true); saveInStorage("men", false) }} checked={women} name="floating_email" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Edad " />
                                 </div>
@@ -716,7 +717,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     <br />
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5">
                         <legend>2. Consecuencias</legend>
-                        <div className="flex lg:gap-5 flex-col lg:flex-row justify-left lg:items-center w-full">
+                        <div className="flex xl:gap-5 flex-col justify-left w-full ">
                             <div className="flex gap-2 items-center mb-1">
                                 <label>Ha habido lesión?</label>
                                 <input type="checkbox" checked={lesionado? true : false} onChange={(e) => {setLesionado(e.target.checked); saveInStorage("lesionado", e.target.checked)}} name="" id="" />
@@ -724,14 +725,37 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             {
                                 lesionado ? (
                                     <div className="w-full">
-                                        <div className="flex lg:flex-row flex-col lg:gap-5 mb-2">
-                                            <label>Tipo de lesión</label>
-                                            <select value={lesiontipo} onChange={(e) => {setLesiontipo(e.target.value); saveInStorage("lesionTipo", e.target.value)}} className="h-11 lg:w-2/6 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600 text-[17px]" name="" id="">
-                                                <option value="Leve">Leve</option>
-                                                <option value="Grave">Grave</option>
-                                                <option value="MuyGrave">Muy grave</option>
-                                                <option value="Mortal">Mortal</option>
-                                            </select>
+                                        <div className="flex w-full flex-col">
+                                            <div>
+                                                <label>Tipo de lesión</label>
+                                                <select value={lesiontipo} onChange={(e) => {setLesiontipo(e.target.value); saveInStorage("lesionTipo", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                    <option value="Leve">Leve</option>
+                                                    <option value="Grave">Grave</option>
+                                                    <option value="MuyGrave">Muy grave</option>
+                                                    <option value="Mortal">Mortal</option>
+                                                </select>
+                                            </div>
+                                            <br />
+                                            <div>
+                                                <label className="flex gap-3">Parte del cuerpo <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                    <option value="1">1</option>
+                                                </select>
+                                            </div>
+                                            <br />
+                                            <div>
+                                                <label className="flex gap-3">Agente <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                    <option value="1">1</option>
+                                                </select>
+                                            </div>
+                                            <br />
+                                            <div>
+                                                <label className="flex gap-3">Forma de producirse <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                    <option value="1">1</option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <textarea name="" placeholder="Describe la lesión" value={lesiondescripcion} onChange={(e) => {setLesiondescripcion(e.target.value); saveInStorage("lesionDescripcion", e.target.value)}} className="min-h-20 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" id=""></textarea>
                                     </div>
@@ -766,86 +790,92 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         </div>
                     </fieldset>
                     <br />
-                    <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex gap-3 flex-wrap">
+                    <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex flex-wrap">
                         <legend className="flex flex-col">5. ANÁLISIS DE LAS CAUSAS <span className={`text-[13px] ${roboto.className}`}>Marcar con un tick las opciones que consideres</span></legend>
-                        <div className=" flex flex-col gap-1 border-2 border-gray-300 rounded-lg p-5">
-                            <label>5.1 MÁQUINAS</label>
-                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
-                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Ausencia resguardos y/o dispositivos protección")} onChange={() => {pushOptions(0,"Ausencia resguardos y/o dispositivos protección")}} className="mt-1" name="" id="" /><span>Ausencia resguardos y/o dispositivos protección</span></div>
-                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Sistemas mando inseguros")} onChange={() => {pushOptions(0,"Sistemas mando inseguros")}} className="mt-1" name="" id="" /><span>Sistemas mando inseguros</span></div>
-                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Paro emergencia inexistente ó ineficaz")} onChange={() => {pushOptions(0,"Paro emergencia inexistente ó ineficaz")}} className="mt-1" name="" id="" /><span>Paro emergencia inexistente ó ineficaz</span></div>
-                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Dispositivos enclavamiento violados")} onChange={() => {pushOptions(0,"Dispositivos enclavamiento violados")}} className="mt-1" name="" id="" /><span>Dispositivos enclavamiento violados</span></div>
-                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Máquina mal utilizada")} onChange={() => {pushOptions(0,"Máquina mal utilizada")}} className="mt-1" name="" id="" /><span>Máquina mal utilizada</span></div>
-                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Riesgos debidos a movilidad máquinas automotrices.")} onChange={() => {pushOptions(0,"Riesgos debidos a movilidad máquinas automotrices.")}} className="mt-1" name="" id="" /><span>Riesgos debidos a movilidad máquinas automotrices.</span></div>
-                                <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Otros1")} onChange={() => {pushOptions(0,"Otros1")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                        <div className="w-full flex justify-around flex-col 2xl:flex-row">
+                            <div className=" flex flex-col gap-1 border-2 border-gray-300 rounded-lg p-5 w-full">
+                                <label>5.1 MÁQUINAS</label>
+                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                    <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Ausencia resguardos y/o dispositivos protección")} onChange={() => {pushOptions(0,"Ausencia resguardos y/o dispositivos protección")}} className="mt-1" name="" id="" /><span>Ausencia resguardos y/o dispositivos protección</span></div>
+                                    <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Sistemas mando inseguros")} onChange={() => {pushOptions(0,"Sistemas mando inseguros")}} className="mt-1" name="" id="" /><span>Sistemas mando inseguros</span></div>
+                                    <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Paro emergencia inexistente ó ineficaz")} onChange={() => {pushOptions(0,"Paro emergencia inexistente ó ineficaz")}} className="mt-1" name="" id="" /><span>Paro emergencia inexistente ó ineficaz</span></div>
+                                    <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Dispositivos enclavamiento violados")} onChange={() => {pushOptions(0,"Dispositivos enclavamiento violados")}} className="mt-1" name="" id="" /><span>Dispositivos enclavamiento violados</span></div>
+                                    <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Máquina mal utilizada")} onChange={() => {pushOptions(0,"Máquina mal utilizada")}} className="mt-1" name="" id="" /><span>Máquina mal utilizada</span></div>
+                                    <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Riesgos debidos a movilidad máquinas automotrices.")} onChange={() => {pushOptions(0,"Riesgos debidos a movilidad máquinas automotrices.")}} className="mt-1" name="" id="" /><span>Riesgos debidos a movilidad máquinas automotrices.</span></div>
+                                    <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Otros1")} onChange={() => {pushOptions(0,"Otros1")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                                </div>
+                            </div>
+                            <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
+                                <label>5.2 EQUIPOS, HERRAMIENTAS MEDIOS AUXILIARES</label>
+                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Equipos, herramientas, medios auxiliares en mal estado.")} onChange={() => {pushOptions(1, "Equipos, herramientas, medios auxiliares en mal estado.")}} className="mt-1" name="" id="" /><span>Equipos, herramientas, medios auxiliares en mal estado.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Equipos, herramientas, medios auxiliares mal utilizados.")} onChange={() => {pushOptions(1, "Equipos, herramientas, medios auxiliares mal utilizados.")}} className="mt-1" name="" id="" /><span>Equipos, herramientas, medios auxiliares mal utilizados.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Inestabilidad de apilamientos, estanterías.")} onChange={() => {pushOptions(1, "Inestabilidad de apilamientos, estanterías.")}} className="mt-1" name="" id="" /><span>Inestabilidad de apilamientos, estanterías.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Otros2")} onChange={() => {pushOptions(1, "Otros2")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                                </div>
+                            </div>
+                            <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
+                                <label className="flex gap-2" htmlFor="">5.3 INCENDIOS</label>
+                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Mal almacenamiento de sustancias inflamables")} onChange={() => {pushOptions(2, "Mal almacenamiento de sustancias inflamables")}} className="mt-1" name="" id="" /><span>Mal almacenamiento de sustancias inflamables</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Insuficiencia / ausencia medios extinción.")} onChange={() => {pushOptions(2, "Insuficiencia / ausencia medios extinción.")}} className="mt-1" name="" id="" /><span>Insuficiencia / ausencia medios extinción.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Otros3")} onChange={() => {pushOptions(2, "Otros3")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                                </div>
                             </div>
                         </div>
-                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
-                            <label>5.2 EQUIPOS, HERRAMIENTAS MEDIOS AUXILIARES</label>
-                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Equipos, herramientas, medios auxiliares en mal estado.")} onChange={() => {pushOptions(1, "Equipos, herramientas, medios auxiliares en mal estado.")}} className="mt-1" name="" id="" /><span>Equipos, herramientas, medios auxiliares en mal estado.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Equipos, herramientas, medios auxiliares mal utilizados.")} onChange={() => {pushOptions(1, "Equipos, herramientas, medios auxiliares mal utilizados.")}} className="mt-1" name="" id="" /><span>Equipos, herramientas, medios auxiliares mal utilizados.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Inestabilidad de apilamientos, estanterías.")} onChange={() => {pushOptions(1, "Inestabilidad de apilamientos, estanterías.")}} className="mt-1" name="" id="" /><span>Inestabilidad de apilamientos, estanterías.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Otros2")} onChange={() => {pushOptions(1, "Otros2")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                        <div className="w-full flex flex-col xl:flex-row">
+                            <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
+                                <label className="flex gap-2" htmlFor="">5.4 ELECTRICIDAD</label>
+                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Inexistencia / fallo protección contra contactos directos.")} onChange={() => {pushOptions(3, "Inexistencia / fallo protección contra contactos directos.")}} className="mt-1" name="" id="" /><span>Inexistencia / fallo protección contra contactos directos.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Inexistencia / fallo protección contra contactos indirectos.")} onChange={() => {pushOptions(3, "Inexistencia / fallo protección contra contactos indirectos.")}} className="mt-1" name="" id="" /><span>Inexistencia / fallo protección contra contactos indirectos.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Otros4")} onChange={() => {pushOptions(3, "Otros4")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                                </div>
+                            </div>
+                            <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
+                                <label className="flex gap-2" htmlFor="">5.5 MATERIALES</label>
+                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[4].includes("Sustancias o productos agresivos")} onChange={() => {pushOptions(4, "Sustancias o productos agresivos")}} className="mt-1" name="" id="" /><span>Sustancias o productos agresivos</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[4].includes("Objetos peligrosos por naturaleza (pesados, cortantes,...)")} onChange={() => {pushOptions(4, "Objetos peligrosos por naturaleza (pesados, cortantes,...)")}} className="mt-1" name="" id="" /><span>Objetos peligrosos por naturaleza (pesados, cortantes,...)</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[4].includes("Otros5")} onChange={() => {pushOptions(4, "Otros5")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                                </div>
                             </div>
                         </div>
-                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
-                            <label className="flex gap-2" htmlFor="">5.3 INCENDIOS</label>
-                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Mal almacenamiento de sustancias inflamables")} onChange={() => {pushOptions(2, "Mal almacenamiento de sustancias inflamables")}} className="mt-1" name="" id="" /><span>Mal almacenamiento de sustancias inflamables</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Insuficiencia / ausencia medios extinción.")} onChange={() => {pushOptions(2, "Insuficiencia / ausencia medios extinción.")}} className="mt-1" name="" id="" /><span>Insuficiencia / ausencia medios extinción.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Otros3")} onChange={() => {pushOptions(2, "Otros3")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                        <div className="w-full flex flex-col xl:flex-row">
+                            <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
+                                <label className="flex gap-2" htmlFor="">5.6 AMBIENTE Y LUGAR DE TRABAJO</label>
+                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Deficiencia, ausencia Distracción.")} onChange={() => {pushOptions(5, "Deficiencia, ausencia Distracción.")}} className="mt-1" name="" id="" /><span>Deficiencia, ausencia Distracción.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Ruido excesivo (enmascarador de señalización)")} onChange={() => {pushOptions(5, "Ruido excesivo (enmascarador de señalización)")}} className="mt-1" name="" id="" /><span>Ruido excesivo (enmascarador de señalización)</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Iluminación insuficiente ó deslumbramiento.")} onChange={() => {pushOptions(5, "Iluminación insuficiente ó deslumbramiento.")}} className="mt-1" name="" id="" /><span>Iluminación insuficiente ó deslumbramiento.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Otros agentes físicos (temperatura, humedad, etc.)")} onChange={() => {pushOptions(5, "Otros agentes físicos (temperatura, humedad, etc.)")}} className="mt-1" name="" id="" /><span>Otros agentes físicos (temperatura, humedad, etc.)</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Falta de orden y limpieza")} onChange={() => {pushOptions(5, "Falta de orden y limpieza")}} className="mt-1" name="" id="" /><span>Falta de orden y limpieza</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Malos pasos, tropiezos.")} onChange={() => {pushOptions(5, "Malos pasos, tropiezos.")}} className="mt-1" name="" id="" /><span>Malos pasos, tropiezos.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Posturas forzadas, espacio insuficiente.")} onChange={() => {pushOptions(5, "Posturas forzadas, espacio insuficiente.")}} className="mt-1" name="" id="" /><span>Posturas forzadas, espacio insuficiente.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Aberturas y huecos desprotegidos")} onChange={() => {pushOptions(5, "Aberturas y huecos desprotegidos")}} className="mt-1" name="" id="" /><span>Aberturas y huecos desprotegidos</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("No delimitar zonas de paso-trabajo-almacén.")} onChange={() => {pushOptions(5, "No delimitar zonas de paso-trabajo-almacén.")}} className="mt-1" name="" id="" /><span>No delimitar zonas de paso-trabajo-almacén.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Deficiencias en plataformas de trabajo")} onChange={() => {pushOptions(5, "Deficiencias en plataformas de trabajo")}} className="mt-1" name="" id="" /><span>Deficiencias en plataformas de trabajo</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Otros6")} onChange={() => {pushOptions(5, "Otros6")}} className="mt-1" name="" id="" /><span>Otros</span></div>
+                                </div>
+                            </div>
+                            <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
+                                <label className="flex gap-2" htmlFor="">5.7 AL INDIVIDUO</label>
+                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimiento de los Riesgos.")} onChange={() => {pushOptions(6, "Desconocimiento de los Riesgos.")}} className="mt-1" name="" id="" /><span>Desconocimiento de los Riesgos.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimientos medidas prevención adoptar.")} onChange={() => {pushOptions(6, "Desconocimientos medidas prevención adoptar.")}} className="mt-1" name="" id="" /><span>Desconocimientos medidas prevención adoptar.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Incumplimiento órdenes expresas de trabajo.")} onChange={() => {pushOptions(6, "Incumplimiento órdenes expresas de trabajo.")}} className="mt-1" name="" id="" /><span>Incumplimiento órdenes expresas de trabajo.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimiento método trabajo.")} onChange={() => {pushOptions(6, "Desconocimiento método trabajo.")}} className="mt-1" name="" id="" /><span>Desconocimiento método trabajo.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimiento medidas prevención  a aplicar.")} onChange={() => {pushOptions(6, "Desconocimiento medidas prevención  a aplicar.")}} className="mt-1" name="" id="" /><span>Desconocimiento medidas prevención  a aplicar.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Anulación-Retirada protecciones.")} onChange={() => {pushOptions(6, "Anulación-Retirada protecciones.")}} className="mt-1" name="" id="" /><span>Anulación-Retirada protecciones.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Sobre esfuerzos carácter personal.")} onChange={() => {pushOptions(6, "Sobre esfuerzos carácter personal.")}} className="mt-1" name="" id="" /><span>Sobre esfuerzos carácter personal.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("No utilización de EPI`s")} onChange={() => {pushOptions(6, "No utilización de EPI`s")}} className="mt-1" name="" id="" /><span>No utilización de EPI`s</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Operar sin autorización")} onChange={() => {pushOptions(6, "Operar sin autorización")}} className="mt-1" name="" id="" /><span>Operar sin autorización</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Distracción al trabajar.")} onChange={() => {pushOptions(6, "Distracción al trabajar.")}} className="mt-1" name="" id="" /><span>Distracción al trabajar.</span></div>
+                                    <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Otros: Manipulación incorrecta de cargas")} onChange={() => {pushOptions(6, "Otros: Manipulación incorrecta de cargas")}} className="mt-1" name="" id="" /><span>Otros: Manipulación incorrecta de cargas</span></div>
+                                </div>
                             </div>
                         </div>
-                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
-                            <label className="flex gap-2" htmlFor="">5.4 ELECTRICIDAD</label>
-                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Inexistencia / fallo protección contra contactos directos.")} onChange={() => {pushOptions(3, "Inexistencia / fallo protección contra contactos directos.")}} className="mt-1" name="" id="" /><span>Inexistencia / fallo protección contra contactos directos.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Inexistencia / fallo protección contra contactos indirectos.")} onChange={() => {pushOptions(3, "Inexistencia / fallo protección contra contactos indirectos.")}} className="mt-1" name="" id="" /><span>Inexistencia / fallo protección contra contactos indirectos.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Otros4")} onChange={() => {pushOptions(3, "Otros4")}} className="mt-1" name="" id="" /><span>Otros</span></div>
-                            </div>
-                        </div>
-                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
-                            <label className="flex gap-2" htmlFor="">5.5 MATERIALES</label>
-                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[4].includes("Sustancias o productos agresivos")} onChange={() => {pushOptions(4, "Sustancias o productos agresivos")}} className="mt-1" name="" id="" /><span>Sustancias o productos agresivos</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[4].includes("Objetos peligrosos por naturaleza (pesados, cortantes,...)")} onChange={() => {pushOptions(4, "Objetos peligrosos por naturaleza (pesados, cortantes,...)")}} className="mt-1" name="" id="" /><span>Objetos peligrosos por naturaleza (pesados, cortantes,...)</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[4].includes("Otros5")} onChange={() => {pushOptions(4, "Otros5")}} className="mt-1" name="" id="" /><span>Otros</span></div>
-                            </div>
-                        </div>
-                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
-                            <label className="flex gap-2" htmlFor="">5.6 AMBIENTE Y LUGAR DE TRABAJO</label>
-                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Deficiencia, ausencia Distracción.")} onChange={() => {pushOptions(5, "Deficiencia, ausencia Distracción.")}} className="mt-1" name="" id="" /><span>Deficiencia, ausencia Distracción.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Ruido excesivo (enmascarador de señalización)")} onChange={() => {pushOptions(5, "Ruido excesivo (enmascarador de señalización)")}} className="mt-1" name="" id="" /><span>Ruido excesivo (enmascarador de señalización)</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Iluminación insuficiente ó deslumbramiento.")} onChange={() => {pushOptions(5, "Iluminación insuficiente ó deslumbramiento.")}} className="mt-1" name="" id="" /><span>Iluminación insuficiente ó deslumbramiento.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Otros agentes físicos (temperatura, humedad, etc.)")} onChange={() => {pushOptions(5, "Otros agentes físicos (temperatura, humedad, etc.)")}} className="mt-1" name="" id="" /><span>Otros agentes físicos (temperatura, humedad, etc.)</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Falta de orden y limpieza")} onChange={() => {pushOptions(5, "Falta de orden y limpieza")}} className="mt-1" name="" id="" /><span>Falta de orden y limpieza</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Malos pasos, tropiezos.")} onChange={() => {pushOptions(5, "Malos pasos, tropiezos.")}} className="mt-1" name="" id="" /><span>Malos pasos, tropiezos.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Posturas forzadas, espacio insuficiente.")} onChange={() => {pushOptions(5, "Posturas forzadas, espacio insuficiente.")}} className="mt-1" name="" id="" /><span>Posturas forzadas, espacio insuficiente.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Aberturas y huecos desprotegidos")} onChange={() => {pushOptions(5, "Aberturas y huecos desprotegidos")}} className="mt-1" name="" id="" /><span>Aberturas y huecos desprotegidos</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("No delimitar zonas de paso-trabajo-almacén.")} onChange={() => {pushOptions(5, "No delimitar zonas de paso-trabajo-almacén.")}} className="mt-1" name="" id="" /><span>No delimitar zonas de paso-trabajo-almacén.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Deficiencias en plataformas de trabajo")} onChange={() => {pushOptions(5, "Deficiencias en plataformas de trabajo")}} className="mt-1" name="" id="" /><span>Deficiencias en plataformas de trabajo</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Otros6")} onChange={() => {pushOptions(5, "Otros6")}} className="mt-1" name="" id="" /><span>Otros</span></div>
-                            </div>
-                        </div>
-                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
-                            <label className="flex gap-2" htmlFor="">5.7 AL INDIVIDUO</label>
-                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimiento de los Riesgos.")} onChange={() => {pushOptions(6, "Desconocimiento de los Riesgos.")}} className="mt-1" name="" id="" /><span>Desconocimiento de los Riesgos.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimientos medidas prevención adoptar.")} onChange={() => {pushOptions(6, "Desconocimientos medidas prevención adoptar.")}} className="mt-1" name="" id="" /><span>Desconocimientos medidas prevención adoptar.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Incumplimiento órdenes expresas de trabajo.")} onChange={() => {pushOptions(6, "Incumplimiento órdenes expresas de trabajo.")}} className="mt-1" name="" id="" /><span>Incumplimiento órdenes expresas de trabajo.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimiento método trabajo.")} onChange={() => {pushOptions(6, "Desconocimiento método trabajo.")}} className="mt-1" name="" id="" /><span>Desconocimiento método trabajo.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimiento medidas prevención  a aplicar.")} onChange={() => {pushOptions(6, "Desconocimiento medidas prevención  a aplicar.")}} className="mt-1" name="" id="" /><span>Desconocimiento medidas prevención  a aplicar.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Anulación-Retirada protecciones.")} onChange={() => {pushOptions(6, "Anulación-Retirada protecciones.")}} className="mt-1" name="" id="" /><span>Anulación-Retirada protecciones.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Sobre esfuerzos carácter personal.")} onChange={() => {pushOptions(6, "Sobre esfuerzos carácter personal.")}} className="mt-1" name="" id="" /><span>Sobre esfuerzos carácter personal.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("No utilización de EPI`s")} onChange={() => {pushOptions(6, "No utilización de EPI`s")}} className="mt-1" name="" id="" /><span>No utilización de EPI`s</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Operar sin autorización")} onChange={() => {pushOptions(6, "Operar sin autorización")}} className="mt-1" name="" id="" /><span>Operar sin autorización</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Distracción al trabajar.")} onChange={() => {pushOptions(6, "Distracción al trabajar.")}} className="mt-1" name="" id="" /><span>Distracción al trabajar.</span></div>
-                                <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Otros: Manipulación incorrecta de cargas")} onChange={() => {pushOptions(6, "Otros: Manipulación incorrecta de cargas")}} className="mt-1" name="" id="" /><span>Otros: Manipulación incorrecta de cargas</span></div>
-                            </div>
-                        </div>
-                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5">
+                        <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
                             <label className="flex gap-2" htmlFor="">5.8 ORGANIZACIÓN</label>
                             <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
                                 <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[7].includes("Falta de adecuación del equipo o material para la tarea a realizar.")} onChange={() => {pushOptions(7, "Falta de adecuación del equipo o material para la tarea a realizar.")}} className="mt-1" name="" id="" /><span>Falta de adecuación del equipo o material para la tarea a realizar.</span></div>
