@@ -107,22 +107,29 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                     {
                         listaExpedientes.map((item, key) => (
                             <React.Fragment key={key}>
-                                <div className="w-full xl:flex justify-between p-10 hover:bg-slate-100 border  hidden" onClick={() => {update(item)}} >
+                                <motion.div
+                                initial={{filter: 'blur(40px)'}}
+                                animate={{filter: 'blur(0px)'}}
+                                transition={{duration: (key/4)*0.5}}
+                                className="w-full xl:flex justify-between p-10 hover:bg-slate-100 border  hidden" onClick={() => {update(item)}} >
                                     <span className="w-[200px] text-center border-r-orange-200">{item.creador}</span>
                                     <span className="w-[300px] text-center px-5">{item.trabajador_nombre}</span>
                                     <span className="w-[100px] text-center">{item.empresa}</span>
                                     <span className="w-[300px] text-center">{item.fecha_investigacion.split('T')[0]}</span>
                                     <span className="w-[200px] text-center">{item.fecha_investigacion.split('T')[1]}</span>
                                     <span className="w-[200px] text-center">{item.tipo_suceso}</span>
-                                </div>
-                                <div className="w-full xl:hidden  p-5 hover:bg-slate-100 border rounded-md flex flex-col gap-3" onClick={() => {update(item)}} >
+                                </motion.div>
+                                <motion.div
+                                initial={{opacity: 0}}
+                                animate={{opacity: 1}}
+                                className="w-full xl:hidden  p-5 hover:bg-slate-100 border rounded-md flex flex-col gap-3" onClick={() => {update(item)}} >
                                     <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Creador:</strong>  {item.creador}</span>
                                     <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Operario:</strong>  {item.trabajador_nombre}</span>
                                     <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Empresa:</strong>  {item.empresa}</span>
                                     <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Fecha Creación:</strong>  {item.fecha_investigacion.split('T')[0]}</span>
                                     <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Hora Creación:</strong>  {item.fecha_investigacion.split('T')[1]}</span>
                                     <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Tipo suceso:</strong>  {item.tipo_suceso}</span>
-                                </div>
+                                </motion.div>
                             </React.Fragment>
                         ))
                     }
