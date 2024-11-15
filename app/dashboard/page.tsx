@@ -53,6 +53,8 @@ const Dashboard = async() => {
     const jsonCausasAccidente = await fetchSelector("causas_accidente")
     const jsonCreador = await fetchSelector("creador")
     const jsonParteCuerpo = await fetchSelector('parte_cuerpo')
+    const jsonAgente = await fetchSelector('agente')
+    const jsonFormaProducirse = await fetchSelector('forma_producirse')
 
     const errorServidor = trabajadores && expedientes && imagenes ? false : true
     
@@ -68,6 +70,8 @@ const Dashboard = async() => {
         jsonCausasAccidente={jsonCausasAccidente ? jsonCausasAccidente : []}
         jsonCreador={jsonCreador ? jsonCreador : []}
         jsonParteCuerpo={jsonParteCuerpo ? jsonParteCuerpo : []}
+        jsonAgente={jsonAgente? jsonAgente : []}
+        jsonFormaProducirse={jsonFormaProducirse? jsonFormaProducirse : []}
         />
      );
 }

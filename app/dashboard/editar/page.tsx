@@ -9,6 +9,8 @@ const Puesto = async() => {
     const causasAccidente = await fetchSelector("causas_accidente")
     const creador = await fetchSelector("creador")
     const parteCuerpo = await fetchSelector("parte_cuerpo")
+    const agente = await fetchSelector("agente")
+    const formaProducirse = await fetchSelector("forma_producirse")
     return ( 
         <div>
             <ReorderGroup 
@@ -18,6 +20,9 @@ const Puesto = async() => {
             // causasAccidente={causasAccidente? causasAccidente : []}
             creador={creador? creador : []}
             parteCuerpo={parteCuerpo? parteCuerpo : []}
+            agente={agente? agente : []}
+            formaProducirse={formaProducirse ? formaProducirse : []}
+            
             />
         </div>
      );
