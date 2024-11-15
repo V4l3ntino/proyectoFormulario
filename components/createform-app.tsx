@@ -127,53 +127,13 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                         ))
                     }
                 </div>
-
-                {/* <table className="tablaDatos max-w-[1488px]">
-                    <colgroup>
-                        <col />
-                        <col style={{minWidth: '200px'}}/>
-                        <col />
-                        <col style={{minWidth: '200px'}}/>
-                        <col style={{minWidth: '200px'}}/>
-                        <col style={{minWidth: '200px'}}/>
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>Creador</th>
-                            <th>Operario</th>
-                            <th>Empresa</th>
-                            <th>Fecha Creación</th>
-                            <th>Hora Creación</th>
-                            <th>Tipo suceso</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            listaExpedientes.map((item, key) => (
-                                <tr key={key} className="cursor-pointer hover:bg-slate-100" onClick={() => {update(item)}}>
-                                    <td>{item.creador}</td>
-                                    <td>{item.trabajador_nombre}</td>
-                                    <td>{item.empresa}</td>
-                                    <td>{`${item.fecha_investigacion.split('T')[0]}`}</td>
-                                    <td>{`${item.fecha_investigacion.split('T')[1]}`}</td>
-                                    <td>{item.tipo_suceso}</td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table> */}
-                
-                {/* {errorServidor? (
+                {errorServidor? (
                         <motion.span
                         initial={{opacity:0}}
-                        whileInView={{opacity:1}}
+                        animate={{opacity:1}}
                         transition={{duration:0.5}}
-                        viewport={{ margin: "-100px", once: true }}
-                        onViewportEnter={() => { setStyle(true)}}
-                        onViewportLeave={() => { setStyle(false)}}
-                        className={`bg-red-500 text-white hover:bg-red-600 overflow-hidden relative rounded w-[1488px] h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-100 ease-in-out 
-                        ${style ? `opacity-1 scale-1` : `opacity-0 scale-0 lg:translate-x-96 translate-x-20` }`}
-                        >
+                        viewport={{once: true }}
+                        className={`bg-red-500 text-white hover:bg-red-600 overflow-hidden relative rounded max-w-[1488px] h-40 mb-5 flex justify-between items-center px-4 lg:px-20 py-5 shadow-2xl transition-transform duration-100 ease-in-out opacity-1 scale-1 `}>
                             <div className="flex gap-5 relative">
                                 <ExclamationTriangleIcon className="h-10 w-10 text-white hidden md:flex"/>
                                 <span className="h-full w-5 before:border-r-2 before:border-r-black before:border-solid before:absolute before:w-1 before:h-10 hidden md:flex"></span>
@@ -184,7 +144,8 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                             <ExclamationTriangleIcon className="h-10 w-10 text-white  md:hidden"/>
                         </motion.span>
                     ) : (``)
-                } */}
+                }
+                
             </div>
         </section>
      );
