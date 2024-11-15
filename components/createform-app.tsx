@@ -111,7 +111,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                                 initial={{filter: 'blur(40px)'}}
                                 animate={{filter: 'blur(0px)'}}
                                 transition={{duration: (key/4)*0.5}}
-                                className="w-full xl:flex justify-between p-10 hover:bg-slate-100 border  hidden" onClick={() => {update(item)}} >
+                                className="w-full xl:flex justify-between p-10 hover:bg-slate-100 border  hidden hover:cursor-pointer" onClick={() => {update(item)}} >
                                     <span className="w-[200px] text-center border-r-orange-200">{item.creador}</span>
                                     <span className="w-[300px] text-center px-5">{item.trabajador_nombre}</span>
                                     <span className="w-[100px] text-center">{item.empresa}</span>
@@ -122,7 +122,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                                 <motion.div
                                 initial={{opacity: 0}}
                                 animate={{opacity: 1}}
-                                className="w-full xl:hidden  p-5 hover:bg-slate-100 border rounded-md flex flex-col gap-3" onClick={() => {update(item)}} >
+                                className="w-full xl:hidden  p-5 hover:bg-slate-100 border rounded-md flex flex-col gap-3 hover:cursor-pointer" onClick={() => {update(item)}} >
                                     <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Creador:</strong>  {item.creador}</span>
                                     <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Operario:</strong>  {item.trabajador_nombre}</span>
                                     <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Empresa:</strong>  {item.empresa}</span>
