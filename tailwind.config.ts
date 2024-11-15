@@ -18,6 +18,9 @@ const config: Config = {
           600: '#2F6FEB',
         },
       },
+      screens: {
+        'sm-425': '425px'
+      }
     },
     keyframes: {
       shimmer: {

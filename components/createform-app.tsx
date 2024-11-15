@@ -83,7 +83,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
     return ( 
         <section>
             <div className="rounded flex-col overflow-auto h-full">
-                <div className="w-full flex sm:flex-row gap-11 items-center flex-col">
+                <div className="w-full flex sm-425:flex-row gap-11 items-left flex-col">
                     <div className="relative text-gray-60 w-fit">
                         <input type="search" name="serch" placeholder="Search" className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none " onChange={(e) => {searchFilter(e.target.value)}}/>
                         <MagnifyingGlassIcon className="w-5 h-5 absolute top-3 right-5"/>
@@ -92,7 +92,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                     whileTap={{scale:0.8}}
                     initial={{scale: 0}}
                     whileInView={{scale: 1}}
-                    onClick={() => {changeState(false)}} className="sm:w-fit w-full p-3 rounded-md bg-blue-400 text-white hover:bg-blue-500" >Añadir</motion.button>
+                    onClick={() => {changeState(false)}} className="sm-425:w-fit w-full p-3 rounded-md bg-blue-400 text-white hover:bg-blue-500" >Añadir</motion.button>
                 </div>
                 <br />
                 <div className="w-full  flex flex-wrap xl:flex-col xl:gap-0 gap-3  max-w-[1488px]">
