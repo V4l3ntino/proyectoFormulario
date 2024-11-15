@@ -24,6 +24,7 @@ type Props = {
     jsonFormasProducirseAccidente: selectJson[]
     jsonCausasAccidente: selectJson[]
     jsonCreador: selectJson[]
+    jsonParteCuerpo: selectJson[]
 }
 
 type Variant = {
@@ -37,7 +38,7 @@ let variant:Variant = {
     lugar_accidente: false
 }
 
-const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente, jsonCausasAccidente, jsonCreador}) => {
+const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente, jsonCausasAccidente, jsonCreador, jsonParteCuerpo}) => {
     const [lista, setLista] = useState<Person[]>([])
     const [json, setJson] = useState<Person[]>(propJson)
     const router = useRouter()
@@ -737,9 +738,13 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                             </div>
                                             <br />
                                             <div>
-                                                <label className="flex gap-3">Parte del cuerpo <PencilSquareIcon onClick={() => {redirectToEdit("creador")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                <label className="flex gap-3">Parte del cuerpo <PencilSquareIcon onClick={() => {redirectToEdit("parte_cuerpo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
                                                 <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
-                                                    <option value="1">1</option>
+                                                    {
+                                                        jsonParteCuerpo.map((item, key) => (
+                                                            <option key={key} value={item.nombre}>{item.nombre}</option>
+                                                        ))
+                                                    }
                                                 </select>
                                             </div>
                                             <br />

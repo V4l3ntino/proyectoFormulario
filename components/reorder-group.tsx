@@ -12,13 +12,14 @@ import { useRouter } from "next/navigation";
 type Props = {
   puestoTrabajo: selectJson[]
   lugarAccidente: selectJson[]
-  formasProducirseAccidenete: selectJson[]
-  causasAccidente: selectJson[]
+  // formasProducirseAccidenete: selectJson[]
+  // causasAccidente: selectJson[]
   creador: selectJson[]
+  parteCuerpo: selectJson[]
 }
-const tipos:string[] = ["puesto_trabajo","lugar_accidente","creador"]
-const nombreTipos: string[] = ["Puesto de Trabajo", "Lugar del Accidente", "Creador"]
-export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProducirseAccidenete, causasAccidente, creador}: Props) {
+const tipos:string[] = ["puesto_trabajo","lugar_accidente","creador", 'parte_cuerpo']
+const nombreTipos: string[] = ["Puesto de Trabajo", "Lugar del Accidente", "Creador", 'Partes del Cuerpo']
+export default function ReorderGroup({puestoTrabajo, lugarAccidente,  creador, parteCuerpo}: Props) {
     const router = useRouter();
     const [initialItems, setInitialItems] = useState<string[]>([])
     const [tipo, setTipo] = useState<string|null>()
@@ -62,6 +63,11 @@ export default function ReorderGroup({puestoTrabajo, lugarAccidente, formasProdu
             setInitialItems(creador.map((item) => item.nombre))
             setMenu(false)
             setReorderOption(false)
+            break;
+          case tipos[3]:
+            setInitialItems(parteCuerpo.map((item) => item.nombre))
+            setMenu(false)
+            setReorderOption(true)
             break;
           default:
             setMenu(true)

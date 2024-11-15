@@ -23,10 +23,11 @@ type Props = {
     jsonFormasProducirseAccidente: selectJson[]
     jsonCausasAccidente: selectJson[]
     jsonCreador: selectJson[]
+    jsonParteCuerpo: selectJson[]
 
 }
 
-const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes, errorServidor, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente, jsonCausasAccidente, jsonCreador}) => {
+const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonImagenes, errorServidor, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente, jsonCausasAccidente, jsonCreador, jsonParteCuerpo}) => {
     const router = useRouter()
     const [state, setState] = useState<boolean>(true)
     const [update, setUpdate] = useState<string|undefined>()
@@ -163,6 +164,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
                     jsonFormasProducirseAccidente={jsonFormasProducirseAccidente}
                     jsonCausasAccidente={jsonCausasAccidente}
                     jsonCreador={jsonCreador}
+                    jsonParteCuerpo={jsonParteCuerpo}
                     />)
             }
             {
