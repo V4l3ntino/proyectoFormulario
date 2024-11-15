@@ -795,7 +795,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <div className="w-full flex justify-around flex-col 2xl:flex-row">
                             <div className=" flex flex-col gap-1 border-2 border-gray-300 rounded-lg p-5 w-full">
                                 <label>5.1 MÁQUINAS</label>
-                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="h-auto w-full text-gray-900 focus:outline-none flex flex-col gap-2">
                                     <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Ausencia resguardos y/o dispositivos protección")} onChange={() => {pushOptions(0,"Ausencia resguardos y/o dispositivos protección")}} className="mt-1" name="" id="" /><span>Ausencia resguardos y/o dispositivos protección</span></div>
                                     <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Sistemas mando inseguros")} onChange={() => {pushOptions(0,"Sistemas mando inseguros")}} className="mt-1" name="" id="" /><span>Sistemas mando inseguros</span></div>
                                     <div className="flex gap-1 "><input type="checkbox" checked={analisisCausas[0].includes("Paro emergencia inexistente ó ineficaz")} onChange={() => {pushOptions(0,"Paro emergencia inexistente ó ineficaz")}} className="mt-1" name="" id="" /><span>Paro emergencia inexistente ó ineficaz</span></div>
@@ -807,7 +807,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                             <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
                                 <label>5.2 EQUIPOS, HERRAMIENTAS MEDIOS AUXILIARES</label>
-                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="h-auto w-full text-gray-900 focus:outline-none flex flex-col gap-2">
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Equipos, herramientas, medios auxiliares en mal estado.")} onChange={() => {pushOptions(1, "Equipos, herramientas, medios auxiliares en mal estado.")}} className="mt-1" name="" id="" /><span>Equipos, herramientas, medios auxiliares en mal estado.</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Equipos, herramientas, medios auxiliares mal utilizados.")} onChange={() => {pushOptions(1, "Equipos, herramientas, medios auxiliares mal utilizados.")}} className="mt-1" name="" id="" /><span>Equipos, herramientas, medios auxiliares mal utilizados.</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[1].includes("Inestabilidad de apilamientos, estanterías.")} onChange={() => {pushOptions(1, "Inestabilidad de apilamientos, estanterías.")}} className="mt-1" name="" id="" /><span>Inestabilidad de apilamientos, estanterías.</span></div>
@@ -816,7 +816,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                             <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
                                 <label className="flex gap-2" htmlFor="">5.3 INCENDIOS</label>
-                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="h-auto w-full text-gray-900 focus:outline-none flex flex-col gap-2">
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Mal almacenamiento de sustancias inflamables")} onChange={() => {pushOptions(2, "Mal almacenamiento de sustancias inflamables")}} className="mt-1" name="" id="" /><span>Mal almacenamiento de sustancias inflamables</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Insuficiencia / ausencia medios extinción.")} onChange={() => {pushOptions(2, "Insuficiencia / ausencia medios extinción.")}} className="mt-1" name="" id="" /><span>Insuficiencia / ausencia medios extinción.</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[2].includes("Otros3")} onChange={() => {pushOptions(2, "Otros3")}} className="mt-1" name="" id="" /><span>Otros</span></div>
@@ -826,7 +826,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <div className="w-full flex flex-col xl:flex-row">
                             <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
                                 <label className="flex gap-2" htmlFor="">5.4 ELECTRICIDAD</label>
-                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="h-auto w-full text-gray-900 focus:outline-none flex flex-col gap-2">
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Inexistencia / fallo protección contra contactos directos.")} onChange={() => {pushOptions(3, "Inexistencia / fallo protección contra contactos directos.")}} className="mt-1" name="" id="" /><span>Inexistencia / fallo protección contra contactos directos.</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Inexistencia / fallo protección contra contactos indirectos.")} onChange={() => {pushOptions(3, "Inexistencia / fallo protección contra contactos indirectos.")}} className="mt-1" name="" id="" /><span>Inexistencia / fallo protección contra contactos indirectos.</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[3].includes("Otros4")} onChange={() => {pushOptions(3, "Otros4")}} className="mt-1" name="" id="" /><span>Otros</span></div>
@@ -834,7 +834,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                             <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
                                 <label className="flex gap-2" htmlFor="">5.5 MATERIALES</label>
-                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="h-auto w-full text-gray-900 focus:outline-none flex flex-col gap-2">
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[4].includes("Sustancias o productos agresivos")} onChange={() => {pushOptions(4, "Sustancias o productos agresivos")}} className="mt-1" name="" id="" /><span>Sustancias o productos agresivos</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[4].includes("Objetos peligrosos por naturaleza (pesados, cortantes,...)")} onChange={() => {pushOptions(4, "Objetos peligrosos por naturaleza (pesados, cortantes,...)")}} className="mt-1" name="" id="" /><span>Objetos peligrosos por naturaleza (pesados, cortantes,...)</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[4].includes("Otros5")} onChange={() => {pushOptions(4, "Otros5")}} className="mt-1" name="" id="" /><span>Otros</span></div>
@@ -844,7 +844,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <div className="w-full flex flex-col xl:flex-row">
                             <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
                                 <label className="flex gap-2" htmlFor="">5.6 AMBIENTE Y LUGAR DE TRABAJO</label>
-                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="h-auto w-full text-gray-900 focus:outline-none flex flex-col gap-2">
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Deficiencia, ausencia Distracción.")} onChange={() => {pushOptions(5, "Deficiencia, ausencia Distracción.")}} className="mt-1" name="" id="" /><span>Deficiencia, ausencia Distracción.</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Ruido excesivo (enmascarador de señalización)")} onChange={() => {pushOptions(5, "Ruido excesivo (enmascarador de señalización)")}} className="mt-1" name="" id="" /><span>Ruido excesivo (enmascarador de señalización)</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[5].includes("Iluminación insuficiente ó deslumbramiento.")} onChange={() => {pushOptions(5, "Iluminación insuficiente ó deslumbramiento.")}} className="mt-1" name="" id="" /><span>Iluminación insuficiente ó deslumbramiento.</span></div>
@@ -860,7 +860,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                             <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
                                 <label className="flex gap-2" htmlFor="">5.7 AL INDIVIDUO</label>
-                                <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                                <div className="h-auto w-full text-gray-900 focus:outline-none flex flex-col gap-2">
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimiento de los Riesgos.")} onChange={() => {pushOptions(6, "Desconocimiento de los Riesgos.")}} className="mt-1" name="" id="" /><span>Desconocimiento de los Riesgos.</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Desconocimientos medidas prevención adoptar.")} onChange={() => {pushOptions(6, "Desconocimientos medidas prevención adoptar.")}} className="mt-1" name="" id="" /><span>Desconocimientos medidas prevención adoptar.</span></div>
                                     <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[6].includes("Incumplimiento órdenes expresas de trabajo.")} onChange={() => {pushOptions(6, "Incumplimiento órdenes expresas de trabajo.")}} className="mt-1" name="" id="" /><span>Incumplimiento órdenes expresas de trabajo.</span></div>
@@ -877,7 +877,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         </div>
                         <div className=" flex flex-col border-2 border-gray-300 rounded-lg p-5 w-full">
                             <label className="flex gap-2" htmlFor="">5.8 ORGANIZACIÓN</label>
-                            <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex flex-col gap-2">
+                            <div className="h-auto w-full text-gray-900 focus:outline-none flex flex-col gap-2">
                                 <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[7].includes("Falta de adecuación del equipo o material para la tarea a realizar.")} onChange={() => {pushOptions(7, "Falta de adecuación del equipo o material para la tarea a realizar.")}} className="mt-1" name="" id="" /><span>Falta de adecuación del equipo o material para la tarea a realizar.</span></div>
                                 <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[7].includes("Mantenimiento ó limpieza del equipo de trabajo sin detenerlo.")} onChange={() => {pushOptions(7, "Mantenimiento ó limpieza del equipo de trabajo sin detenerlo.")}} className="mt-1" name="" id="" /><span>Mantenimiento ó limpieza del equipo de trabajo sin detenerlo.</span></div>
                                 <div className="flex gap-1"><input type="checkbox" checked={analisisCausas[7].includes("Sobrecarga de trabajo – Esfuerzos.")} onChange={() => {pushOptions(7, "Sobrecarga de trabajo – Esfuerzos.")}} className="mt-1" name="" id="" /><span>Sobrecarga de trabajo – Esfuerzos.</span></div>
