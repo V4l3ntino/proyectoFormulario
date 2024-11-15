@@ -27,7 +27,10 @@ export interface ExpedienteJson {
     creador: string,
     fecha_investigacion: string,
     otros: boolean,
-    empresa: string
+    empresa: string,
+    parte_cuerpo: string,
+    agente: string,
+    forma_producirse: string
 }
 
 

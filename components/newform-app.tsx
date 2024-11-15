@@ -86,6 +86,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [otros, setOtros] = useState<boolean>(false)
     const [empresa, setEmpresa] = useState<string>("")
     const [estadoCargaImg, setEstadoCargaImg] = useState<boolean>(false)
+    const [parteCuerpo, setParteCuerpo] = useState<string>(jsonParteCuerpo[0]?.nombre || "")
+    const [agente, setAgente] = useState<string>(jsonAgente[0]?.nombre || "")
+    const [formaProducirse, setFormaProducirse] = useState<string>(jsonFormaProducirse[0]?.nombre || "")
     
     
 
@@ -157,6 +160,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         const creadorStorage = JSON.parse(localStorage.getItem("creador")!)
         const otrosStorage = JSON.parse(localStorage.getItem("otros")!)
         const empresaStorage = JSON.parse(localStorage.getItem("empresa")!)
+
+        const parteCuerpoStorage = JSON.parse(localStorage.getItem("parteCuerpo")!)
+        const agenteStorage = JSON.parse(localStorage.getItem("agente")!)
+        const formaProducirseStorage = JSON.parse(localStorage.getItem("formaProducirse")!)
         
         if(aplicar_accionStorage){
             let lista: aplicarAcciones[] = []
@@ -190,6 +197,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         tipoSucesoStorage ? setTipoSuceso(tipoSucesoStorage) : ``;
         creadorStorage ? setCreador(creadorStorage) : ``;
         empresaStorage ? setEmpresa(empresaStorage) : ``;
+
+        parteCuerpoStorage ? setParteCuerpo(parteCuerpo) : ``;
+        agenteStorage ? setAgente(agenteStorage) : ``;
+        formaProducirseStorage ? setFormaProducirse(formaProducirseStorage) : ``;
 
         if (otrosStorage){
             setOtros(true)
@@ -335,7 +346,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 creador: creador,
                 fecha_investigacion: fechaInvestigacion,
                 otros: otros,
-                empresa: empresa
+                empresa: empresa,
+                parte_cuerpo: parteCuerpo,
+                agente: agente,
+                forma_producirse: formaProducirse
             }
             fetchExpedientePost(expediente)
             if(!updateId){
@@ -741,7 +755,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                             <br />
                                             <div>
                                                 <label className="flex gap-3">Parte del cuerpo <PencilSquareIcon onClick={() => {redirectToEdit("parte_cuerpo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                                <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                <select onChange={(e) => {setParteCuerpo(e.target.value); saveInStorage("parteCuerpo", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
                                                     {
                                                         jsonParteCuerpo.map((item, key) => (
                                                             <option key={key} value={item.nombre}>{item.nombre}</option>
@@ -752,7 +766,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                             <br />
                                             <div>
                                                 <label className="flex gap-3">Agente <PencilSquareIcon onClick={() => {redirectToEdit("agente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                                <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                <select onChange={(e) => {setAgente(e.target.value); saveInStorage("agente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
                                                     {
                                                         jsonAgente.map((item, key) => (
                                                             <option key={key} value={item.nombre}>{item.nombre}</option>
@@ -763,7 +777,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                             <br />
                                             <div>
                                                 <label className="flex gap-3">Forma de producirse <PencilSquareIcon onClick={() => {redirectToEdit("forma_producirse")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                                <select className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                <select onChange={(e) => {setFormaProducirse(e.target.value); saveInStorage("formaProducirse", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
                                                     {
                                                         jsonFormaProducirse.map((item, key) => (
                                                             <option key={key} value={item.nombre}>{item.nombre}</option>
