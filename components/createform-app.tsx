@@ -8,6 +8,7 @@ import { DocumentPlusIcon, ExclamationTriangleIcon, MagnifyingGlassIcon } from "
 import { Expediente } from "@/models/Expediente";
 import EditSvg from "./icons/edit";
 import WordSvg from "./icons/word";
+import React from "react";
 
 type Props = {
     changeState: (state: boolean)=> void
@@ -81,20 +82,53 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
     const [style, setStyle] = useState(false)
     return ( 
         <section>
-            <div className="p-2 lg:p-10 rounded flex-col overflow-auto h-full">
-                <div className="w-full flex gap-11 items-center">
+            <div className="rounded flex-col overflow-auto h-full">
+                <div className="w-full flex sm:flex-row gap-11 items-center flex-col">
                     <div className="relative text-gray-60 w-fit">
-                        <input type="search" name="serch" placeholder="Search" className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none sm:w-96" onChange={(e) => {searchFilter(e.target.value)}}/>
+                        <input type="search" name="serch" placeholder="Search" className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none " onChange={(e) => {searchFilter(e.target.value)}}/>
                         <MagnifyingGlassIcon className="w-5 h-5 absolute top-3 right-5"/>
                     </div>
                     <motion.button
                     whileTap={{scale:0.8}}
                     initial={{scale: 0}}
                     whileInView={{scale: 1}}
-                    onClick={() => {changeState(false)}} className="w-fit p-3 rounded-md bg-blue-400 text-white hover:bg-blue-500" >Añadir</motion.button>
+                    onClick={() => {changeState(false)}} className="sm:w-fit w-full p-3 rounded-md bg-blue-400 text-white hover:bg-blue-500" >Añadir</motion.button>
                 </div>
                 <br />
-                <table className="tablaDatos max-w-[1488px]">
+                <div className="w-full  flex flex-wrap xl:flex-col xl:gap-0 gap-3  max-w-[1488px]">
+                    <div className="w-full xl:flex justify-between border-b-2 p-10  hidden ">
+                        <strong className="w-[200px] text-center">Creador</strong>
+                        <strong className="w-[300px] text-center">Operario</strong>
+                        <strong className="w-[100px] text-center">Empresa</strong>
+                        <strong className="w-[300px] text-center">Fecha Creación</strong>
+                        <strong className="w-[200px] text-center">Hora creación</strong>
+                        <strong className="w-[200px] text-center">Tipo suceso</strong>
+                    </div>
+                    {
+                        listaExpedientes.map((item, key) => (
+                            <React.Fragment key={key}>
+                                <div className="w-full xl:flex justify-between p-10 hover:bg-slate-100 border  hidden" onClick={() => {update(item)}} >
+                                    <span className="w-[200px] text-center border-r-orange-200">{item.creador}</span>
+                                    <span className="w-[300px] text-center px-5">{item.trabajador_nombre}</span>
+                                    <span className="w-[100px] text-center">{item.empresa}</span>
+                                    <span className="w-[300px] text-center">{item.fecha_investigacion.split('T')[0]}</span>
+                                    <span className="w-[200px] text-center">{item.fecha_investigacion.split('T')[1]}</span>
+                                    <span className="w-[200px] text-center">{item.tipo_suceso}</span>
+                                </div>
+                                <div className="w-full xl:hidden  p-5 hover:bg-slate-100 border rounded-md flex flex-col gap-3" onClick={() => {update(item)}} >
+                                    <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Creador:</strong>  {item.creador}</span>
+                                    <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Operario:</strong>  {item.trabajador_nombre}</span>
+                                    <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Empresa:</strong>  {item.empresa}</span>
+                                    <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Fecha Creación:</strong>  {item.fecha_investigacion.split('T')[0]}</span>
+                                    <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Hora Creación:</strong>  {item.fecha_investigacion.split('T')[1]}</span>
+                                    <span className="text-left w-full flex sm:flex-row flex-col sm:gap-2"><strong>Tipo suceso:</strong>  {item.tipo_suceso}</span>
+                                </div>
+                            </React.Fragment>
+                        ))
+                    }
+                </div>
+
+                {/* <table className="tablaDatos max-w-[1488px]">
                     <colgroup>
                         <col />
                         <col style={{minWidth: '200px'}}/>
@@ -123,29 +157,13 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                                     <td>{`${item.fecha_investigacion.split('T')[0]}`}</td>
                                     <td>{`${item.fecha_investigacion.split('T')[1]}`}</td>
                                     <td>{item.tipo_suceso}</td>
-                                    {/* <td className="flex gap-4 flex-col sm:flex-row justify-center">
-                                        <motion.div
-                                        initial={{scale: 0}}
-                                        whileInView={{scale: 1}}
-                                        whileTap={{scale:1.5}}
-                                        >
-                                            <EditSvg width={28} height={28}  className="cursor-pointer"/>
-                                        </motion.div>
-                                        <motion.div
-                                        whileTap={{scale:1.5}}
-                                        initial={{scale: 0}}
-                                        whileInView={{scale: 1}}
-                                        >
-                                            <WordSvg width={28} height={28} onClick={() => {fetchDownloadWord(item.id)}} className="cursor-pointer"/>
-                                        </motion.div>
-                                    </td> */}
                                 </tr>
                             ))
                         }
                     </tbody>
-                </table>
+                </table> */}
                 
-                {errorServidor? (
+                {/* {errorServidor? (
                         <motion.span
                         initial={{opacity:0}}
                         whileInView={{opacity:1}}
@@ -166,7 +184,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                             <ExclamationTriangleIcon className="h-10 w-10 text-white  md:hidden"/>
                         </motion.span>
                     ) : (``)
-                }
+                } */}
             </div>
         </section>
      );
