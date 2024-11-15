@@ -755,7 +755,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                             <br />
                                             <div>
                                                 <label className="flex gap-3">Parte del cuerpo <PencilSquareIcon onClick={() => {redirectToEdit("parte_cuerpo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                                <select onChange={(e) => {setParteCuerpo(e.target.value); saveInStorage("parteCuerpo", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                <select value={parteCuerpo} onChange={(e) => {setParteCuerpo(e.target.value); saveInStorage("parteCuerpo", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
                                                     {
                                                         jsonParteCuerpo.map((item, key) => (
                                                             <option key={key} value={item.nombre}>{item.nombre}</option>
@@ -766,7 +766,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                             <br />
                                             <div>
                                                 <label className="flex gap-3">Agente <PencilSquareIcon onClick={() => {redirectToEdit("agente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                                <select onChange={(e) => {setAgente(e.target.value); saveInStorage("agente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                <select value={agente} onChange={(e) => {setAgente(e.target.value); saveInStorage("agente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
                                                     {
                                                         jsonAgente.map((item, key) => (
                                                             <option key={key} value={item.nombre}>{item.nombre}</option>
@@ -777,7 +777,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                             <br />
                                             <div>
                                                 <label className="flex gap-3">Forma de producirse <PencilSquareIcon onClick={() => {redirectToEdit("forma_producirse")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                                <select onChange={(e) => {setFormaProducirse(e.target.value); saveInStorage("formaProducirse", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                <select value={formaProducirse} onChange={(e) => {setFormaProducirse(e.target.value); saveInStorage("formaProducirse", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
                                                     {
                                                         jsonFormaProducirse.map((item, key) => (
                                                             <option key={key} value={item.nombre}>{item.nombre}</option>
