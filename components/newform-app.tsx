@@ -198,7 +198,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         creadorStorage ? setCreador(creadorStorage) : ``;
         empresaStorage ? setEmpresa(empresaStorage) : ``;
 
-        parteCuerpoStorage ? setParteCuerpo(parteCuerpo) : ``;
+        parteCuerpoStorage ? setParteCuerpo(parteCuerpoStorage) : ``;
         agenteStorage ? setAgente(agenteStorage) : ``;
         formaProducirseStorage ? setFormaProducirse(formaProducirseStorage) : ``;
 
