@@ -120,6 +120,22 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
 
     }
 
+    const fetchDownloadExcel = async():Promise<void> => {
+        const timeOut = await new Promise<void>((r) => setTimeout(r, 200))
+        setStateDownload(true)
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/generate-excel-document`,{method: 'POST'})
+            if(!response.ok){
+                throw new Error("Error al generar el documento Excel")
+            }
+            setStateDownload(false)
+            window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/media/excel/expedientes.xlsx`
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const fetchDeleteExpediente = async(id:string): Promise<void> => {
         try{
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expediente/${id}/`,{method: 'DELETE'})
@@ -160,7 +176,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
             <br />
             {
                 state ? (
-                    <CreateFormApp changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} fetchDownloadWord={fetchDownloadWord} errorServidor={errorServidor}/>
+                    <CreateFormApp changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} fetchDownloadExcel={fetchDownloadExcel} errorServidor={errorServidor}/>
                 ) : (<NewformApp 
                     propJson={jsonTrabajadores} 
                     idExpediente={update? update : uuidv4()} 
