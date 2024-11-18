@@ -33,11 +33,17 @@ type Variant = {
     creador: boolean
     puesto_trabajo: boolean
     lugar_accidente: boolean
+    parte_cuerpo: boolean
+    agente: boolean
+    forma_producirse: boolean
 }
 let variant:Variant = {
     creador: false,
     puesto_trabajo: false,
-    lugar_accidente: false
+    lugar_accidente: false,
+    agente: false,
+    forma_producirse: false,
+    parte_cuerpo: false
 }
 
 const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpediente, fetchDownloadWord, jsonPuestoTrabajo, jsonLugarAccidente, jsonFormasProducirseAccidente, jsonCausasAccidente, jsonCreador, jsonParteCuerpo, jsonAgente, jsonFormaProducirse}) => {
@@ -230,6 +236,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         variant.creador = false
         variant.puesto_trabajo = false
         variant.lugar_accidente = false
+        variant.agente = false
+        variant.forma_producirse = false
+        variant.parte_cuerpo = false
         
         if(storeId){
             if(!existValue(creadorStorage, jsonCreador)){
@@ -240,6 +249,15 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             }
             if(!existValue(lugarAccidenteStorage, jsonLugarAccidente)){
                 variant.lugar_accidente = true
+            }
+            if(!existValue(parteCuerpoStorage, jsonParteCuerpo)){
+                variant.parte_cuerpo = true
+            }
+            if(!existValue(agenteStorage, jsonAgente)){
+                variant.agente = true
+            }
+            if(!existValue(formaProducirseStorage, jsonFormaProducirse)){
+                variant.forma_producirse = true
             }
             setException(variant)    
         }
@@ -753,38 +771,67 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                                 </select>
                                             </div>
                                             <br />
-                                            <div>
-                                                <label className="flex gap-3">Parte del cuerpo <PencilSquareIcon onClick={() => {redirectToEdit("parte_cuerpo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                                <select value={parteCuerpo} onChange={(e) => {setParteCuerpo(e.target.value); saveInStorage("parteCuerpo", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
-                                                    {
-                                                        jsonParteCuerpo.map((item, key) => (
-                                                            <option key={key} value={item.nombre}>{item.nombre}</option>
-                                                        ))
-                                                    }
-                                                </select>
-                                            </div>
+                                            
+                                            {
+                                                variant.parte_cuerpo ? (
+                                                    <div>
+                                                        <label className="flex gap-3">Parte del cuerpo <PencilSquareIcon onClick={() => {redirectToEdit("parte_cuerpo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                        <input type="text" value={parteCuerpo} onChange={(e) => {setParteCuerpo(e.target.value); saveInStorage("parteCuerpo", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"/>
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        <label className="flex gap-3">Parte del cuerpo <PencilSquareIcon onClick={() => {redirectToEdit("parte_cuerpo")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                        <select value={parteCuerpo} onChange={(e) => {setParteCuerpo(e.target.value); saveInStorage("parteCuerpo", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                            {
+                                                                jsonParteCuerpo.map((item, key) => (
+                                                                    <option key={key} value={item.nombre}>{item.nombre}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                )
+                                            }
+
                                             <br />
-                                            <div>
-                                                <label className="flex gap-3">Agente <PencilSquareIcon onClick={() => {redirectToEdit("agente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                                <select value={agente} onChange={(e) => {setAgente(e.target.value); saveInStorage("agente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
-                                                    {
-                                                        jsonAgente.map((item, key) => (
-                                                            <option key={key} value={item.nombre}>{item.nombre}</option>
-                                                        ))
-                                                    }
-                                                </select>
-                                            </div>
+                                            {
+                                                variant.agente ? (
+                                                    <div>
+                                                        <label className="flex gap-3">Agente <PencilSquareIcon onClick={() => {redirectToEdit("agente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                        <input type="text" value={agente} onChange={(e) => {setAgente(e.target.value); saveInStorage("agente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"/>
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        <label className="flex gap-3">Agente <PencilSquareIcon onClick={() => {redirectToEdit("agente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                        <select value={agente} onChange={(e) => {setAgente(e.target.value); saveInStorage("agente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                            {
+                                                                jsonAgente.map((item, key) => (
+                                                                    <option key={key} value={item.nombre}>{item.nombre}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                )
+                                            }
                                             <br />
-                                            <div>
-                                                <label className="flex gap-3">Forma de producirse <PencilSquareIcon onClick={() => {redirectToEdit("forma_producirse")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                                <select value={formaProducirse} onChange={(e) => {setFormaProducirse(e.target.value); saveInStorage("formaProducirse", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
-                                                    {
-                                                        jsonFormaProducirse.map((item, key) => (
-                                                            <option key={key} value={item.nombre}>{item.nombre}</option>
-                                                        ))
-                                                    }
-                                                </select>
-                                            </div>
+                                            {
+                                                variant.forma_producirse ? (
+                                                    <div>
+                                                        <label className="flex gap-3">Forma de producirse <PencilSquareIcon onClick={() => {redirectToEdit("forma_producirse")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                        <input type="text" value={formaProducirse} onChange={(e) => {setFormaProducirse(e.target.value); saveInStorage("formaProducirse", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        <label className="flex gap-3">Forma de producirse <PencilSquareIcon onClick={() => {redirectToEdit("forma_producirse")}} className="w-5 h-5 hover:cursor-pointer"/></label>
+                                                        <select value={formaProducirse} onChange={(e) => {setFormaProducirse(e.target.value); saveInStorage("formaProducirse", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600">
+                                                            {
+                                                                jsonFormaProducirse.map((item, key) => (
+                                                                    <option key={key} value={item.nombre}>{item.nombre}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                )
+                                            }
                                         </div>
                                         <textarea name="" placeholder="Describe la lesión" value={lesiondescripcion} onChange={(e) => {setLesiondescripcion(e.target.value); saveInStorage("lesionDescripcion", e.target.value)}} className="min-h-20 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" id=""></textarea>
                                     </div>
