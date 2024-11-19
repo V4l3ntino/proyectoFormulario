@@ -176,7 +176,7 @@ const DashboardApp:React.FC<Props> = ({jsonTrabajadores, jsonExpedientes, jsonIm
             <br />
             {
                 state ? (
-                    <CreateFormApp changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} fetchDownloadWord={fetchDownloadWord} fetchDownloadExcel={fetchDownloadExcel} errorServidor={errorServidor}/>
+                    <CreateFormApp fetchDeleteExpediente={fetchDeleteExpediente} changeState={changeState} trabajadores={jsonTrabajadores} expedientesJson={jsonExpedientes} update={updateExpediente} fetchDownloadWord={fetchDownloadWord} fetchDownloadExcel={fetchDownloadExcel} errorServidor={errorServidor}/>
                 ) : (<NewformApp 
                     propJson={jsonTrabajadores} 
                     idExpediente={update? update : uuidv4()} 

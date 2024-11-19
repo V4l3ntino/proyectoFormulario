@@ -4,7 +4,7 @@ import CardForm from "./cardForm";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { abel } from "@/app/ui/fonts";
-import { DocumentPlusIcon, ExclamationTriangleIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { DocumentPlusIcon, ExclamationTriangleIcon, MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Expediente } from "@/models/Expediente";
 import EditSvg from "./icons/edit";
 import WordSvg from "./icons/word";
@@ -22,10 +22,11 @@ type Props = {
     update: (object: ExpedienteJson) => void
     fetchDownloadExcel: () => void
     fetchDownloadWord: (value:string) => void
+    fetchDeleteExpediente: (value: string) => void
     errorServidor: boolean
 }
 
-const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJson, update, fetchDownloadWord, fetchDownloadExcel, errorServidor}) => {
+const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJson, update, fetchDownloadWord, fetchDownloadExcel, errorServidor, fetchDeleteExpediente}) => {
 
     const expedientes2: ExpedienteJson[] = []
     if(expedientesJson && expedientesJson.length > 0 && trabajadores && trabajadores.length > 0){
@@ -64,6 +65,12 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
             })
         })
     } 
+    const borrarIncidente = (value:string) => {
+        let verificacion = confirm("Esta seguro de que quiere borrar el expediente?")
+        if(verificacion){
+            fetchDeleteExpediente(value)
+        }
+    }
 
     const [listaExpedientes, setListaExpedientes] = useState<ExpedienteJson[]>(expedientes2)
 
@@ -113,17 +120,17 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                         </SheetTrigger>
                         <SheetContent>
                             <div className="grid gap-2 py-4">
-                                <div className="grid md:grid-cols-4 grid-rows-2 items-center gap-2">
+                                <div className="flex flex-row items-center gap-2">
                                     <motion.button
                                     whileTap={{scale:0.8}}
                                     initial={{scale: 0}}
                                     whileInView={{scale: 1}}
-                                    onClick={() => {changeState(false)}} className="sm:w-fit w-full p-3 rounded-md bg-blue-400 text-white hover:bg-blue-500" >Añadir</motion.button>
+                                    onClick={() => {changeState(false)}} className="w-full p-3 rounded-md bg-blue-400 text-white hover:bg-blue-500" >Añadir</motion.button>
                                     <motion.button
                                     whileTap={{scale:0.8}}
                                     initial={{scale: 0}}
                                     whileInView={{scale: 1}}
-                                    onClick={() => {fetchDownloadExcel()}} className="sm:w-fit w-full p-3 rounded-md bg-green-400 text-white justify-center hover:bg-green-500 flex gap-2" >Exportar <ExcelSvg height={28} width={28}/></motion.button>
+                                    onClick={() => {fetchDownloadExcel()}} className="w-full p-3 rounded-md bg-green-400 text-white justify-center hover:bg-green-500 flex gap-2" >Exportar <ExcelSvg height={28} width={28}/></motion.button>
                                 </div>
                                 <div className="flex flex-col gap-3">
                                     <Input type="search" placeholder="Buscar..." onChange={(e) => {searchFilter(e.target.value)}}/>
@@ -150,6 +157,11 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                                                                 <WordSvg width={28} height={28}/>
                                                                 <p className="hover:underline">Exportar a Word</p>
                                                         </motion.div>
+                                                        <motion.span
+                                                            whileTap={{scale:0.73}}
+                                                            onClick={() => {borrarIncidente(item.id)}} className="cursor-pointer hover:underline flex gap-1 p-2 bg-red-500 rounded-md mb-3 text-white items-center">
+                                                                Eliminar <TrashIcon className="w-4" />
+                                                            </motion.span>
                                                         </span>
                                                     </motion.div>
                                                 </React.Fragment>
