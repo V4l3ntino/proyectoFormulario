@@ -56,6 +56,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const fechaActual = new Date();
     const fechaFormateada = format(fechaActual, "yyyy-MM-dd'T'HH:mm");
 
+    const dateFormateada = format(fechaActual, 'yyyy-MM-dd')
+
     const [idexpediente, setIdexpediente] = useState<string>(idExpediente)
     const [name, setName] = useState('');
     const [edad, setEdad] = useState<number>(18);
@@ -83,6 +85,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [accionAplicar, setAccionAplicar] = useState<string>("")
     const [prioridad, setPrioridad] = useState<number>(1)
     const [responsable, setResponsable] = useState<string>("Envasado")
+    const [fechaAccion, setFechaAccion] = useState<string>(dateFormateada)
     const [idAccion, setIdAccion] = useState<number>(0)
     const [itinere, setItinere] = useState<boolean>(false)
     const [descripcionCausaAccidente, setDescripcionCausaAccidente] = useState<string>("")
@@ -499,7 +502,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             accion: accionAplicar,
             prioridad: prioridad,
             responsable: responsable,
-            fecha: "2004-11-10"
+            fecha: fechaAccion
         }
         setIdAccion(accion.id)
         setAccionAplicar("")
@@ -1076,7 +1079,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                         <option value="Planchas">Planchas</option>
                                     </select>
                                     <label>Fecha de Inicio Recomendada</label>
-                                    <input type="date"  />
+                                    <input type="date" onChange={(e) => {setFechaAccion(e.target.value)}} value={fechaAccion} />
                                     <br />
                                     <span onClick={() => addNewAction()} className="bg-slate-300 hover:bg-slate-100 cursor-pointer text-center">+</span>
                                 </fieldset>
