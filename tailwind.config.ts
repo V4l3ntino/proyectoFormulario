@@ -19,7 +19,8 @@ const config: Config = {
         },
       },
       screens: {
-        'sm-425': '425px'
+        'sm-425': '425px',
+        'sm-380': '380px'
       }
     },
     keyframes: {

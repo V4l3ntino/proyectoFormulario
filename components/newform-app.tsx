@@ -178,7 +178,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                     id: index,
                     accion: item[0],
                     prioridad: JSON.parse(item[1]),
-                    responsable: item[2]
+                    responsable: item[2],
+                    fecha: item[3]
                 }
                 lista.push(accion)
             })
@@ -339,7 +340,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 aplicar_accion.push([
                     item.accion,
                     item.prioridad.toString(),
-                    item.responsable
+                    item.responsable,
+                    item.fecha
                 ]);
             })
             // const expediente = new Expediente(idtrabajador, sexo, edad, lugar, fechasuceso, lesionado? lesion: `|`, descripcion, lesionado, puestoTrabajo)
@@ -496,7 +498,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             id: idAccion + 1,
             accion: accionAplicar,
             prioridad: prioridad,
-            responsable: responsable
+            responsable: responsable,
+            fecha: "2004-11-10"
         }
         setIdAccion(accion.id)
         setAccionAplicar("")
@@ -511,7 +514,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             aplicar_accion.push([
                 item.accion,
                 item.prioridad.toString(),
-                item.responsable
+                item.responsable,
+                item.fecha
             ]);
         })
         console.log(aplicar_accion)
@@ -968,10 +972,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         </div>
                     </fieldset>
                     <br />
-                    <div className=" flex flex-col gap-1 border-2 border-gray-300 rounded-lg p-5">
+                    <div className=" flex flex-col gap-1 border-2 border-gray-300 rounded-lg p-2">
 
                         <label className="flex gap-2">Causas que han provocado el Accidente.</label>
-                        <div className="h-auto w-full text-gray-900 focus:outline-none p-5 flex lg:flex-row flex-col sm:gap-10 gap-5">
+                        <div className="h-auto w-full text-gray-900 focus:outline-none flex lg:flex-row flex-col sm:gap-10 gap-5">
                             <div className="lg:w-1/4">
                                 <div className="w-full">
                                     <fieldset className="border-2 border-gray-400 rounded-lg p-3 flex flex-col ">
@@ -982,7 +986,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     </fieldset>
                                 </div>
                             </div>
-                            <div className="w-full lg:pl-20">
+                            <div className="w-full lg:pl-20 p-5">
                                 <ul className="listaDesordenada">
                                     {
                                         causasAccidente.map((item, key) => (
@@ -998,12 +1002,12 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         </div>
                     </div>
                     <br />
-                    <fieldset className="border-2 border-gray-300 rounded-lg p-5">
+                    <div className="border-2 border-gray-300 rounded-lg p-5">
                         <legend>6. Valoración de los hechos </legend>
                         <div className="w-full flex flex-col gap-5">
                             <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">LA REPETICIÓN DE ESTE HECHO ES:</label>
-                                <div className="flex w-full lg:justify-end gap-5">
+                                <div className="flex sm-380:flex-row flex-col w-full lg:justify-end gap-5">
                                     <label>BAJA</label>
                                     <input type="radio" value="BAJA" name="repeticion" required checked={valoracionHechos[0] == "BAJA"} onChange={() => {updateValoracionHechos("BAJA", 0)}}/>
                                     <label>MEDIA</label>
@@ -1014,7 +1018,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                             <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">LA GRAVEDAD QUE PODÍA HABER TENIDO EL HECHO ES:</label>
-                                <div className="flex  gap-3 w-full lg:justify-end">
+                                <div className="flex sm-380:flex-row flex-col gap-3 w-full lg:justify-end">
                                     <label>LEVE</label>
                                     <input type="radio" value="LEVE" name="gravedad" required checked={valoracionHechos[1] == "LEVE"} onChange={() => {updateValoracionHechos("LEVE", 1)}}/>
                                     <label>GRAVE</label>
@@ -1025,7 +1029,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                             <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">EXISTÍAN MEDIDAS DE CONTROL PARA EL RIESGO:</label>
-                                <div className="flex  gap-5">
+                                <div className="flex sm-380:flex-row flex-col gap-5">
                                     <label>SI</label>
                                     <input type="radio" value="si" name="medidasControl" required checked={valoracionHechos[2] == "SI"} onChange={() => {updateValoracionHechos("SI", 2)}}/>
                                     <label>NO</label>
@@ -1034,7 +1038,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                             <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">EL ACCIDENTADO/A CONOCÍA EL RIESGO:</label>
-                                <div className="flex  gap-5">
+                                <div className="flex sm-380:flex-row flex-col gap-5">
                                     <label>SI</label>
                                     <input type="radio" value="si" name="riesgo" required checked={valoracionHechos[3] == "SI"} onChange={() => {updateValoracionHechos("SI", 3)}}/>
                                     <label>NO</label>
@@ -1043,7 +1047,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                             </div>
                             <div className="w-full flex flex-col lg:flex-row gap-2">
                                 <label className="flex w-full" htmlFor="">EL ACCIDENTADO/A CONOCÍA LAS MEDIDAS DE PREVENCIÓN:</label>
-                                <div className="flex  gap-5">
+                                <div className="flex sm-380:flex-row flex-col gap-5">
                                     <label>SI</label>
                                     <input type="radio" value="si" name="prevencion" required checked={valoracionHechos[4] == "SI"} onChange={() => {updateValoracionHechos("SI", 4)}}/>
                                     <label>NO</label>
@@ -1051,7 +1055,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 </div>
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                     <br />
                     <fieldset className="border-2 border-gray-300 rounded-lg p-5 flex xl:flex-row flex-col gap-5">
                         <legend>7. Medidas correctoras propuestas</legend>
@@ -1071,6 +1075,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                         <option value="Autos">Autos</option>
                                         <option value="Planchas">Planchas</option>
                                     </select>
+                                    <label>Fecha de Inicio Recomendada</label>
+                                    <input type="date"  />
                                     <br />
                                     <span onClick={() => addNewAction()} className="bg-slate-300 hover:bg-slate-100 cursor-pointer text-center">+</span>
                                 </fieldset>
@@ -1082,7 +1088,10 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     <fieldset className="border-2 border-gray-400 rounded-lg p-3 mb-5 relative">
                                         <legend>Responsable:{item.responsable} - Prioridad:{item.prioridad}</legend>
                                         <motion.div initial={{scale:0}} whileInView={{scale:1}} transition={{ type: "spring", stiffness: 100, delay:0.3 }} onClick={() => {deleteAction(item.id)}} className="bg-red-300 hover:bg-red-400 rounded-full p-2 absolute -top-[0.9rem] cursor-pointer z-10 -right-2"><XMarc className="w-5"/></motion.div>
-                                        <p>{item.accion}</p>
+                                        <p>
+                                            <span>Fecha Inicio: {item.fecha}</span>
+                                            <p>{item.accion}</p>
+                                        </p>
                                     </fieldset>
                                 ))
                             }

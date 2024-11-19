@@ -50,5 +50,6 @@ export interface aplicarAcciones {
     id:number,
     accion: string,
     prioridad: number,
-    responsable: string
+    responsable: string,
+    fecha: string
 }
