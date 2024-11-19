@@ -112,8 +112,8 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                             <Button variant="outline">Acciones</Button>
                         </SheetTrigger>
                         <SheetContent>
-                            <div className="grid gap-0 py-4">
-                                <div className="grid md:grid-cols-4 grid-rows-2 items-center gap-4">
+                            <div className="grid gap-2 py-4">
+                                <div className="grid md:grid-cols-4 grid-rows-2 items-center gap-2">
                                     <motion.button
                                     whileTap={{scale:0.8}}
                                     initial={{scale: 0}}
@@ -126,10 +126,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                                     onClick={() => {fetchDownloadExcel()}} className="sm:w-fit w-full p-3 rounded-md bg-green-400 text-white justify-center hover:bg-green-500 flex gap-2" >Exportar <ExcelSvg height={28} width={28}/></motion.button>
                                 </div>
                                 <div className="flex flex-col gap-3">
-                                    <Label htmlFor="username" className="text-left">
-                                    Buscar
-                                    </Label>
-                                    <Input type="search" onChange={(e) => {searchFilter(e.target.value)}}/>
+                                    <Input type="search" placeholder="Buscar..." onChange={(e) => {searchFilter(e.target.value)}}/>
                                     <div className="w-full h-[32rem] flex flex-col gap-2 overflow-auto">
                                         {
                                             listaExpedientes.map((item, key) => (
