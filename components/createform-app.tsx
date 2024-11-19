@@ -112,13 +112,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                             <Button variant="outline">Acciones</Button>
                         </SheetTrigger>
                         <SheetContent>
-                            <SheetHeader>
-                                <SheetTitle>Aplicar acciones</SheetTitle>
-                                <SheetDescription>
-                                    En este menú podrá añadir nuevos expedientes, exportarlos a un Excel
-                                </SheetDescription>
-                            </SheetHeader>
-                            <div className="grid gap-4 py-4">
+                            <div className="grid gap-0 py-4">
                                 <div className="grid md:grid-cols-4 grid-rows-2 items-center gap-4">
                                     <motion.button
                                     whileTap={{scale:0.8}}
@@ -136,7 +130,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                                     Buscar
                                     </Label>
                                     <Input type="search" onChange={(e) => {searchFilter(e.target.value)}}/>
-                                    <div className="w-full h-[32rem] flex flex-col gap-2 overflow-auto">
+                                    <div className="w-full h-[36rem] flex flex-col gap-2 overflow-auto">
                                         {
                                             listaExpedientes.map((item, key) => (
                                                 <React.Fragment key={key}>
