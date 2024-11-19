@@ -55,13 +55,14 @@ const Dashboard = async() => {
     const jsonParteCuerpo = await fetchSelector('parte_cuerpo')
     const jsonAgente = await fetchSelector('agente')
     const jsonFormaProducirse = await fetchSelector('forma_producirse')
+    const expedientesOrder = expedientes?.sort((itemA, itemB) => new Date(itemB.fecha_investigacion).getTime() - new Date(itemA.fecha_investigacion).getTime())
 
     const errorServidor = trabajadores && expedientes && imagenes ? false : true
     
     return ( 
         <DashboardApp 
         jsonTrabajadores={trabajadores? trabajadores : []} 
-        jsonExpedientes={expedientes ? expedientes : []} 
+        jsonExpedientes={expedientesOrder ? expedientesOrder : []} 
         jsonImagenes={imagenes ? imagenes : []}
         jsonPuestoTrabajo={puestoTrabajo? puestoTrabajo : []}
         jsonLugarAccidente={lugarAccidente? lugarAccidente : []}
