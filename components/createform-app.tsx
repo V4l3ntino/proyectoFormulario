@@ -130,7 +130,7 @@ const CreateFormApp:React.FC<Props> = ({changeState, trabajadores, expedientesJs
                                     Buscar
                                     </Label>
                                     <Input type="search" onChange={(e) => {searchFilter(e.target.value)}}/>
-                                    <div className="w-full h-[36rem] flex flex-col gap-2 overflow-auto">
+                                    <div className="w-full h-[32rem] flex flex-col gap-2 overflow-auto">
                                         {
                                             listaExpedientes.map((item, key) => (
                                                 <React.Fragment key={key}>
