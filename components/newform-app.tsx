@@ -979,7 +979,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
 
                         <label className="flex gap-2">Causas que han provocado el Accidente.</label>
                         <div className="h-auto w-full text-gray-900 focus:outline-none flex lg:flex-row flex-col sm:gap-10 gap-5">
-                            <div className="lg:w-1/4">
+                            <div className="lg:w-1/4 sm:p-5">
                                 <div className="w-full">
                                     <fieldset className="border-2 border-gray-400 rounded-lg p-3 flex flex-col ">
                                         <label>Descripción</label>
