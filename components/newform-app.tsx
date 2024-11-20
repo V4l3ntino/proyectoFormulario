@@ -254,9 +254,9 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                 }
                 setException(variant)    
             }
-                if (menStorage) {
-                setMen(true); setWomen(false);
-                return
+            if (menStorage) {
+            setMen(true); setWomen(false);
+            return
             }
             if (womenStorage) {
                 setMen(false); setWomen(true);
@@ -751,6 +751,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 <select value={tipoSuceso} onChange={(e) => {setTipoSuceso(e.target.value); saveInStorage("tipo_suceso", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="">
                                     <option value="Accidente con baja">Accidente con baja</option>
                                     <option value="Accidente sin baja">Accidente sin baja</option>
+                                    <option value="Accidente no reconocido">Accidente no reconocido</option>
                                     <option value="Incidente">Incidente</option>
                                 </select>
                             </div>
@@ -1074,9 +1075,8 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                     </select>
                                     <label>Responsable</label>
                                     <select onChange={(e) => {setResponsable(e.target.value); saveInStorage("accion_responsable", e.target.value)}} value={responsable} name="" id="">
-                                        <option value="Envasado">Envasado</option>
-                                        <option value="Autos">Autos</option>
-                                        <option value="Planchas">Planchas</option>
+                                        <option value="Taller">Taller</option>
+                                        <option value="Almacen">Almacen</option>
                                     </select>
                                     <label>Fecha de Inicio Recomendada</label>
                                     <input type="date" onChange={(e) => {setFechaAccion(e.target.value)}} value={fechaAccion} />
