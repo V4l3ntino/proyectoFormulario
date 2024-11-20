@@ -226,7 +226,35 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             edadStorage < 100 ? edadRefElement.current!.value = edadStorage : edadRefElement.current!.value = "18";
             experienciaRefElement.current!.value = experienciaStorage
             setEdad(+(edadRefElement.current!.value))
-            if (menStorage) {
+            variant.creador = false
+            variant.puesto_trabajo = false
+            variant.lugar_accidente = false
+            variant.agente = false
+            variant.forma_producirse = false
+            variant.parte_cuerpo = false
+            
+            if(storeId){
+                if(!existValue(creadorStorage, jsonCreador)){
+                    variant.creador = true
+                }
+                if(!existValue(puestoTrabajoStorage, jsonPuestoTrabajo)){
+                    variant.puesto_trabajo = true
+                }
+                if(!existValue(lugarAccidenteStorage, jsonLugarAccidente)){
+                    variant.lugar_accidente = true
+                }
+                if(!existValue(parteCuerpoStorage, jsonParteCuerpo)){
+                    variant.parte_cuerpo = true
+                }
+                if(!existValue(agenteStorage, jsonAgente)){
+                    variant.agente = true
+                }
+                if(!existValue(formaProducirseStorage, jsonFormaProducirse)){
+                    variant.forma_producirse = true
+                }
+                setException(variant)    
+            }
+                if (menStorage) {
                 setMen(true); setWomen(false);
                 return
             }
@@ -237,34 +265,6 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
             console.warn(error)
         }
 
-        variant.creador = false
-        variant.puesto_trabajo = false
-        variant.lugar_accidente = false
-        variant.agente = false
-        variant.forma_producirse = false
-        variant.parte_cuerpo = false
-        
-        if(storeId){
-            if(!existValue(creadorStorage, jsonCreador)){
-                variant.creador = true
-            }
-            if(!existValue(puestoTrabajoStorage, jsonPuestoTrabajo)){
-                variant.puesto_trabajo = true
-            }
-            if(!existValue(lugarAccidenteStorage, jsonLugarAccidente)){
-                variant.lugar_accidente = true
-            }
-            if(!existValue(parteCuerpoStorage, jsonParteCuerpo)){
-                variant.parte_cuerpo = true
-            }
-            if(!existValue(agenteStorage, jsonAgente)){
-                variant.agente = true
-            }
-            if(!existValue(formaProducirseStorage, jsonFormaProducirse)){
-                variant.forma_producirse = true
-            }
-            setException(variant)    
-        }
 
 
     }, [])
