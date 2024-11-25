@@ -71,7 +71,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
     const [fechasuceso, setFechasuceso] = useState<string>(fechaFormateada)
     const [fechaInvestigacion, setFechaInvestigacion] = useState<string>(fechaFormateada)
     const [descripcion, setDescripcion] = useState<string>("")
-    const [idtrabajador, setIdtrabajador] = useState<number|undefined>(undefined)
+    const [idtrabajador, setIdtrabajador] = useState<string|undefined>(undefined)
     const [imagenes, setImagenes] = useState<File[]|null>(null)
     const [puestoTrabajo, setPuestoTrabajo] = useState<string>(jsonPuestoTrabajo[0]?.nombre || "")
     const [estado, setEstado] = useState<boolean>(true)
@@ -387,7 +387,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
         alert("Id no especificado")
         
     }
-    const verificarOperario = (id: number) => {
+    const verificarOperario = (id: string) => {
         let estadoDefault = false
 
         const persona:Person|undefined = json.find((item) => item.id == id)
@@ -645,7 +645,7 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
                             <div className="w-full">
                                 {estado? (<label>Id</label>) : (<span className="border-b-2 border-rose-700 text-red-400">No se ha encontrado a dicho operario</span>)}
-                                <input min={0} value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(+e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
+                                <input  value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(e.target.value) }} type="text" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
                             </div>
                             <div className="w-full">
 

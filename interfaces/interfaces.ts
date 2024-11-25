@@ -1,5 +1,5 @@
 export interface Person {
-    id: number
+    id: string
     nombre: string
     apellido: string
     experiencia: number
@@ -7,7 +7,7 @@ export interface Person {
 
 export interface ExpedienteJson {
     id: string
-    trabajador: number
+    trabajador: string
     trabajador_nombre?: string
     sexo: string
     edad: number
