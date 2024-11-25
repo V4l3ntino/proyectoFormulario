@@ -157,7 +157,7 @@ export const redirectToDashboard = () => {
 
 export const validarSiExisteOpcion = (nombre: string, lista:string[]): boolean => {
     let found = false
-    if (lista.find((item) => item.toLowerCase() == nombre.toLowerCase())){
+    if (lista.find((item) => item.toLowerCase() == nombre.toLowerCase().trim())){
         found = true
     }
     return found
