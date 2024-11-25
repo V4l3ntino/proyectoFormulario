@@ -648,54 +648,33 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                                 <input min={0} value={idtrabajador? idtrabajador : ``} onChange={(e) => { setIdtrabajador(+e.target.value);saveInStorage("idTrabajador", e.target.value); verificarOperario(+e.target.value) }} type="number" className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder=" Identificador " required />
                             </div>
                             <div className="w-full">
-                                {
-                                    !itinere ? (
-                                        <>
-                                            {
-                                                exception.puesto_trabajo ? (
-                                                    <>
-                                                      <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/>
-                                                        <div className="flex gap-2 items-center mb-1">
-                                                            <label>Itinere?</label>
-                                                            <input type="checkbox" checked={itinere? true : false} onChange={(e) => {if(!updateId){setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}}} name="" id="" />
-                                                        </div>
 
-                                                        </label>
-                                                        <input type="text" value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required />
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/>
-                                                        <div className="flex gap-2 items-center mb-1">
-                                                            <label>Itinere?</label>
-                                                            <input type="checkbox" checked={itinere? true : false} onChange={(e) => {if(!updateId){setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}}} name="" id="" />
-                                                        </div>
+                                <>
+                                    {
+                                        exception.puesto_trabajo ? (
+                                            <>
+                                                <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/>
 
-                                                        </label>
-                                                        <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
-                                                            {
-                                                                jsonPuestoTrabajo.map((item, index) => (
-                                                                    <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
-                                                                ))
-                                                            }
-                                                        </select>
-                                                    </>
-                                                )
-                                            }
-                                        </>
-                                    ) : (
-                                        <>
-                                            <label htmlFor="" className="flex gap-2">Puesto de Trabajo 
-                                                <div className="flex gap-2 items-center mb-1">
-                                                    <label>Itinere?</label>
-                                                    <input type="checkbox" checked={itinere? true : false} onChange={(e) => {if(!updateId){setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}}} name="" id="" />
-                                                </div>
+                                                </label>
+                                                <input type="text" value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <label htmlFor="" className="flex gap-2">Puesto de Trabajo <PencilSquareIcon onClick={() => {redirectToEdit("puesto_trabajo")}} className="w-5 h-5 hover:cursor-pointer"/>
 
-                                            </label>
-                                            <input type="text" value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
-                                        </>
-                                    )
-                                }
+                                                </label>
+                                                <select value={puestoTrabajo} onChange={(e) => { setPuestoTrabajo(e.target.value);saveInStorage("puesto_trabajo", e.target.value) }} className="  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" required>
+                                                    {
+                                                        jsonPuestoTrabajo.map((item, index) => (
+                                                            <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                                        ))
+                                                    }
+                                                </select>
+                                            </>
+                                        )
+                                    }
+                                </>
+                                
                             </div>
                         </div>
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-ful">
@@ -723,21 +702,48 @@ const NewformApp: React.FC<Props> = ({ propJson ,  idExpediente, fetchDeleteExpe
                         <div className="flex gap-2 lg:gap-5 flex-col lg:flex-row w-full">
                             <div className="lg:w-1/2 w-full">
                                 {
-                                    exception.lugar_accidente ? (
+                                    !itinere ? (
                                         <>
-                                            <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                            <input type="text" value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
+                                            {
+                                                exception.lugar_accidente ? (
+                                                    <>
+                                                        <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/>
+                                                            <div className="flex gap-2 items-center mb-1">
+                                                                <label>Itinere?</label>
+                                                                <input type="checkbox" checked={itinere? true : false} onChange={(e) => {setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}} name="" id="" />
+                                                            </div>
+                                                        </label>
+                                                        <input type="text" value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/>
+                                                            <div className="flex gap-2 items-center mb-1">
+                                                                <label>Itinere?</label>
+                                                                <input type="checkbox" checked={itinere? true : false} onChange={(e) => {setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}} name="" id="" />
+                                                            </div>
+                                                        </label>
+                                                        <select value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" >
+                                                            {
+                                                                jsonLugarAccidente.map((item, index) => (
+                                                                    <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </>
+                                                )
+                                            }
                                         </>
-                                    ) : (
+                                    ) : ( 
                                         <>
-                                            <label className="flex gap-2">Lugar accidente <PencilSquareIcon onClick={() => {redirectToEdit("lugar_accidente")}} className="w-5 h-5 hover:cursor-pointer"/></label>
-                                            <select value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" name="" id="" >
-                                                {
-                                                    jsonLugarAccidente.map((item, index) => (
-                                                        <option key={index} value={`${item.nombre}`}>{item.nombre}</option>
-                                                    ))
-                                                }
-                                            </select>
+                                            <label htmlFor="" className="flex gap-2">Lugar accidente
+                                                <div className="flex gap-2 items-center mb-1">
+                                                    <label>Itinere?</label>
+                                                    <input type="checkbox" checked={itinere? true : false} onChange={(e) => {setItinere(e.target.checked); saveInStorage("itinere", e.target.checked)}} name="" id="" />
+                                                </div>
+
+                                            </label>
+                                            <input type="text" value={lugar} onChange={(e) => {setLugar(e.target.value);saveInStorage("lugarAccidente", e.target.value)}} className="h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" />
                                         </>
                                     )
                                 }
